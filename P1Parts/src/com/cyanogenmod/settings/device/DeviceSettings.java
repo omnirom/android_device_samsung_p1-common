@@ -52,7 +52,6 @@ public class DeviceSettings extends Activity {
     public static final String KEY_BACKLIGHT_TIMEOUT = "backlight_timeout";
     public static final String KEY_LED_BRIGHTNESS = "key_led_brightness";
     public static final String KEY_TOUCHSCREEN_CLOCK = "touchscreen_clock";
-    public static final String KEY_FAST_CHARGE = "fast_charge";
     public static final String KEY_VIBRATOR_TUNING = "vibrator_tuning";
 
 
@@ -84,8 +83,6 @@ public class DeviceSettings extends Activity {
                 TVFragmentActivity.class, null);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_vibrator_tuning_title),
                 VibratorFragmentActivity.class, null);
-        mTabsAdapter.addTab(bar.newTab().setText(R.string.category_usb_title),
-                FastChargeFragmentActivity.class, null);
 
         if (savedInstanceState != null) {
             bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
