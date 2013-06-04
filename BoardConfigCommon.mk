@@ -93,9 +93,22 @@ TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/p1-common
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /cache/.startrecovery; sync;"
-BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/p1-common/recovery/graphics.c
-BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/samsung/p1-common/recovery/keys.c
+# BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/p1-common/recovery/graphics.c
+# BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/samsung/p1-common/recovery/keys.c
 BOARD_USES_BML_OVER_MTD := true
+
+# TWRP
+TARGET_RECOVERY_PIXEL_FORMAT    := "RGB_565"
+DEVICE_RESOLUTION               := 1024x600
+BOARD_HAS_FLIPPED_SCREEN        := true
+RECOVERY_TOUCHSCREEN_FLIP_Y     := true
+RECOVERY_TOUCHSCREEN_FLIP_X     := true
+TW_NO_REBOOT_BOOTLOADER         := true
+TW_NO_REBOOT_RECOVERY           := true
+TW_INCLUDE_INJECTTWRP           := true
+TW_MAX_BRIGHTNESS               := 255
+TW_BRIGHTNESS_PATH              := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
+TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 
 # Samsung EMMC brick bug
 # Already disabled in kernel, but disable again for safety

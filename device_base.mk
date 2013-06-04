@@ -77,8 +77,8 @@ PRODUCT_PACKAGES += \
 	libstagefrighthw
 
 # Powah
-PRODUCT_PACKAGES += \
-	power.s5pc110
+# PRODUCT_PACKAGES += \
+#	power.s5pc110
 
 # tvout
 PRODUCT_PACKAGES += \
