@@ -109,6 +109,7 @@ TW_INCLUDE_INJECTTWRP           := true
 TW_MAX_BRIGHTNESS               := 255
 TW_BRIGHTNESS_PATH              := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
+BOARD_USE_CUSTOM_RECOVERY_FONT  := \"roboto_10x18.h\"
 
 # Samsung EMMC brick bug
 # Already disabled in kernel, but disable again for safety
