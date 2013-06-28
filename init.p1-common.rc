@@ -47,8 +47,8 @@ on post-fs-data
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp
 
-    # cpufreq, set ondemand governor
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ondemand
+    # cpufreq, set default governor
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
 
     # sensors
     # this needs to be fixed correctly, see: frameworks/base/services/sensorservice/SensorDevice.cpp
