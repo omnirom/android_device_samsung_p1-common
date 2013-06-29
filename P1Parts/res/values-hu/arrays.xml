@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2012-2013 The CyanogenMod Project
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2013 The CyanogenMod Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -12,23 +12,32 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
- -->
+-->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string-array name="hspa_entries">
-        <item>Nur UMTS</item>
-        <item>Nur HSDPA</item>
+        <item>UMTS</item>
+        <item>HSDPA</item>
         <item>HSDPA + HSUPA</item>
     </string-array>
-
+    <string-array name="tvout_system_entries">
+        <item>NTSC</item>
+        <item>PAL</item>
+    </string-array>
     <string-array name="backlight_timeout_entries">
-        <item>Immer an</item>
-        <item>Immer aus</item>
-        <item>0,5 Sekunden</item>
-        <item>1,6 Sekunden</item>
-        <item>2 Sekunden</item>
-        <item>5 Sekunden</item>
-        <item>10 Sekunden</item>
-        <item>15 Sekunden</item>
-        <item>30 Sekunden</item>
+        <item>Mindig bekapcsolva</item>
+        <item>Mindig kikapcsolva</item>
+        <item>0,5 másodperc</item>
+        <item>1,6 másodperc</item>
+        <item>2 másodperc</item>
+        <item>5 másodperc</item>
+        <item>10 másodperc</item>
+        <item>15 másodperc</item>
+        <item>30 másodperc</item>
+    </string-array>
+    <string-array name="touchscreen_clock_entries">
+        <item>400 MHz</item>
+        <item>800 MHz</item>
+        <item>1000 MHz</item>
+        <item>1200 MHz</item>
     </string-array>
 </resources>

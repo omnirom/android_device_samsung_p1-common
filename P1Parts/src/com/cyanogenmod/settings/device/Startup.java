@@ -29,8 +29,6 @@ public class Startup extends BroadcastReceiver {
         KeyLedBrightness.restore(context);
         TouchscreenClock.restore(context);
         VibratorTuningPreference.restore(context);
-        Intent myIntent = new Intent(context, DockObserver.class);
-        context.startService(myIntent);
         Sanity.check(context);
     }
 }

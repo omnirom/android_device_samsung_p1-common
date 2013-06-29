@@ -33,14 +33,11 @@
 
         <service android:name=".TvOutService" />
 
-        <service
-            android:enabled="true"
-            android:name=".DockObserver"/>
-
         <activity android:name=".WarnActivity"
-            android:label="@string/generic_warning_title"
-            android:theme="@android:style/Theme.Translucent">
+        android:label="@string/generic_warning_title"
+        android:theme="@android:style/Theme.Translucent">
         </activity>
+
     </application>
 
 </manifest>
