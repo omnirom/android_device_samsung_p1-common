@@ -1,17 +1,19 @@
 #
-# Copyright (C) 2009 The Android Open Source Project
+# Copyright (C) 2008 The Android Open-Source Project
+# Copyright (C) 2013 OmniROM Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 # BoardConfigCommon.mk
 #
@@ -42,7 +44,7 @@ TARGET_BOOTLOADER_BOARD_NAME := s5pc110
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/p1-common/bluetooth
-BOARD_BLUEDROID_VENDOR_CONF := device/samsung/p1-common/libbt_vndcfg.txt
+BOARD_BLUEDROID_VENDOR_CONF := device/samsung/p1-common/bluetooth/libbt_vndcfg.txt
 
 # WiFi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
@@ -57,6 +59,7 @@ WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
 WIFI_DRIVER_FW_PATH_STA     := "/vendor/firmware/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_AP      := "/vendor/firmware/fw_bcmdhd_apsta.bin"
 
+# Camera HAL
 USE_CAMERA_STUB := false
 ifeq ($(USE_CAMERA_STUB),false)
 BOARD_CAMERA_LIBRARIES := libcamera
@@ -78,8 +81,7 @@ BOARD_NAND_PAGE_SIZE := 4096
 BOARD_NAND_SPARE_SIZE := 128
 BOARD_KERNEL_BASE := 0x32000000
 BOARD_KERNEL_PAGESIZE := 4096
-BOARD_KERNEL_CMDLINE := console=ttyFIQ0,115200 init=/init no_console_suspend
-
+BOARD_KERNEL_CMDLINE := console=ttyFIQ0,115200 androidboot.selinux=permissive init=/init no_console_suspend
 BOARD_BOOTIMAGE_PARTITION_SIZE := 7864320
 BOARD_FLASH_BLOCK_SIZE := 4096
 
@@ -88,29 +90,6 @@ BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 
 # Releasetools
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/p1-common
-
-# Recovery
-TARGET_USERIMAGES_USE_EXT4 := true
-BOARD_HAS_NO_SELECT_BUTTON := true
-TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /cache/.startrecovery; sync;"
-# BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/p1-common/recovery/graphics.c
-# BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/samsung/p1-common/recovery/keys.c
-BOARD_USES_BML_OVER_MTD := true
-
-# TWRP
-TARGET_RECOVERY_PIXEL_FORMAT    := "RGB_565"
-DEVICE_RESOLUTION               := 1024x600
-BOARD_HAS_FLIPPED_SCREEN        := true
-RECOVERY_TOUCHSCREEN_FLIP_Y     := true
-RECOVERY_TOUCHSCREEN_FLIP_X     := true
-TW_NO_REBOOT_BOOTLOADER         := true
-TW_NO_REBOOT_RECOVERY           := true
-TW_NO_EXFAT                     := true
-TW_INCLUDE_INJECTTWRP           := true
-TW_MAX_BRIGHTNESS               := 255
-TW_BRIGHTNESS_PATH              := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
-TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
-BOARD_USE_CUSTOM_RECOVERY_FONT  := \"roboto_10x18.h\"
 
 # Samsung EMMC brick bug
 # Already disabled in kernel, but disable again for safety
@@ -133,9 +112,6 @@ BOARD_ALLOW_EGL_HIBERNATION := true
 # hwcomposer: custom vsync ioctl
 BOARD_CUSTOM_VSYNC_IOCTL := true
 
-# Hardware tunables
-BOARD_HARDWARE_CLASS := device/samsung/p1-common/cmhw/
-
 # Dalvik startup with a low memory footprint
 TARGET_ARCH_LOWMEM := true
 
@@ -150,12 +126,12 @@ BOARD_SEPOLICY_UNION += \
     mediaserver.te \
     property_contexts \
     pvrsrvinit.te \
-    rild.te \
-    tvouthack.te \
-    tvoutserver.te
+    rild.te
+#    tvouthack.te \
+#    tvoutserver.te
 
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
 
 # Required for TV out
-COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
+# COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS

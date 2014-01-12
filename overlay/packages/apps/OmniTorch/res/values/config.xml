@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 /*
-**
-** Copyright 2011, Havlena Petr <havlenapetr@gmail.com>
 ** Copyright 2011, The CyanogenMod Project
 ** Copyright 2013, OmniROM Project
 **
@@ -16,30 +16,12 @@
 ** See the License for the specific language governing permissions and
 ** limitations under the License.
 */
+-->
 
-#ifndef ANDROID_HARDWARE_CAMERA_SEC_UTILS_H
-#define ANDROID_HARDWARE_CAMERA_SEC_UTILS_H
+<!-- These resources are around just to allow their values to be customized
+     for different hardware and product builds. -->
+<resources>
+    <!-- If there is no sysfs-based control mechanism, enable this -->
+    <bool name="useCameraInterface">false</bool>
 
-#include <utils/String8.h>
-
-namespace android {
-
-struct SecCameraArea {
-    int m_left;
-    int m_top;
-    int m_right;
-    int m_bottom;
-    int m_weight;
-
-    SecCameraArea(int left = 0, int top = 0, int right = 0, int bottom = 0, int weight = 0);
-    SecCameraArea(const char* str);
-
-    int getX(int width);
-    int getY(int height);
-    bool isDummy();
-    String8 toString8();
-};
-
-}; // namespace android
-
-#endif // ANDROID_HARDWARE_CAMERA_SEC_UTILS_H
+</resources>

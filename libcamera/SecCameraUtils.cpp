@@ -2,6 +2,7 @@
 **
 ** Copyright 2011, Havlena Petr <havlenapetr@gmail.com>
 ** Copyright 2011, The CyanogenMod Project
+** Copyright 2013, OmniROM Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.

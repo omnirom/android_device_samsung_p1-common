@@ -1,4 +1,6 @@
-# Copyright (C) 2010 The Android Open Source Project
+#
+# Copyright (C) 2008 The Android Open-Source Project
+# Copyright (C) 2013 OmniROM Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 # These is the hardware-specific overlay, which points to the location
 # of hardware-specific resource overrides, typically the frameworks and
@@ -24,12 +27,13 @@ TARGET_SCREEN_WIDTH := 600
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES := \
 	device/samsung/p1-common/libaudio/audio_policy.conf:system/etc/audio_policy.conf \
-	device/samsung/p1-common/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf
+	device/samsung/p1-common/libaudio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
+	device/samsung/p1-common/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf
 
 # Init files
 PRODUCT_COPY_FILES += \
-	device/samsung/p1-common/init.p1-common.rc:root/init.p1-common.rc \
-	device/samsung/p1-common/lpm.rc:root/lpm.rc
+	device/samsung/p1-common/rootdir/init.p1-common.rc:root/init.p1-common.rc \
+	device/samsung/p1-common/rootdir/lpm.rc:root/lpm.rc
 
 # Prebuilt kl keymaps
 PRODUCT_COPY_FILES += \
@@ -40,6 +44,10 @@ PRODUCT_COPY_FILES += \
 # Filesystem management tools
 PRODUCT_PACKAGES := \
 	bml_over_mtd
+
+# Interface controller
+PRODUCT_PACKAGES += \
+	libnetcmdiface
 
 # Lights
 PRODUCT_PACKAGES += \
@@ -80,13 +88,12 @@ PRODUCT_PACKAGES += \
 	power.s5pc110
 
 # tvout
-PRODUCT_PACKAGES += \
-	P1Parts \
-	tvouthack
+# PRODUCT_PACKAGES += \
+#	tvouthack
 
 # torch
 PRODUCT_PACKAGES += \
-	Torch
+	OmniTorch
 
 # Usb accessory
 PRODUCT_PACKAGES += \
@@ -169,11 +176,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.vold.umsdirtyratio=20
 
-# enable repeatable keys in cwm
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.cwm.enable_key_repeat=true \
-	ro.cwm.repeatable_keys=102,114,115,139
-
 # Enable Low Ram Device flag
 # This is used by ActivityManager.isLowRamDevice()
 PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
@@ -182,7 +184,7 @@ PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
 PRODUCT_TAGS += dalvik.gc.type-precise
 
 # dalvik
-include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
+include frameworks/native/build/tablet-dalvik-heap.mk
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \

@@ -1,5 +1,7 @@
-# Copyright (C) 2012 The Android Open Source Project
+#
 # Copyright (C) 2012 The CyanogenMod Project
+# Copyright (C) 2012 The Android Open-Source Project
+# Copyright (C) 2013 OmniROM Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +14,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 """Custom OTA commands for p1"""
 
@@ -21,13 +24,11 @@ import os
 LOCAL_DIR = os.path.dirname(os.path.abspath(__file__))
 TARGET_DIR = os.getenv('OUT')
 UTILITIES_DIR = os.path.join(TARGET_DIR, 'utilities')
-TARGET_DEVICE = os.getenv('CM_BUILD')
+TARGET_DEVICE = os.getenv('CUSTOM_BUILD')
 
 def FullOTA_Assertions(info):
-  if TARGET_DEVICE == "p1":
+  if TARGET_DEVICE != "p1c":
     info.output_zip.write(os.path.join(TARGET_DIR, "modem.bin"), "modem.bin")
-    info.output_zip.write(os.path.join(TARGET_DIR, "p1ln.sh"), "p1ln.sh")
-    info.output_zip.write(os.path.join(TARGET_DIR, "boot_p1ln.img"), "boot_p1ln.img")
 
   info.output_zip.write(os.path.join(TARGET_DIR, "updater.sh"), "updater.sh")
   info.output_zip.write(os.path.join(UTILITIES_DIR, "make_ext4fs"), "make_ext4fs")
@@ -37,13 +38,10 @@ def FullOTA_Assertions(info):
   info.output_zip.write(os.path.join(UTILITIES_DIR, "bml_over_mtd"), "bml_over_mtd")
   info.output_zip.write(os.path.join(LOCAL_DIR, "bml_over_mtd.sh"), "bml_over_mtd.sh")
 
-  if TARGET_DEVICE == "p1":
+  if TARGET_DEVICE != "p1c":
     info.script.AppendExtra(
           ('package_extract_file("modem.bin", "/tmp/modem.bin");\n'
            'set_perm(0, 0, 0777, "/tmp/modem.bin");'))
-    info.script.AppendExtra(
-          ('package_extract_file("p1ln.sh", "/tmp/p1ln.sh");\n'
-           'set_perm(0, 0, 0777, "/tmp/p1ln.sh");'))
 
   info.script.AppendExtra(
         ('package_extract_file("updater.sh", "/tmp/updater.sh");\n'
@@ -72,11 +70,8 @@ def FullOTA_Assertions(info):
   if TARGET_DEVICE == "p1c":
     info.script.AppendExtra('assert(run_program("/tmp/updater.sh", "cdma") == 0);')
   else:
-    info.script.AppendExtra('package_extract_file("boot_p1ln.img", "/tmp/boot_p1ln.img");')
-    info.script.AppendExtra('assert(run_program("/tmp/p1ln.sh") == 0);')
     info.script.AppendExtra('assert(run_program("/tmp/updater.sh") == 0);')
 
 def FullOTA_InstallEnd(info):
   # Remove writing boot.img from script (we do it in updater.sh)
   info.script.script = [cmd for cmd in info.script.script if not "write_raw_image" in cmd]
-

@@ -2,6 +2,7 @@
  * Video for Linux Two header file for samsung
  *
  * Copyright (C) 2009, Samsung Electronics
+ * Copyright (C) 2013, OmniROM Project
  *
  * This header file contains several v4l2 APIs to be proposed to v4l2
  * community and until bein accepted, will be used restrictly in Samsung's
