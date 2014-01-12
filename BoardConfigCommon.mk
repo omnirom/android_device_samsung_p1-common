@@ -29,7 +29,7 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_ARCH_VARIANT_CPU := cortex-a8
-ARCH_ARM_HAVE_TLS_REGISTER := true
+TARGET_CPU_VARIANT := cortex-a8
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
@@ -132,3 +132,30 @@ BOARD_ALLOW_EGL_HIBERNATION := true
 
 # hwcomposer: custom vsync ioctl
 BOARD_CUSTOM_VSYNC_IOCTL := true
+
+# Hardware tunables
+BOARD_HARDWARE_CLASS := device/samsung/p1-common/cmhw/
+
+# Dalvik startup with a low memory footprint
+TARGET_ARCH_LOWMEM := true
+
+# SELinux
+BOARD_SEPOLICY_DIRS += \
+    device/samsung/p1-common/sepolicy
+
+BOARD_SEPOLICY_UNION += \
+    device.te \
+    domain.te \
+    file_contexts \
+    mediaserver.te \
+    property_contexts \
+    pvrsrvinit.te \
+    rild.te \
+    tvouthack.te \
+    tvoutserver.te
+
+TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
+BOARD_EGL_WORKAROUND_BUG_10194508 := true
+
+# Required for TV out
+COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS

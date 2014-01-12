@@ -11,3 +11,8 @@ on init
 on boot
     # mass_storage support
     setprop sys.usb.config mass_storage,adb
+
+on init
+    # legacy symlink
+    rmdir /external_sd
+    symlink /storage/sdcard1 /external_sd
