@@ -115,6 +115,24 @@ BOARD_CUSTOM_VSYNC_IOCTL := true
 # Dalvik startup with a low memory footprint
 TARGET_ARCH_LOWMEM := true
 
+# TWRP
+DEVICE_RESOLUTION := 1024x600
+BOARD_USES_BML_OVER_MTD := true
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /cache/.startrecovery; sync;"
+TARGET_RECOVERY_PIXEL_FORMAT := "RGB_565"
+TW_NO_REBOOT_BOOTLOADER := true
+TW_NO_REBOOT_RECOVERY := true
+TW_INCLUDE_INJECTTWRP := true
+TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
+BOARD_HAS_FLIPPED_SCREEN := true
+RECOVERY_TOUCHSCREEN_FLIP_Y := true
+RECOVERY_TOUCHSCREEN_FLIP_X := true
+TW_INTERNAL_STORAGE_PATH := "/sdcard"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
+TW_MAX_BRIGHTNESS := 255
+TW_BRIGHTNESS_PATH := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
+
 # SELinux
 BOARD_SEPOLICY_DIRS += \
     device/samsung/p1-common/sepolicy

@@ -78,6 +78,10 @@ PRODUCT_PACKAGES += \
 	libOMX.SEC.M4V.Encoder \
 	libOMX.SEC.AVC.Encoder
 
+# Libnetcmd
+PRODUCT_PACKAGES += \
+    libnetcmdiface
+
 # Libs
 PRODUCT_PACKAGES += \
 	hwcomposer.s5pc110 \

@@ -136,12 +136,12 @@ service iprenew_bnep0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
-service tvout /system/bin/tvoutserver
-    class main
-    user system
-    group graphics
+# service tvout /system/bin/tvoutserver
+#    class main
+#    user system
+#    group graphics
 
-service tvouthack /system/bin/tvouthack
-    user system
-    group graphics
-    disabled
+# service tvouthack /system/bin/tvouthack
+#    user system
+#    group graphics
+#    disabled
