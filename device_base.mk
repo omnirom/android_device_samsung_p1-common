@@ -27,6 +27,10 @@ TARGET_SCREEN_WIDTH := 600
 # Galaxy Tab uses high-density artwork where available
 PRODUCT_LOCALES += hdpi
 
+# Screen size is "large" 7' tablet, density is "hdpi"
+PRODUCT_AAPT_CONFIG := large hdpi xhdpi
+PRODUCT_AAPT_PREF_CONFIG := hdpi
+
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES := \
 	device/samsung/p1-common/libaudio/audio_policy.conf:system/etc/audio_policy.conf \
