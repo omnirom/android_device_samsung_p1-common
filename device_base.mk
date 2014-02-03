@@ -24,6 +24,9 @@ DEVICE_PACKAGE_OVERLAYS := device/samsung/p1-common/overlay
 TARGET_SCREEN_HEIGHT := 1024
 TARGET_SCREEN_WIDTH := 600
 
+# Galaxy Tab uses high-density artwork where available
+PRODUCT_LOCALES += hdpi
+
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES := \
 	device/samsung/p1-common/libaudio/audio_policy.conf:system/etc/audio_policy.conf \
