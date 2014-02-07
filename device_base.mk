@@ -178,9 +178,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # The extended JNI checks will cause the system to run more slowly, but they can spot a variety of nasty bugs 
 # before they have a chance to cause problems.
 # Default=true for development builds, set by android buildsystem.
+# Disable GC freed lines
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.kernel.android.checkjni=0 \
-	dalvik.vm.checkjni=false
+    ro.kernel.android.checkjni=0 \
+    dalvik.vm.checkjni=false \
+    dalvik.vm.debug.alloc=0
 
 # Override /proc/sys/vm/dirty_ratio on UMS
 PRODUCT_PROPERTY_OVERRIDES += \
