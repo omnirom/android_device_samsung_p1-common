@@ -36,15 +36,11 @@ on boot
     domainname localdomain
 
     class_start default
+    class_start charger
+
+service charger /charger
+    class charger
+    user root
 
 service ueventd /sbin/ueventd
     critical
-
-service playlpm /system/bin/playlpm
-    user root
-    oneshot
-
-service lpmkey /system/bin/charging_mode
-    user root
-    oneshot
-

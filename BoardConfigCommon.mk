@@ -133,6 +133,9 @@ TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
 TW_MAX_BRIGHTNESS := 255
 TW_BRIGHTNESS_PATH := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
 
+# Charging mode
+BOARD_CHARGER_RES := device/samsung/p1-common/res/charger
+
 # SELinux
 BOARD_SEPOLICY_DIRS += \
     device/samsung/p1-common/sepolicy
