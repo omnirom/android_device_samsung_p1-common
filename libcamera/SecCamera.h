@@ -384,6 +384,7 @@ public:
     int             setObjectTrackingStartStop(int start_stop);
     int             setTouchAFStartStop(int start_stop);
     int             getAutoFocusResult(void);
+    int             setAntiBanding(int anti_banding);
     int             getPostview(void);
     int             setRecordingSize(int width, int height);
     int             setExifOrientationInfo(int orientationInfo);
@@ -486,6 +487,7 @@ private:
     int             m_snapshot_max_height;
 
     int             m_angle;
+    int             m_anti_banding;
     int             m_zoom_level;
     int             m_object_tracking;
     int             m_object_tracking_start_stop;
