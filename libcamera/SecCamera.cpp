@@ -360,7 +360,7 @@ static int fimc_v4l2_querybuf(int fp, struct fimc_buffer *buffer, enum v4l2_buf_
     buffer->length = v4l2_buf.length;
     if ((buffer->start = (char *)mmap(0, v4l2_buf.length,
                                          PROT_READ | PROT_WRITE, MAP_SHARED,
-                                         fp, v4l2_buf.m.offset)) < 0) {
+                                         fp, v4l2_buf.m.offset)) == '\0') {
          ALOGE("%s %d] mmap() failed\n",__func__, __LINE__);
          return -1;
     }
@@ -524,6 +524,7 @@ SecCamera::SecCamera() :
             m_snapshot_max_width  (MAX_BACK_CAMERA_SNAPSHOT_WIDTH),
             m_snapshot_max_height (MAX_BACK_CAMERA_SNAPSHOT_HEIGHT),
             m_angle(-1),
+            m_anti_banding(-1),
             m_zoom_level(-1),
             m_object_tracking(-1),
             m_gps_enabled(false),
@@ -714,7 +715,7 @@ int SecCamera::startPreview(void)
     CHECK(ret);
 
     if (m_camera_id == CAMERA_ID_BACK)
-    ret = fimc_v4l2_s_fmt(m_cam_fd, m_preview_width,m_preview_height,m_preview_v4lformat, 0);
+        ret = fimc_v4l2_s_fmt(m_cam_fd, m_preview_width,m_preview_height,m_preview_v4lformat, 0);
     else
         ret = fimc_v4l2_s_fmt(m_cam_fd, m_preview_height,m_preview_width,m_preview_v4lformat, 0);
     CHECK(ret);
@@ -733,11 +734,11 @@ int SecCamera::startPreview(void)
     ret = fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_VT_MODE, m_vtmode);
     CHECK(ret);
 
-    //reference only, this is in stock camera HAL, but not supported in the kernel
-    //if (m_camera_id == CAMERA_ID_BACK) {
-    //    ret = fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_ANTI_BANDING, 0);
-    //    CHECK(ret);
-    //}
+    if (m_camera_id == CAMERA_ID_FRONT) {
+        m_anti_banding = ANTI_BANDING_60HZ;
+        ret = fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_ANTI_BANDING, m_anti_banding);
+        CHECK(ret);
+    }
 
     ret = fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_CHECK_FLIP, 0);
     CHECK(ret);
@@ -783,6 +784,8 @@ int SecCamera::startPreview(void)
         CHECK(ret);
         ret = fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_FLASH_MODE, m_params->flash_mode);
         CHECK(ret);
+        ret = fimc_v4l2_g_ctrl(m_cam_fd, V4L2_CID_ESD_INT);
+        CHECK(ret);
     }
 
     ret = fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_APP_CHECK, 0);
@@ -791,10 +794,11 @@ int SecCamera::startPreview(void)
     ret = fimc_v4l2_s_parm(m_cam_fd, &m_streamparm);
     CHECK(ret);
 
-    if (m_camera_id == CAMERA_ID_BACK) {
-        ret = fimc_v4l2_g_ctrl(m_cam_fd, V4L2_CID_ESD_INT);
-        CHECK_PTR(ret);
-    }
+    /* It is a delay for a new frame,
+     * not to show the previous bigger ugly picture frame.
+     */
+    ret = fimc_poll(&m_events_c);
+    CHECK(ret);
 
     ALOGV("%s: got the first frame of the preview\n", __func__);
 
@@ -854,8 +858,12 @@ int SecCamera::startRecord(void)
          __func__, m_recording_width, m_recording_height);
 
     if (m_camera_id == CAMERA_ID_BACK) {
+        // Some properties for back camera video recording
+        setISO(ISO_MOVIE);
+        setMetering(METERING_MATRIX);
+
         ret = fimc_v4l2_s_fmt(m_cam_fd2, m_recording_width,
-                          m_recording_height, V4L2_PIX_FMT_NV12T, 0);
+                              m_recording_height, V4L2_PIX_FMT_NV12T, 0);
     }
     else {
         ret = fimc_v4l2_s_fmt(m_cam_fd2, m_recording_height,
@@ -923,6 +931,12 @@ int SecCamera::stopRecord(void)
     ret = fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_FRAME_RATE,
                             FRAME_RATE_AUTO);
     CHECK(ret);
+
+    // Properties for back camera non-video recording
+    if (m_camera_id == CAMERA_ID_BACK) {
+        setISO(ISO_AUTO);
+        setMetering(METERING_CENTER);
+    }
 
     return 0;
 }
@@ -1279,14 +1293,14 @@ void SecCamera::getPostViewConfig(int *width, int *height, int *size)
         *height = BACK_CAMERA_POSTVIEW_HEIGHT;
         *size = BACK_CAMERA_POSTVIEW_WIDE_WIDTH * BACK_CAMERA_POSTVIEW_HEIGHT * BACK_CAMERA_POSTVIEW_BPP / 8;
     } else {
-        if (m_camera_id == CAMERA_ID_BACK) {
-            *width = BACK_CAMERA_POSTVIEW_WIDTH;
-            *height = BACK_CAMERA_POSTVIEW_HEIGHT;
-            *size = BACK_CAMERA_POSTVIEW_WIDTH * BACK_CAMERA_POSTVIEW_HEIGHT * BACK_CAMERA_POSTVIEW_BPP / 8;
-        } else {
+        if (m_camera_id == CAMERA_ID_FRONT) {
             *width = FRONT_CAMERA_POSTVIEW_WIDTH;
             *height = FRONT_CAMERA_POSTVIEW_HEIGHT;
             *size = FRONT_CAMERA_POSTVIEW_WIDTH * FRONT_CAMERA_POSTVIEW_HEIGHT * FRONT_CAMERA_POSTVIEW_BPP / 8;
+        } else {
+            *width = BACK_CAMERA_POSTVIEW_WIDTH;
+            *height = BACK_CAMERA_POSTVIEW_HEIGHT;
+            *size = BACK_CAMERA_POSTVIEW_WIDTH * BACK_CAMERA_POSTVIEW_HEIGHT * BACK_CAMERA_POSTVIEW_BPP / 8;
         }
     }
     ALOGV("[5B] m_preview_width : %d, mPostViewWidth = %d mPostViewHeight = %d mPostViewSize = %d",
@@ -1779,6 +1793,29 @@ int SecCamera::getImageEffect(void)
 {
     ALOGV("%s : image_effect(%d)", __func__, m_params->effects);
     return m_params->effects;
+}
+
+// ======================================================================
+int SecCamera::setAntiBanding(int anti_banding)
+{
+    ALOGV("%s(anti_banding(%d))", __func__, anti_banding);
+
+    if (anti_banding < ANTI_BANDING_AUTO || ANTI_BANDING_OFF < anti_banding) {
+        ALOGE("ERR(%s):Invalid anti_banding (%d)", __func__, anti_banding);
+        return -1;
+    }
+
+    if (m_anti_banding != anti_banding) {
+        m_anti_banding = anti_banding;
+        if (m_flag_camera_start) {
+            if (fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_ANTI_BANDING, anti_banding) < 0) {
+                 ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_ANTI_BANDING", __func__);
+                 return -1;
+            }
+        }
+    }
+
+    return 0;
 }
 
 //======================================================================
