@@ -156,7 +156,7 @@ void CameraHardwareSec::initDefaultParameters(int cameraId)
 
     if (cameraId == SecCamera::CAMERA_ID_BACK) {
         p.set(CameraParameters::KEY_SUPPORTED_PREVIEW_SIZES,
-              "1024x600,800x600,720x480,176x144");
+              "1280x720,1024x600,800x600,720x480,176x144");
         p.set(CameraParameters::KEY_SUPPORTED_PICTURE_SIZES,
               "2048x1536,2048x1232,1600x1200,1600x960,1024x600,800x600");
     } else {

@@ -22,7 +22,7 @@
                          AudioDecoderCap)>
 <!ELEMENT CamcorderProfiles (EncoderProfile+, ImageEncoding+, ImageDecoding, Camera)>
 <!ELEMENT EncoderProfile (Video, Audio)>
-<!ATTLIST EncoderProfile quality (timelapsehigh|timelapse480p|timelapselow|high|480p|low) #REQUIRED>
+<!ATTLIST EncoderProfile quality (timelapse720p|timelapsehigh|timelapse480p|timelapselow|720p|high|480p|low) #REQUIRED>
 <!ATTLIST EncoderProfile fileFormat (mp4|3gp) #REQUIRED>
 <!ATTLIST EncoderProfile duration (30|60) #REQUIRED>
 <!ATTLIST EncoderProfile cameraId (0|1) #REQUIRED>
@@ -89,6 +89,20 @@
 <MediaSettings>
     <!-- Each camcorder profile defines a set of predefined configuration parameters -->
     <CamcorderProfiles cameraId="0">
+
+        <EncoderProfile quality="720p" fileFormat="mp4" duration="60">
+          <Video codec="h264"
+                   bitRate="10000000"
+                   width="1280"
+                   height="720"
+                   frameRate="30" />
+
+            <Audio codec="aac"
+                   bitRate="96000"
+                   sampleRate="16000"
+                   channels="1" />
+        </EncoderProfile>
+
         <EncoderProfile quality="high" fileFormat="mp4" duration="60">
             <Video codec="h264"
                    bitRate="10000000"
@@ -122,6 +136,20 @@
                    height="600"
                    frameRate="30" />
 
+            <Audio codec="aac"
+                   bitRate="96000"
+                   sampleRate="16000"
+                   channels="1" />
+        </EncoderProfile>
+
+        <EncoderProfile quality="timelapse720p" fileFormat="mp4" duration="60">
+            <Video codec="h264"
+                   bitRate="10000000"
+                   width="1280"
+                   height="720"
+                   frameRate="30" />
+
+            <!-- Audio settings are not used for timelapse video recording -->
             <Audio codec="aac"
                    bitRate="96000"
                    sampleRate="16000"
@@ -312,9 +340,9 @@
         For this platform, it allows maximum 8MB(1.3MB per 720p frame x 6
         frames) memory.
     -->
-    <VideoEditorCap  maxInputFrameWidth="1024"
-        maxInputFrameHeight="600" maxOutputFrameWidth="1024"
-        maxOutputFrameHeight="600" maxPrefetchYUVFrames="6"/>
+    <VideoEditorCap  maxInputFrameWidth="1280"
+        maxInputFrameHeight="720" maxOutputFrameWidth="1280"
+        maxOutputFrameHeight="720" maxPrefetchYUVFrames="6"/>
     <!--
         The VideoEditor Export codec profile and level values
         correspond to the values in OMX_Video.h.
