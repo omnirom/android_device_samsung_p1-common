@@ -240,8 +240,8 @@
         minFrameRate="1" maxFrameRate="30" />
 
     <AudioEncoderCap name="aac" enabled="true"
-        minBitRate="8192" maxBitRate="96000"
-        minSampleRate="8000" maxSampleRate="44100"
+        minBitRate="758" maxBitRate="288000"
+        minSampleRate="8000" maxSampleRate="48000"
         minChannels="1" maxChannels="1" />
 
     <AudioEncoderCap name="heaac" enabled="true"
@@ -260,7 +260,7 @@
         minChannels="1" maxChannels="1" />
 
     <AudioEncoderCap name="amrnb" enabled="true"
-        minBitRate="5525" maxBitRate="12200"
+        minBitRate="4750" maxBitRate="12200"
         minSampleRate="8000" maxSampleRate="8000"
         minChannels="1" maxChannels="1" />
 
