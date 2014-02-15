@@ -48,9 +48,11 @@ fix_package_location() {
     # Remove leading /mnt
     PACKAGE_LOCATION=${PACKAGE_LOCATION#/mnt}
     # Convert to modern sdcard path
-    PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/sdcard|/storage/sdcard0|"`
-    PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/emmc|/storage/sdcard1|"`
-    PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/external_sd|/storage/sdcard1|"`
+    PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/sdcard/||"`
+    PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/emmc/||"`
+    PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/external_sd/||"`
+    PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/storage/sdcard1/||"`
+    PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/storage/sdcard1/||"`
     echo $PACKAGE_LOCATION
 }
 
