@@ -5,8 +5,30 @@ on init
     export PATH /sbin
     export LD_LIBRARY_PATH .:/sbin
 
+on fs
+
+    # mount /system
+    mount yaffs2 mtd@system /system
+
+on post-fs
+
+	# vibrator
+	insmod /system/lib/modules/vibrator.ko
+
+	# disable lpm
+	write /sys/class/power_supply/battery/charging_mode_booting 0
+
     # touch rotate
     write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/pivot 0
+
+    # led timeout: 10 seconds
+	write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/leds_timeout 10000
+
+	# led brightness: 3mA
+	write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/brightness 3
+
+	# touch clock: 400MHz
+	write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/cpufreq_lock 0
 
 on boot
     # mass_storage support
