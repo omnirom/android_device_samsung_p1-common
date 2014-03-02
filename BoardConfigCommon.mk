@@ -144,12 +144,12 @@ BOARD_SEPOLICY_UNION += \
     mediaserver.te \
     property_contexts \
     pvrsrvinit.te \
-    rild.te
-#    tvouthack.te \
-#    tvoutserver.te
+    rild.te \
+    tvouthack.te \
+    tvoutserver.te
 
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
 
 # Required for TV out
-# COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
+COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
