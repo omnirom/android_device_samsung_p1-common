@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013 The OmiROM Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+ -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Configurações avançadas</string>
+    <string name="category_radio_title">Radio</string>
+    <string name="hspa_title_head">HSPA</string>
+    <string name="hspa_summary_head">Ativar HSDPA/HSUPA</string>
+    <string name="category_tvout_title">Saída de TV</string>
+    <string name="tvout_enable_head">Saída de TV</string>
+    <string name="tvout_enable_summary_nocable">Cabo para Saída de TV não conectado</string>
+    <string name="tvout_enable_summary">Cabo para Saída de TV conectado, ative para usar</string>
+    <string name="tvout_enable_summary_on">Saída de TV ativada</string>
+    <string name="tvout_system_head">Sistema de TV</string>
+    <string name="tvout_system_summary">Ajuste o padrão de saída para TV</string>
+    <string name="hdmi_dock_summary">Encaixe HDMI conectado, selecione para ativar</string>
+    <string name="hdmi_dock_summary_on">Encaixe HDMI ativado</string>
+    <string name="hdmi_dock_head">Encaixe HDMI</string>
+    <string name="category_capacitive_buttons_title">Botões capacitivos</string>
+    <string name="capacitive_buttons_title">Desativar botões capacitivos</string>
+    <string name="capacitive_buttons_summary">Desativar luzes e funções de toque dos botões capacitivos (incluindo notificações)</string>
+    <string name="hdmi_dock_summary_nodock">Encaixe HDMI não está conectado</string>
+    <string name="backlight_timeout_title_head">Tempo limite da luz de fundo</string>
+    <string name="backlight_timeout_summary_head">Ajusta o tempo que a luz de fundo da tecla sensível ao toque ficará piscando antes de desligar automaticamente</string>
+    <string name="category_speed_title">Velocidade</string>
+    <string name="touchscreen_clock_title">Velocidade da Tela Sensível ao Toque</string>
+    <string name="category_buttons_title">Botões</string>
+    <string name="generic_warning_title">Aviso</string>
+    <string name="imei_not_sane_title">Aviso!</string>
+    <string name="imei_not_sane_message">Um problema foi detectado com o seu dispositivo. O número IMEI do seu dispositivo é inválido. Um número de IMEI inválido pode causar problemas com a rede incluindo a incapacidade de ligar para números de emergência.</string>
+    <string name="imei_not_sane_ok">OK</string>
+</resources>

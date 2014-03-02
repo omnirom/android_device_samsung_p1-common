@@ -96,8 +96,12 @@ PRODUCT_PACKAGES += \
 	power.s5pc110
 
 # tvout
-# PRODUCT_PACKAGES += \
-#	tvouthack
+PRODUCT_PACKAGES += \
+    tvouthack
+
+# Device Settings
+PRODUCT_PACKAGES += \
+    DeviceSettings
 
 # torch
 PRODUCT_PACKAGES += \
@@ -196,7 +200,7 @@ PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
 PRODUCT_TAGS += dalvik.gc.type-precise
 
 # dalvik
-include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
+include frameworks/native/build/tablet-dalvik-heap.mk
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
