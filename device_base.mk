@@ -82,6 +82,11 @@ PRODUCT_PACKAGES += \
 	libOMX.SEC.M4V.Encoder \
 	libOMX.SEC.AVC.Encoder
 
+# Open Source Charging Mode
+PRODUCT_PACKAGES += \
+    p1_charger \
+    p1_charger_res_images
+
 # Libnetcmd
 PRODUCT_PACKAGES += \
     libnetcmdiface
