@@ -69,10 +69,10 @@
 #define min(a,b) ((a) < (b) ? (a) : (b))
 #endif
 
-#define ARRAY_SIZE(x)  (sizeof(x)/sizeof(x[0]))
+#define ARRAY_SIZE(x)           (sizeof(x)/sizeof(x[0]))
 
-#define MSEC_PER_SEC   (1000LL)
-#define NSEC_PER_MSEC  (1000000LL)
+#define MSEC_PER_SEC            (1000LL)
+#define NSEC_PER_MSEC           (1000000LL)
 
 #define BATTERY_UNKNOWN_TIME    (1 * MSEC_PER_SEC)
 #define POWER_ON_KEY_TIME       (1 * MSEC_PER_SEC)
@@ -240,7 +240,7 @@ static void dump_last_kmsg(void)
 
     free(buf);
 
- out:
+out:
     LOGI("\n");
     LOGI("************* END LAST KMSG *************\n");
     LOGI("\n");
@@ -267,7 +267,7 @@ static int read_file(const char *path, char *buf, size_t sz)
     close(fd);
     return cnt;
 
- err:
+err:
     if (fd >= 0)
         close(fd);
     return -1;
@@ -286,13 +286,13 @@ static int read_file_int(const char *path, int *val)
 
     tmp = strtol(buf, &end, 0);
     if (end == buf ||
-            ((end < buf+sizeof(buf)) && (*end != '\n' && *end != '\0')))
+        ((end < buf+sizeof(buf)) && (*end != '\n' && *end != '\0')))
         goto err;
 
     *val = tmp;
     return 0;
 
- err:
+err:
     return -1;
 }
 
@@ -544,8 +544,8 @@ static void update_screen_state(struct charger *charger,int64_t now){
 
             /* find first frame given current capacity */
             for (i = 1; i < batt_anim->num_frames; i++) {
-	if (batt_cap < batt_anim->frames[i].min_capacity)
-	    break;
+                if (batt_cap < batt_anim->frames[i].min_capacity)
+                break;
             }
             batt_anim->cur_frame = i - 1;
 
@@ -556,7 +556,7 @@ static void update_screen_state(struct charger *charger,int64_t now){
         batt_anim->capacity = batt_cap;
     }
 
-    /* unblank the screen    on first cycle */
+    /* unblank the screen on first cycle */
     if (batt_anim->cur_cycle == 0)
         gr_fb_blank(false);
 
@@ -585,7 +585,7 @@ static void update_screen_state(struct charger *charger,int64_t now){
      * the current level, skip it during the animation.
      */
     while (batt_anim->cur_frame < batt_anim->num_frames &&
-	 batt_anim->frames[batt_anim->cur_frame].level_only)
+        batt_anim->frames[batt_anim->cur_frame].level_only)
         batt_anim->cur_frame++;
     if (batt_anim->cur_frame >= batt_anim->num_frames) {
         batt_anim->cur_cycle++;
@@ -623,14 +623,14 @@ static int set_key_callback(int code, int value, void *data)
         int64_t secs = duration / 1000;
         int64_t msecs = duration - secs * 1000;
         LOGV("[%lld] key[%d] up (was down for %lld.%lldsec)\n", now,
-	 code, secs, msecs);
+            code, secs, msecs);
     }
 
     return 0;
 }
 
 static void update_input_state(struct charger *charger,
-                                                             struct input_event *ev)
+                               struct input_event *ev)
 {
     if (ev->type != EV_KEY)
         return;
@@ -638,8 +638,8 @@ static void update_input_state(struct charger *charger,
 }
 
 static void set_next_key_check(struct charger *charger,
-                                                             struct key_state *key,
-                                                             int64_t timeout)
+                               struct key_state *key,
+                               int64_t timeout)
 {
     int64_t then = key->timestamp + timeout;
 
@@ -656,19 +656,19 @@ static void process_key(struct charger *charger, int code, int64_t now)
         if (key->down) {
             int64_t reboot_timeout = key->timestamp + POWER_ON_KEY_TIME;
             if (now >= reboot_timeout) {
-	LOGI("[%lld] rebooting\n", now);
-	android_reboot(ANDROID_RB_RESTART, 0, 0);
+                LOGI("[%lld] rebooting\n", now);
+                android_reboot(ANDROID_RB_RESTART, 0, 0);
             } else {
-	/* if the key is pressed but timeout hasn't expired,
-	 * make sure we wake up at the right-ish time to check
-	 */
-	set_next_key_check(charger, key, POWER_ON_KEY_TIME);
+                /* if the key is pressed but timeout hasn't expired,
+                 * make sure we wake up at the right-ish time to check
+                 */
+                set_next_key_check(charger, key, POWER_ON_KEY_TIME);
             }
         } else {
             /* if the power key got released, force screen state cycle */
             if (key->pending) {
-	request_suspend(false);
-	kick_animation(charger->batt_anim);
+                request_suspend(false);
+                kick_animation(charger->batt_anim);
             }
         }
     }
@@ -692,7 +692,7 @@ static void wait_next_event(struct charger *charger, int64_t now)
     int ret;
 
     LOGV("[%lld] next screen: %lld next key: %lld\n", now,
-             charger->next_screen_transition, charger->next_key_check);
+         charger->next_screen_transition, charger->next_key_check);
 
     if (charger->next_screen_transition != -1)
         next_event = charger->next_screen_transition;
@@ -727,7 +727,7 @@ static void event_loop(struct charger *charger)
     int ret;
 
     while (true) {
-        now=curr_time_ms();
+        now = curr_time_ms();
         LOGV("[%lld] event_loop()\n", now);
         handle_input_state(charger, now);
         check_status(charger,now);
@@ -743,7 +743,6 @@ int main(int argc, char **argv)
 {
     int ret;
     struct charger *charger = &charger_state;
-
     int64_t now = curr_time_ms() - 1;
     int fd;
     int i;
