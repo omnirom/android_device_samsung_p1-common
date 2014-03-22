@@ -101,6 +101,16 @@ TARGET_BOOTANIMATION_PRELOAD := true
 TARGET_BOOTANIMATION_TEXTURE_CACHE := false
 TARGET_BOOTANIMATION_USE_RGB565 := true
 
+# Open Source Charging Mode
+BOARD_POWER_SUPPLY_PATH := /sys/class/power_supply
+BOARD_BATTERY_SYSFS_PATH := $(BOARD_POWER_SUPPLY_PATH)/battery
+BOARD_AC_SYSFS_PATH := $(BOARD_POWER_SUPPLY_PATH)/ac
+BOARD_USB_SYSFS_PATH := $(BOARD_POWER_SUPPLY_PATH)/usb
+BOARD_CHARGER_ENABLE_SUSPEND := false
+BOARD_CHARGER_DIM_SCREEN_BRIGHTNESS := true
+BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../../device/samsung/p1-common/recovery/keys.c
+BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/p1-common/recovery/graphics.c
+
 # TARGET_DISABLE_TRIPLE_BUFFERING can be used to disable triple buffering
 # on per target basis. On crespo it is possible to do so in theory
 # to save memory, however, there are currently some limitations in the
