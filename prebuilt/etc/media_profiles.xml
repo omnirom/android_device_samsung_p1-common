@@ -179,7 +179,7 @@
 
     <CamcorderProfiles cameraId="1">
 
-        <EncoderProfile quality="high" fileFormat="mp4" duration="60">
+        <EncoderProfile quality="480p" fileFormat="mp4" duration="60">
             <Video codec="h264"
                    bitRate="1000000"
                    width="640"
@@ -192,21 +192,20 @@
                    channels="1" />
         </EncoderProfile>
 
-        <EncoderProfile quality="low" fileFormat="mp4" duration="30">
+        <EncoderProfile quality="low" fileFormat="mp4" duration="60">
             <Video codec="h264"
-                   bitRate="256000"
-                   width="176"
-                   height="144"
+                   bitRate="1000000"
+                   width="320"
+                   height="240"
                    frameRate="30" />
 
-            <Audio codec="amrnb"
-                   bitRate="12200"
-                   sampleRate="8000"
+            <Audio codec="aac"
+                   bitRate="96000"
+                   sampleRate="16000"
                    channels="1" />
-
         </EncoderProfile>
 
-        <EncoderProfile quality="timelapsehigh" fileFormat="mp4" duration="60">
+        <EncoderProfile quality="timelapse480p" fileFormat="mp4" duration="60">
             <Video codec="h264"
                    bitRate="3078000"
                    width="640"
@@ -220,17 +219,17 @@
                    channels="1" />
         </EncoderProfile>
 
-        <EncoderProfile quality="timelapselow" fileFormat="mp4" duration="30">
+        <EncoderProfile quality="timelapselow" fileFormat="mp4" duration="60">
             <Video codec="h264"
-                   bitRate="256000"
-                   width="176"
-                   height="144"
-                   frameRate="15" />
+                   bitRate="3078000"
+                   width="320"
+                   height="240"
+                   frameRate="30" />
 
             <!-- Audio settings are not used for timelapse video recording -->
-            <Audio codec="amrnb"
-                   bitRate="12200"
-                   sampleRate="8000"
+            <Audio codec="aac"
+                   bitRate="96000"
+                   sampleRate="16000"
                    channels="1" />
         </EncoderProfile>
 
