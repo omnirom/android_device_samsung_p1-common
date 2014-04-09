@@ -55,3 +55,42 @@
 
 # serial console aka s3c2310_serial2 uart in old kernel
 /dev/ttyFIQ0              0600   root       root
+
+# power hal - governors - interactive
+/sys/devices/system/cpu/cpufreq interactive/above_hispeed_delay      0664    system  system
+/sys/devices/system/cpu/cpufreq interactive/boost                    0664    system  system
+/sys/devices/system/cpu/cpufreq interactive/boostpulse               0664    system  system
+/sys/devices/system/cpu/cpufreq interactive/go_hispeed_load          0664    system  system
+/sys/devices/system/cpu/cpufreq interactive/hispeed_freq             0664    system  system
+/sys/devices/system/cpu/cpufreq interactive/input_boost              0664    system  system
+/sys/devices/system/cpu/cpufreq interactive/min_sample_rate          0664    system  system
+/sys/devices/system/cpu/cpufreq interactive/timer_rate               0664    system  system
+
+# power hal - governors - ondemand
+/sys/devices/system/cpu/cpufreq ondemand/boostfreq                   0664    system  system
+/sys/devices/system/cpu/cpufreq ondemand/boostpulse                  0664    system  system
+/sys/devices/system/cpu/cpufreq ondemand/ignore_nice_load            0664    system  system
+/sys/devices/system/cpu/cpufreq ondemand/io_is_busy                  0664    system  system
+/sys/devices/system/cpu/cpufreq ondemand/powersave_bias              0664    system  system
+/sys/devices/system/cpu/cpufreq ondemand/sampling_down_factor        0664    system  system
+/sys/devices/system/cpu/cpufreq ondemand/sampling_rate               0664    system  system
+/sys/devices/system/cpu/cpufreq ondemand/sampling_rate_min           0664    system  system
+/sys/devices/system/cpu/cpufreq ondemand/up_threshold                0664    system  system
+
+# cpufreq
+/sys/devices/system/cpu/cpu* cpufreq/UV_mV_table                     0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/affected_cpus                   0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/cpuinfo_cur_freq                0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/cpuinfo_max_freq                0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/cpuinfo_min_freq                0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/cpuinfo_transition_latency      0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/related_cpus                    0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/scaling_available_frequencies   0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/scaling_available_governors     0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/scaling_cur_freq                0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/scaling_driver                  0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/scaling_governor                0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/scaling_max_freq                0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/scaling_min_freq                0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/scaling_setspeed                0664    system  system
+/sys/devices/system/cpu/cpu* cpufreq/stats                           0664    system  system
