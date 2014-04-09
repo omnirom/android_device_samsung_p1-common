@@ -40,9 +40,15 @@
 # for Sensor HAL
 /dev/akm8973              0660   system     system
 /dev/accelerometer        0660   system     system
-/dev/l3g4200d             0600   system       system
+/dev/l3g4200d             0660   system     system
+
 /sys/devices/virtual/BMA-dev/accelerometer   calibration               0660 system system
 /sys/devices/virtual/lightsensor/switch_cmd  lightsensor_file_cmd      0660 system system
+
+# general inputs properties
+/sys/devices/virtual/input/input*   enable      0660  root  input
+/sys/devices/virtual/input/input*   delay       0660  root  input
+/sys/devices/virtual/input/input*   poll_delay  0660  root  input
 
 # for GPS
 /dev/s3c2410_serial1      0600   gps        gps
