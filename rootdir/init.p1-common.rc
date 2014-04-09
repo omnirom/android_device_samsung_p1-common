@@ -48,6 +48,13 @@ on post-fs
 
 on post-fs-data
 
+    # write value must be consistent with the above properties.
+    # Note that the driver only supports 6 slots, so we have combined some of
+    # the classes into the same memory level; the associated processes of higher
+    # classes will still be killed first.
+    write /sys/module/lowmemorykiller/parameters/adj 0,1,2,4,7,15
+    write /sys/module/lowmemorykiller/parameters/minfree 2048,3072,4096,6144,7168,8192
+
     # create data/gps for GPS demon
     mkdir /data/gps 771 gps system
     chown gps system /data/gps
