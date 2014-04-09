@@ -37,9 +37,24 @@ on fs
     chown radio radio /sys/class/sec/uart_switch/UART_SEL/value
     chmod 660 /sys/class/sec/uart_switch/UART_SEL/value
 
-    chown system radio /sys/class/sec/switch/usb_state
-    chown system radio /sys/class/sec/switch/usb_sel
-    chown system radio /sys/class/sec/switch/uart_sel
+    # permissions for MTP device node
+    chmod 0777 /dev/mtp_usb
+	restorecon /dev/mtp_usb
+    chmod 0777 /dev/usb_accessory
+	restorecon /dev/usb_accessory
+
+    # sensor sysfs permission
+	chown system system /sys/devices/virtual/BMA-dev/accelerometer/calibration
+	chown system system /sys/devices/virtual/lightsensor/switch_cmd/lightsensor_file_cmd
+
+    # mdnie permission
+    chown system system /sys/class/sec/sec_tune_cmc623/color_saturation
+    chown system system /sys/class/sec/sec_tune_cmc623/color_black
+    chown system system /sys/class/sec/sec_tune_cmc623/color_white
+    chown system system /sys/class/sec/sec_tune_cmc623/set_bypass
+    chown system system /sys/class/sec/sec_tune_cmc623/show_regs
+    chown system system /sys/class/sec/sec_tune_cmc623/read_reg
+    chown system system /sys/class/sec/sec_tune_cmc623/set_reg
 
 on post-fs
 
