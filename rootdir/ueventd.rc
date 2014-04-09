@@ -51,7 +51,8 @@
 /dev/s3c2410_serial0      0660   bluetooth  net_bt_stack
 
 # for mtp
-/dev/usb_mtp_gadget       0660   system     system
+/dev/usb_accessory        0664    system    system
+/dev/mtp_usb              0664    system    system
 
 # serial console aka s3c2310_serial2 uart in old kernel
 /dev/ttyFIQ0              0600   root       root
