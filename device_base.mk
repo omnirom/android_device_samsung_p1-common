@@ -204,6 +204,9 @@ PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
 # Enable KSM by default
 PRODUCT_PROPERTY_OVERRIDES += ro.ksm.default=1
 
+# Disable JIT
+PRODUCT_PROPERTY_OVERRIDES += dalvik.vm.jit.codecachesize=0
+
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
