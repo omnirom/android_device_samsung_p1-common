@@ -92,6 +92,10 @@ on post-fs-data
     write /sys/kernel/mm/ksm/sleep_millisecs 500
     write /sys/kernel/mm/ksm/run 1
 
+    # read only 1 page at a time
+    write /proc/sys/vm/page-cluster 0
+    restorecon /proc/sys/vm/page-cluster
+
     # make sure that /data/.nvram_net.txt exists during wifi initialization
     start set-macaddr
 
