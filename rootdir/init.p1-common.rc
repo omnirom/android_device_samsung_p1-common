@@ -87,11 +87,6 @@ on post-fs-data
     write /sys/class/input/input3/enable 1  # enable gyro (p1c) & orientation_sensor (p1)
     write /sys/class/input/input4/enable 1  # enable lightsensor-level (p1c) & gyro (p1)
 
-    # ksm
-    write /sys/kernel/mm/ksm/pages_to_scan 100
-    write /sys/kernel/mm/ksm/sleep_millisecs 500
-    write /sys/kernel/mm/ksm/run 1
-
     # read only 1 page at a time
     write /proc/sys/vm/page-cluster 0
     restorecon /proc/sys/vm/page-cluster
