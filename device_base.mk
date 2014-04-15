@@ -201,9 +201,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # This is used by ActivityManager.isLowRamDevice()
 PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
 
-# Enable KSM by default
-PRODUCT_PROPERTY_OVERRIDES += ro.ksm.default=1
-
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
