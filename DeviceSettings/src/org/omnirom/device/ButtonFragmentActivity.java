@@ -37,7 +37,6 @@ public class ButtonFragmentActivity extends PreferenceFragment {
 
     private CheckBoxPreference mDisableButtons;
     private ListPreference mBacklightTimeout;
-    private ListPreference mKeyLedBrightness;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,12 +55,6 @@ public class ButtonFragmentActivity extends PreferenceFragment {
         mBacklightTimeout.setOnPreferenceChangeListener(new TouchKeyBacklightTimeout());
         TouchKeyBacklightTimeout.updateSummary(mBacklightTimeout,
                 Integer.parseInt(mBacklightTimeout.getValue()));
-
-        mKeyLedBrightness = (ListPreference) findPreference(DeviceSettings.KEY_LED_BRIGHTNESS);
-        mKeyLedBrightness.setEnabled(KeyLedBrightness.isSupported());
-        mKeyLedBrightness.setOnPreferenceChangeListener(new KeyLedBrightness());
-        KeyLedBrightness.updateSummary(mKeyLedBrightness,
-                Integer.parseInt(mKeyLedBrightness.getValue()));
     }
 
     public static void restore(Context context) {
