@@ -34,6 +34,9 @@ static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
 char const*const LCD_BACKLIGHT_FILE = "/sys/class/backlight/s5p_bl/brightness";
 char const*const BUTTON_FILE = "/sys/class/leds/button-backlight/brightness";
 
+char const*const BUTTON_LED_BRIGHTNESS_FILE =
+	"/sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/key_led_brightness";
+
 static int write_int(char const *path, int value)
 {
 	int fd;
@@ -101,11 +104,22 @@ static int set_light_buttons (struct light_device_t* dev,
 static int set_light_backlight(struct light_device_t* dev,
 		struct light_state_t const* state) {
 	int err = 0;
+	int button_led_brightness = 1;
 	int brightness = rgb_to_brightness(state);
 	ALOGV("%s brightness=%d color=0x%08x",
 		__func__,brightness, state->color);
 	pthread_mutex_lock(&g_lock);
 	err = write_int(LCD_BACKLIGHT_FILE, brightness);
+
+	// update button led brightness
+	button_led_brightness = 1;
+	if (brightness >= 170) {
+		button_led_brightness = 3;
+	} else if(brightness >= 85 && brightness < 170) {
+		button_led_brightness = 2;
+	}
+	err = write_int (BUTTON_LED_BRIGHTNESS_FILE, button_led_brightness);
+
 	// if LCD backlight is on then button backlight should be on too
 	// Samsung has some annoying code that turns on buttons light only when touchscreen is pressed
 	// and it turns off automatically afterwards, leaving user hunting for buttons in the dark
