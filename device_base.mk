@@ -49,10 +49,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES := \
     bml_over_mtd
 
-# Interface controller
-PRODUCT_PACKAGES += \
-    libnetcmdiface
-
 # Lights
 PRODUCT_PACKAGES += \
     lights.s5pc110
@@ -208,7 +204,7 @@ PRODUCT_PROPERTY_OVERRIDES += dalvik.vm.jit.codecachesize=0
 PRODUCT_TAGS += dalvik.gc.type-precise
 
 # dalvik
-include frameworks/native/build/tablet-dalvik-heap.mk
+include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
