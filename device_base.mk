@@ -49,10 +49,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES := \
     bml_over_mtd
 
-# Interface controller
-PRODUCT_PACKAGES += \
-    libnetcmdiface
-
 # Lights
 PRODUCT_PACKAGES += \
     lights.s5pc110
