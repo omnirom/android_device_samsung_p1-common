@@ -208,7 +208,7 @@ PRODUCT_PROPERTY_OVERRIDES += dalvik.vm.jit.codecachesize=0
 PRODUCT_TAGS += dalvik.gc.type-precise
 
 # dalvik
-include frameworks/native/build/tablet-dalvik-heap.mk
+include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
