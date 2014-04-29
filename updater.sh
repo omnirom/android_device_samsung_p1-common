@@ -20,7 +20,7 @@
 # Combined GSM & CDMA version
 #
 
-SYSTEM_SIZE='851443712' # 800M
+SYSTEM_SIZE='629145600' # 600M
 
 check_mount() {
     local MOUNT_POINT=`busybox readlink $1`
@@ -228,7 +228,7 @@ elif busybox test -e /dev/block/mtdblock0 ; then
         warn_repartition
         format_partitions
     else
-        if busybox test `busybox blockdev --getsize64 /dev/mapper/lvpool-system` -lt $SYSTEM_SIZE ; then
+        if busybox test `busybox blockdev --getsize64 /dev/mapper/lvpool-system` -ne $SYSTEM_SIZE ; then
             warn_repartition
             /lvm/sbin/lvm lvremove -f lvpool
             format_partitions
