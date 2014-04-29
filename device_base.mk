@@ -199,7 +199,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Enable Low Ram Device flag
 # This is used by ActivityManager.isLowRamDevice()
-# PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
+PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
 
 # Disable JIT
 PRODUCT_PROPERTY_OVERRIDES += dalvik.vm.jit.codecachesize=0
