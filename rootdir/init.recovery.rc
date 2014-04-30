@@ -7,9 +7,8 @@ on init
 
 on fs
 
-    # set up lvm volumes
-    exec /lvm/sbin/lvm vgscan --mknodes --ignorelockingfailure
-    exec /lvm/sbin/lvm vgchange -aly --ignorelockingfailure
+    # mount /system
+    mount yaffs2 mtd@system /system
 
 on post-fs
 
