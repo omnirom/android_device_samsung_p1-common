@@ -1,7 +1,7 @@
 # RIL
 /dev/s3c2410_serial3                                u:object_r:radio_device:s0
 /dev/onedram                                        u:object_r:radio_device:s0
-/radio/modem.bin                                    u:object_r:rild_file:s0
+/radio(/.*)?                                        u:object_r:rild_file:s0
 
 # Bluetooth
 /dev/s3c2410_serial0                                u:object_r:hci_attach_dev:s0
