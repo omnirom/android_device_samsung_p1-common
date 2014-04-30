@@ -2,14 +2,25 @@ on init
 
 loglevel 9
 
-# We will create our own ril-daemon service in class 'core' because the
-# rild doesn't like being killed. (During device encryption.)
+    # we will create our own ril-daemon service in class 'core' because the
+    # rild doesn't like being killed. (During device encryption.)
     stop ril-daemon
+
+on boot
+
+    # mount debugfs
+    mount debugfs /sys/kernel/debug /sys/kernel/debug
+
+    # fake some battery state
+    setprop status.battery.state Slow
+    setprop status.battery.level 5
+    setprop status.battery.level_raw  50
+    setprop status.battery.level_scale 9
 
 on fs
 
-# mount mtd partitions
-    # Mount /system rw first to give the filesystem a chance to save a checkpoint
+    # mount mtd partitions
+    # /system rw first to give the filesystem a chance to save a checkpoint
     mount yaffs2 mtd@system /system
     mount yaffs2 mtd@system /system ro remount
 
@@ -30,7 +41,7 @@ on fs
     restorecon /sys/class/rfkill/rfkill0/type
     restorecon /sys/class/rfkill/rfkill1/type
 
-    # System server can control backlight brightness
+    # system server can control backlight brightness
     chown system system /sys/class/backlight/s5p_bl/brightness
 
     # change permission for uart_switch
@@ -39,13 +50,13 @@ on fs
 
     # permissions for MTP device node
     chmod 0777 /dev/mtp_usb
-	restorecon /dev/mtp_usb
+    restorecon /dev/mtp_usb
     chmod 0777 /dev/usb_accessory
-	restorecon /dev/usb_accessory
+    restorecon /dev/usb_accessory
 
     # sensor sysfs permission
-	chown system system /sys/devices/virtual/BMA-dev/accelerometer/calibration
-	chown system system /sys/devices/virtual/lightsensor/switch_cmd/lightsensor_file_cmd
+    chown system system /sys/devices/virtual/BMA-dev/accelerometer/calibration
+    chown system system /sys/devices/virtual/lightsensor/switch_cmd/lightsensor_file_cmd
 
     # mdnie permission
     chown system system /sys/class/sec/sec_tune_cmc623/color_saturation
@@ -59,12 +70,13 @@ on fs
 on post-fs
 
     # now that all filesystems are mounted, load device specific kernel modules
-    insmod /system/lib/modules/vibrator.ko   # vibrator
+    # vibrator
+    insmod /system/lib/modules/vibrator.ko
 
 on post-fs-data
 
     # write value must be consistent with the above properties.
-    # Note that the driver only supports 6 slots, so we have combined some of
+    # note that the driver only supports 6 slots, so we have combined some of
     # the classes into the same memory level; the associated processes of higher
     # classes will still be killed first.
     write /sys/module/lowmemorykiller/parameters/adj 0,1,2,4,7,15
@@ -82,30 +94,24 @@ on post-fs-data
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
 
     # sensors
-    # this needs to be fixed correctly, see: frameworks/base/services/sensorservice/SensorDevice.cpp
+    # this needs to be fixed correctly
+    # see: frameworks/base/services/sensorservice/SensorDevice.cpp
 
-    write /sys/class/input/input3/enable 1  # enable gyro (p1c) & orientation_sensor (p1)
-    write /sys/class/input/input4/enable 1  # enable lightsensor-level (p1c) & gyro (p1)
+    # enable gyro (p1c) & orientation_sensor (p1)
+    write /sys/class/input/input3/enable 1
 
+    # enable lightsensor-level (p1c) & gyro (p1)
+    write /sys/class/input/input4/enable 1
+
+    # zram parameters
+    write /proc/sys/vm/swappiness 70
     # read only 1 page at a time
     write /proc/sys/vm/page-cluster 0
-    restorecon /proc/sys/vm/page-cluster
 
     # make sure that /data/.nvram_net.txt exists during wifi initialization
     start set-macaddr
 
     setprop vold.post_fs_data_done 1
-
-on boot
-
-    # fake some battery state
-    setprop status.battery.state Slow
-    setprop status.battery.level 5
-    setprop status.battery.level_raw  50
-    setprop status.battery.level_scale 9
-
-    # phone
-    setprop ro.telephony.call_ring.multiple 0
 
 service p1-ril-daemon /system/bin/rild
     class core
@@ -132,15 +138,15 @@ on property:sys.boot_completed=1
     start set-macaddr
 
 service wpa_supplicant /system/bin/wpa_supplicant \
-	-iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -O/data/misc/wifi/sockets -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
-	#   we will start as root and wpa_supplicant will switch to user wifi
-	#   after setting up the capabilities required for WEXT
-	#   user wifi
-	#   group wifi inet keystore
-	class main
-	socket wpa_wlan0 dgram 660 wifi wifi
-	disabled
-	oneshot
+    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -O/data/misc/wifi/sockets -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
+    #   we will start as root and wpa_supplicant will switch to user wifi
+    #   after setting up the capabilities required for WEXT
+    #   user wifi
+    #   group wifi inet keystore
+    class main
+    socket wpa_wlan0 dgram 660 wifi wifi
+    disabled
+    oneshot
 
 service dhcpcd_wlan0 /system/bin/dhcpcd -aABDKL
     class main
