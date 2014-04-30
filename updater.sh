@@ -43,6 +43,26 @@ set_log() {
     exec >> $1 2>&1
 }
 
+warn_repartition() {
+    if ! busybox test -e /.accept_wipe ; then
+        busybox touch /.accept_wipe
+        ui_print ""
+        ui_print "============================================"
+        ui_print "ATTENTION"
+        ui_print ""
+        ui_print "This VERSION uses an incompatible partition layout"
+        ui_print "Your /data will be wiped upon installation"
+        ui_print "So, make your backups (if you want) and then just"
+        ui_print "Run this update.zip again to confirm install"
+        ui_print ""
+        ui_print "ATTENTION"
+        ui_print "============================================"
+        ui_print ""
+        exit 9
+    fi
+    busybox rm /.accept_wipe
+}
+
 fix_package_location() {
     local PACKAGE_LOCATION=$1
     # Remove leading /mnt
@@ -51,13 +71,13 @@ fix_package_location() {
     PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/sdcard/||"`
     PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/emmc/||"`
     PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/external_sd/||"`
-    PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/storage/sdcard1/||"`
+    PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/storage/sdcard0/||"`
     PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | busybox sed -e "s|^/storage/sdcard1/||"`
     echo $PACKAGE_LOCATION
 }
 
 # ui_print by Chainfire
-OUTFD=$(busybox ps | busybox grep -v "grep" | busybox grep -o -E "update_binary(.*)" | busybox cut -d " " -f 3);
+OUTFD=$(busybox ps | busybox grep -v "grep" | busybox grep -o -E "/tmp/updater .*" | busybox cut -d " " -f 3);
 ui_print() {
   if [ $OUTFD != "" ]; then
     echo "ui_print ${1} " 1>&$OUTFD;
@@ -154,18 +174,7 @@ elif busybox test `busybox cat /sys/class/mtd/mtd2/size` != "$MTD_SIZE" || \
     # everything is logged into /sdcard/omni_mtd_old.log
     set_log /sdcard/omni_mtd_old.log
 
-    if ! busybox test -e /cache/.accept_wipe ; then
-        busybox touch /cache/.accept_wipe
-        ui_print
-        ui_print "============================================"
-        ui_print "This ROM uses an incompatible partition layout"
-        ui_print "Your /data will be wiped upon installation"
-        ui_print "Run this update.zip again to confirm install"
-        ui_print "============================================"
-        ui_print
-        exit 9
-    fi
-    busybox rm /cache/.accept_wipe
+    warn_repartition
 
     # write the package path to sdcard omni.cfg
     if busybox test -n "$UPDATE_PACKAGE" ; then
