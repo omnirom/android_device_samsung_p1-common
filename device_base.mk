@@ -223,7 +223,8 @@ PRODUCT_COPY_FILES += \
 
 # init.d scripts
 PRODUCT_COPY_FILES += \
-    device/samsung/p1-common/prebuilt/etc/init.d/00random:system/etc/init.d/00random
+    device/samsung/p1-common/prebuilt/etc/init.d/00random:system/etc/init.d/00random \
+    device/samsung/p1-common/prebuilt/etc/init.d/99zram:system/etc/init.d/99zram
 
 # bml_over_mtd
 PRODUCT_COPY_FILES += \
