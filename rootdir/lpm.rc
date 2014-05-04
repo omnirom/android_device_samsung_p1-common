@@ -19,10 +19,16 @@ on init
     mkdir /tmp
     mkdir /mnt 0775 root root
 
-on early-fs
+on fs
+
+    # set up lvm volumes
+    exec /lvm/sbin/lvm vgscan --mknodes --ignorelockingfailure
+    exec /lvm/sbin/lvm vgchange -aly --ignorelockingfailure
+    restorecon /dev/mapper/lvpool-system
+    restorecon /dev/mapper/lvpool-userdata
 
     mount tmpfs tmpfs /tmp
-    mount yaffs2 mtd@system /system ro
+    mount ext4 /dev/lvpool/system /system
 
     mkdir /data/log 0777
     chmod 0666 /dev/log/radio

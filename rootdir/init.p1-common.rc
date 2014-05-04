@@ -17,15 +17,10 @@ on boot
     setprop status.battery.level_raw  50
     setprop status.battery.level_scale 9
 
+    # phone
+    setprop ro.telephony.call_ring.multiple 0
+
 on fs
-
-    # mount mtd partitions
-    # /system rw first to give the filesystem a chance to save a checkpoint
-    mount yaffs2 mtd@system /system
-    mount yaffs2 mtd@system /system ro remount
-
-    # mount debugfs
-    mount debugfs /sys/kernel/debug /sys/kernel/debug
 
     # bluetooth
     chown bluetooth net_bt_stack /dev/s3c2410_serial0

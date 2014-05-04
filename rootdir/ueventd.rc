@@ -25,13 +25,13 @@
 /dev/i2c-10               0660   root       input
 
 # for radio interface
+/dev/onedram              0660   radio      radio
 /dev/modem_ctl            0660   radio      radio
 /dev/modem_fmt            0660   radio      radio
 /dev/modem_rfs            0660   radio      radio
 /dev/s3c2410_serial3      0660   radio      radio
-/dev/onedram              0660   radio      radio
-/dev/block/mtdblock3      0660   radio      radio
-/dev/mtd/mtd3ro           0660   radio      radio
+/dev/block/mtdblock5      0660   radio      radio
+/dev/mtd/mtd5ro           0660   radio      radio
 
 # network
 /dev/dun                  0600   system     system

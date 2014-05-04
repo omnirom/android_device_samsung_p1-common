@@ -7,29 +7,37 @@ on init
 
 on fs
 
-    # mount /system
-    mount yaffs2 mtd@system /system
+    # set up lvm volumes
+    exec /lvm/sbin/lvm vgscan --mknodes --ignorelockingfailure
+    exec /lvm/sbin/lvm vgchange -aly --ignorelockingfailure
+    restorecon /dev/mapper/lvpool-system
+    restorecon /dev/mapper/lvpool-userdata
+
+    mount ext4 /dev/lvpool/system /system
+    mount yaffs2 mtd@datadata /datadata
+    mount yaffs2 mtd@cache /cache
 
 on post-fs
 
-	# vibrator
-	insmod /system/lib/modules/vibrator.ko
+    # vibrator
+    insmod /system/lib/modules/vibrator.ko
 
-	# disable lpm
-	write /sys/class/power_supply/battery/charging_mode_booting 0
+    # disable lpm
+    write /sys/class/power_supply/battery/charging_mode_booting 0
 
     # touch rotate
     write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/pivot 0
 
     # led timeout: 10 seconds
-	write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/leds_timeout 10000
+    write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/leds_timeout 10000
 
-	# led brightness: 3mA
-	write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/brightness 3
+    # led brightness: 3mA
+    write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/brightness 3
 
-	# touch clock: 400MHz
-	write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/cpufreq_lock 0
+    # touch clock: 400MHz
+    write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/cpufreq_lock 0
 
 on boot
+
     # mass_storage support
     setprop sys.usb.config mass_storage,adb
