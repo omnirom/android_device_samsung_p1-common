@@ -32,6 +32,7 @@ PRODUCT_AAPT_PREF_CONFIG := tvdpi
 PRODUCT_COPY_FILES := \
     device/samsung/p1-common/libaudio/audio_policy.conf:system/etc/audio_policy.conf \
     device/samsung/p1-common/libaudio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
+    device/samsung/p1-common/rootdir/setupdatadata.sh:root/sbin/setupdatadata.sh \
     device/samsung/p1-common/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf
 
 # Init files
@@ -47,6 +48,7 @@ PRODUCT_COPY_FILES += \
 
 # Filesystem management tools
 PRODUCT_PACKAGES := \
+    setup_fs \
     bml_over_mtd
 
 # Lights
@@ -191,7 +193,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.kernel.android.checkjni=0 \
     dalvik.vm.checkjni=false \
-    dalvik.vm.debug.alloc=0
+    dalvik.vm.debug.alloc=0 \
+    dalvik.vm.dexopt-data-only=1
 
 # Override /proc/sys/vm/dirty_ratio on UMS
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -220,8 +223,7 @@ PRODUCT_COPY_FILES += \
 
 # init.d scripts
 PRODUCT_COPY_FILES += \
-    device/samsung/p1-common/prebuilt/etc/init.d/00random:system/etc/init.d/00random \
-    device/samsung/p1-common/prebuilt/etc/init.d/99zram:system/etc/init.d/99zram
+    device/samsung/p1-common/prebuilt/etc/init.d/00random:system/etc/init.d/00random
 
 # bml_over_mtd
 PRODUCT_COPY_FILES += \
