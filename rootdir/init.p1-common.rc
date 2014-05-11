@@ -68,6 +68,9 @@ on post-fs
     # vibrator
     insmod /system/lib/modules/vibrator.ko
 
+    # load wifi module
+    insmod /system/lib/modules/bcmdhd.ko
+
 on post-fs-data
 
     # write value must be consistent with the above properties.
