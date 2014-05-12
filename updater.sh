@@ -115,7 +115,7 @@ else
     # GSM mode
     IS_GSM='busybox true'
     SD_PART='/dev/block/mmcblk0p1'
-    MMC_PART='/dev/block/mmcblk0p2'
+    MMC_PART='/dev/block/mmcblk0p2 /dev/block/mmcblk0p3'
     MTD_SIZE='442499072'
 fi
 
