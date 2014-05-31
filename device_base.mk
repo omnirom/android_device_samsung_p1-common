@@ -32,6 +32,7 @@ PRODUCT_AAPT_PREF_CONFIG := tvdpi
 PRODUCT_COPY_FILES := \
     device/samsung/p1-common/libaudio/audio_policy.conf:system/etc/audio_policy.conf \
     device/samsung/p1-common/libaudio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
+    device/samsung/p1-common/rootdir/setupdatadata.sh:root/sbin/setupdatadata.sh \
     device/samsung/p1-common/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf
 
 # Init files
@@ -47,11 +48,8 @@ PRODUCT_COPY_FILES += \
 
 # Filesystem management tools
 PRODUCT_PACKAGES := \
+    setup_fs \
     bml_over_mtd
-
-# Interface controller
-PRODUCT_PACKAGES += \
-    libnetcmdiface
 
 # Lights
 PRODUCT_PACKAGES += \
@@ -124,6 +122,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/samsung/p1-common/prebuilt/usr/idc/AT42QT602240_Touchscreen.idc:system/usr/idc/AT42QT602240_Touchscreen.idc
 
+# Keyboard
+PRODUCT_COPY_FILES += \
+    device/samsung/p1-common/prebuilt/usr/idc/p1_keyboard.idc:system/usr/idc/p1_keyboard.idc
+
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
@@ -191,7 +193,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.kernel.android.checkjni=0 \
     dalvik.vm.checkjni=false \
-    dalvik.vm.debug.alloc=0
+    dalvik.vm.debug.alloc=0 \
+    dalvik.vm.dexopt-data-only=1
 
 # Override /proc/sys/vm/dirty_ratio on UMS
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -201,11 +204,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # This is used by ActivityManager.isLowRamDevice()
 PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
 
+# Disable JIT
+PRODUCT_PROPERTY_OVERRIDES += dalvik.vm.jit.codecachesize=0
+
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
 # dalvik
-include frameworks/native/build/tablet-dalvik-heap.mk
+include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
@@ -214,6 +220,10 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # installer
 PRODUCT_COPY_FILES += \
     device/samsung/p1-common/updater.sh:updater.sh
+
+# init.d scripts
+PRODUCT_COPY_FILES += \
+    device/samsung/p1-common/prebuilt/etc/init.d/00random:system/etc/init.d/00random
 
 # bml_over_mtd
 PRODUCT_COPY_FILES += \

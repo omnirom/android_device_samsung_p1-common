@@ -115,14 +115,14 @@
          than the size of the config_autoBrightnessLevels array.
     -->
     <integer-array name="config_autoBrightnessLcdBacklightValues">
-        <item>75</item>
-        <item>90</item>
-        <item>105</item>
-        <item>120</item>
-        <item>150</item>
-        <item>180</item>
-        <item>210</item>
-        <item>240</item>
+        <item>75</item>   <!--    0 -    5  -->
+        <item>90</item>   <!--    6 -   22  -->
+        <item>125</item>  <!--   23 -   75  -->
+        <item>155</item>  <!--   76 -  220  -->
+        <item>190</item>  <!--  221 -  800  -->
+        <item>210</item>  <!--  801 - 2800  -->
+        <item>235</item>  <!-- 2801 - 4800  -->
+        <item>255</item>  <!-- 4801 - 4801+ -->
     </integer-array>
 
     <!-- Array of output values for button backlight corresponding to the LUX values
@@ -157,7 +157,7 @@
     </integer-array>
 
     <!-- Minimum screen brightness allowed by the power manager. -->
-    <integer name="config_screenBrightnessDim">10</integer>
+    <integer name="config_screenBrightnessDim">30</integer>
 
     <!-- CRT Screen off animation -->
     <bool name="config_animateScreenLights">false</bool>
