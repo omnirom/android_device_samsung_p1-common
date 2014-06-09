@@ -25,8 +25,8 @@ TARGET_SCREEN_HEIGHT := 1024
 TARGET_SCREEN_WIDTH := 600
 
 # Screen size is large 7"
-PRODUCT_AAPT_CONFIG := normal large tvdpi hdpi
-PRODUCT_AAPT_PREF_CONFIG := tvdpi
+PRODUCT_AAPT_CONFIG := large mdpi
+PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES := \
