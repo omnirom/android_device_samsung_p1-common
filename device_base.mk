@@ -98,10 +98,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     power.s5pc110
 
-# tvout
-PRODUCT_PACKAGES += \
-    tvouthack
-
 # Device Settings
 PRODUCT_PACKAGES += \
     DeviceSettings
