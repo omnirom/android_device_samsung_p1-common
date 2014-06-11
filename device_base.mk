@@ -221,10 +221,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_COPY_FILES += \
     device/samsung/p1-common/updater.sh:updater.sh
 
-# init.d scripts
-PRODUCT_COPY_FILES += \
-    device/samsung/p1-common/prebuilt/etc/init.d/00random:system/etc/init.d/00random
-
 # bml_over_mtd
 PRODUCT_COPY_FILES += \
     device/samsung/p1-common/bml_over_mtd.sh:bml_over_mtd.sh
