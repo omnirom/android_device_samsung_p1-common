@@ -32,7 +32,10 @@
         <activity android:name=".ButtonFragmentActivity" />
         <activity android:name=".OverClockFragmentActivity" />
         <activity android:name=".RadioFragmentActivity" />
+        <activity android:name=".TVFragmentActivity" />
         <activity android:name=".VibratorFragmentActivity" />
+
+        <service android:name=".TvOutService" />
 
         <activity android:name=".WarnActivity"
             android:label="@string/generic_warning_title"

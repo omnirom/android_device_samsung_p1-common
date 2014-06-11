@@ -20,6 +20,11 @@
         <item>HSDPA &amp; HSUPA</item>
     </string-array>
 
+    <string-array name="tvout_system_entries">
+        <item>NTSC</item>
+        <item>PAL</item>
+    </string-array>
+
     <string-array name="backlight_timeout_entries">
         <item>Altijd aan</item>
         <item>Altijd uit</item>

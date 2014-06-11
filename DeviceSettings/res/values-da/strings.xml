@@ -18,6 +18,17 @@
     <string name="category_radio_title">Radio</string>
     <string name="hspa_title_head">HSPA</string>
     <string name="hspa_summary_head">Aktivér HSDPA/HSUPA</string>
+    <string name="category_tvout_title">TV</string>
+    <string name="tvout_enable_head">TV-Out</string>
+    <string name="tvout_enable_summary_nocable">TV-Out-kabel ikke tilsluttet</string>
+    <string name="tvout_enable_summary">TV-Out-kabel tilsluttet, markér for at aktivere</string>
+    <string name="tvout_enable_summary_on">TV-Out aktiveret</string>
+    <string name="tvout_system_head">TV-system</string>
+    <string name="tvout_system_summary">Angiv dit TV-system til TV-Out</string>
+    <string name="hdmi_dock_summary_nodock">HDMI-dock ikke tilsluttet</string>
+    <string name="hdmi_dock_summary">HDMI-dock tilsluttet, markér for at aktivere</string>
+    <string name="hdmi_dock_summary_on">HDMI-dock aktiveret</string>
+    <string name="hdmi_dock_head">HDMI-dock</string>
     <string name="category_buttons_title">Knapper</string>
     <string name="category_capacitive_buttons_title">Berøringstaster</string>
     <string name="capacitive_buttons_title">Deaktivér berøringstaster</string>

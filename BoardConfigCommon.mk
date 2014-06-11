@@ -73,6 +73,9 @@ BOARD_CAMERA_HAVE_ISO := true
 BOARD_EGL_CFG := device/samsung/p1-common/prebuilt/lib/egl/egl.cfg
 USE_OPENGL_RENDERER := true
 
+# SkTextBox for libtvout
+BOARD_USES_SKTEXTBOX := true
+
 # Device related defines
 BOARD_NAND_PAGE_SIZE := 4096
 BOARD_NAND_SPARE_SIZE := 128
@@ -151,8 +154,12 @@ BOARD_SEPOLICY_UNION += \
     mediaserver.te \
     property_contexts \
     pvrsrvinit.te \
-    rild.te
+    rild.te \
+    tvouthack.te \
+    tvoutserver.te
 
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
 
+# Required for TV out
+COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS

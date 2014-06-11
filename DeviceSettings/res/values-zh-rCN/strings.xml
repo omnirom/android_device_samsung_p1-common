@@ -20,6 +20,18 @@
     <string name="hspa_title_head">HSPA</string>
     <string name="hspa_summary_head">启用 HSDPA/HSUPA</string>
 
+    <string name="category_tvout_title">电视输出</string>
+    <string name="tvout_enable_head">电视输出</string>
+    <string name="tvout_enable_summary_nocable">电视输出线未连接</string>
+    <string name="tvout_enable_summary">电视输出线已连接，点击以启用</string>
+    <string name="tvout_enable_summary_on">电视输出已启用</string>
+    <string name="tvout_system_head">电视制式</string>
+    <string name="tvout_system_summary">设定电视输出使用的制式</string>
+    <string name="hdmi_dock_summary_nodock">HDMI 基座未连接</string>
+    <string name="hdmi_dock_summary">HDMI 基座已连接，点击以启用</string>
+    <string name="hdmi_dock_summary_on">HDMI 基座已启用</string>
+    <string name="hdmi_dock_head">HDMI 基座</string>
+
     <string name="category_buttons_title">按键</string>
     <string name="category_capacitive_buttons_title">电容式按键</string>
     <string name="capacitive_buttons_title">禁用电容式按键</string>
