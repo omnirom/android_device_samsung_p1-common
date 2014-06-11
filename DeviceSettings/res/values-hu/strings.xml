@@ -18,6 +18,17 @@
     <string name="category_radio_title">GSM Rádió</string>
     <string name="hspa_title_head">HSPA</string>
     <string name="hspa_summary_head">HSDPA/HSUPA engedélyezése</string>
+    <string name="category_tvout_title">TV</string>
+    <string name="tvout_enable_head">TV kimenet</string>
+    <string name="tvout_enable_summary_nocable">TV kábel nincs csatlakoztatva</string>
+    <string name="tvout_enable_summary">TV-kábel csatlakoztatva, de nincs engedélyezve</string>
+    <string name="tvout_enable_summary_on">TV kimenet engedélyezve</string>
+    <string name="tvout_system_head">TV rendszer</string>
+    <string name="tvout_system_summary">Állítsa be a TV rendszerét TV kimenetre</string>
+    <string name="hdmi_dock_summary_nodock">Nincs csatlakoztatva a HDMI dokkolóra</string>
+    <string name="hdmi_dock_summary">Csatlakoztatva a HDMI dokkolóra, de nincs engedélyezve</string>
+    <string name="hdmi_dock_summary_on">HDMI dokkoló engedélyezve</string>
+    <string name="hdmi_dock_head">HDMI dokkoló</string>
     <string name="category_buttons_title">Gombok</string>
     <string name="category_capacitive_buttons_title">Kapacitív gombok</string>
     <string name="capacitive_buttons_title">Kapacitív gombok letiltása</string>
