@@ -44,9 +44,6 @@ public class DeviceSettings extends Activity {
     public static final String ACTION_UPDATE_PREFERENCES = "org.omnirom.device.UPDATE";
     public static final String KEY_CATEGORY_RADIO = "category_radio";
     public static final String KEY_HSPA = "hspa";
-    public static final String KEY_TVOUT_ENABLE = "tvout_enable";
-    public static final String KEY_TVOUT_SYSTEM = "tvout_system";
-    public static final String KEY_HDMI_ENABLE = "hdmi_enable";
     public static final String KEY_BUTTONS_DISABLE = "buttons_disable";
     public static final String KEY_BUTTONS = "buttons_category";
     public static final String KEY_BACKLIGHT_TIMEOUT = "backlight_timeout";
@@ -77,8 +74,6 @@ public class DeviceSettings extends Activity {
                 RadioFragmentActivity.class, null);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_speed_title),
                 OverClockFragmentActivity.class, null);
-        mTabsAdapter.addTab(bar.newTab().setText(R.string.category_tvout_title),
-                TVFragmentActivity.class, null);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_vibrator_tuning_title),
                 VibratorFragmentActivity.class, null);
         if (savedInstanceState != null) {
