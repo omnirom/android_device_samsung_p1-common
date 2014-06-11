@@ -20,18 +20,6 @@
     <string name="hspa_title_head">HSPA</string>
     <string name="hspa_summary_head">HSDPA/HSUPA einschalten</string>
 
-    <string name="category_tvout_title">TV</string>
-    <string name="tvout_enable_head">TV-Out</string>
-    <string name="tvout_enable_summary_nocable">TV-Out kein Kabel verbunden</string>
-    <string name="tvout_enable_summary">TV-Out Kabel verbunden, zum aktivieren, Haken setzen</string>
-    <string name="tvout_enable_summary_on">TV-Out eingeschaltet</string>
-    <string name="tvout_system_head">TV-System</string>
-    <string name="tvout_system_summary">Stelle dein TV-System für TV-Out ein</string>
-    <string name="hdmi_dock_summary_nodock">HDMI-Dock nicht verbunden</string>
-    <string name="hdmi_dock_summary">HDMI-Dock verbunden, zum aktivieren, Haken setzen</string>
-    <string name="hdmi_dock_summary_on">HDMI-Dock eingeschaltet</string>
-    <string name="hdmi_dock_head">HDMI-Dock</string>
-
     <string name="category_buttons_title">Tasten</string>
     <string name="category_capacitive_buttons_title">Sensortasten</string>
     <string name="capacitive_buttons_title">Sensortasten deaktivieren</string>
