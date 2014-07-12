@@ -116,7 +116,7 @@ BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/p1-common/recovery/graphics.c
 # to save memory, however, there are currently some limitations in the
 # OpenGL ES driver that in conjunction with disable triple-buffering
 # would hurt performance significantly (see b/6016711)
-TARGET_DISABLE_TRIPLE_BUFFERING := false
+TARGET_DISABLE_TRIPLE_BUFFERING := true
 
 BOARD_ALLOW_EGL_HIBERNATION := true
 
