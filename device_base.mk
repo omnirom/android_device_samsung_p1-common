@@ -94,6 +94,10 @@ PRODUCT_PACKAGES += \
     hwcomposer.s5pc110 \
     libstagefrighthw
 
+# audio submix
+PRODUCT_PACKAGES += \
+    audio.r_submix.default
+
 # Powah
 PRODUCT_PACKAGES += \
     power.s5pc110
