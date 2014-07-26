@@ -47,6 +47,7 @@ const uint32_t AudioHardware::inputConfigTable[][AudioHardware::INPUT_CONFIG_CNT
         {11025, 4},
         {16000, 2},
         {22050, 2},
+        {24000, 2},
         {32000, 1},
         {44100, 1}
 };
