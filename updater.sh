@@ -165,9 +165,6 @@ if /tmp/busybox test -e /dev/block/bml7 ; then
         /tmp/busybox echo `fix_package_location $UPDATE_PACKAGE` > /mnt/sdcard/omni.cfg
     fi
 
-    # Scorch any ROM Manager settings to require the user to reflash recovery
-    /tmp/busybox rm -f /mnt/sdcard/TWRP/.settings
-
     # write new kernel to boot partition
     /tmp/flash_image boot /tmp/boot.img
     if [ "$?" != "0" ] ; then
