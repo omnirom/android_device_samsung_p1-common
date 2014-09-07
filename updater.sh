@@ -45,6 +45,21 @@ set_log() {
     exec >> $1 2>&1
 }
 
+# ui_print
+OUTFD=$(/tmp/busybox ps | /tmp/busybox grep -v "grep" | /tmp/busybox grep -o -E "/tmp/updater .*" | /tmp/busybox cut -d " " -f 3);
+if /tmp/busybox test -e /tmp/update_binary ; then
+    OUTFD=$(/tmp/busybox ps | /tmp/busybox grep -v "grep" | /tmp/busybox grep -o -E "update_binary(.*)" | /tmp/busybox cut -d " " -f 3);
+fi
+
+ui_print() {
+  if [ $OUTFD != "" ]; then
+    echo "ui_print ${1} " 1>&$OUTFD;
+    echo "ui_print " 1>&$OUTFD;
+  else
+    echo "${1}";
+  fi;
+}
+
 warn_repartition() {
     if ! /tmp/busybox test -e /tmp/.accept_wipe ; then
         /tmp/busybox touch /tmp/.accept_wipe
@@ -88,17 +103,6 @@ fix_package_location() {
     PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | /tmp/busybox sed -e "s|^/storage/sdcard0/||"`
     PACKAGE_LOCATION=`echo $PACKAGE_LOCATION | /tmp/busybox sed -e "s|^/storage/sdcard1/||"`
     echo $PACKAGE_LOCATION
-}
-
-# ui_print by Chainfire
-OUTFD=$(/tmp/busybox ps | /tmp/busybox grep -v "grep" | /tmp/busybox grep -o -E "/tmp/updater .*" | /tmp/busybox cut -d " " -f 3);
-ui_print() {
-  if [ $OUTFD != "" ]; then
-    echo "ui_print ${1} " 1>&$OUTFD;
-    echo "ui_print " 1>&$OUTFD;
-  else
-    echo "${1}";
-  fi;
 }
 
 set -x
