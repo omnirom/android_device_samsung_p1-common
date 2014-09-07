@@ -113,17 +113,32 @@ if /tmp/busybox test "$1" = cdma ; then
     # CDMA mode
     IS_GSM='/tmp/busybox false'
     SD_PART='/dev/block/mmcblk1p1'
-    MMC_PART='/dev/block/mmcblk0p1 /dev/block/mmcblk0p2'
+    MMC_PART1='/dev/block/mmcblk0p1'
+    MMC_PART2='/dev/block/mmcblk0p2'
     MTD_SIZE='490733568'
 else
     # GSM mode
     IS_GSM='/tmp/busybox true'
     SD_PART='/dev/block/mmcblk0p1'
-    MMC_PART='/dev/block/mmcblk0p2 /dev/block/mmcblk0p3'
+    MMC_PART1='/dev/block/mmcblk0p2'
+    MMC_PART2='/dev/block/mmcblk0p3'
     MTD_SIZE='442499072'
     EFS_PART=`/tmp/busybox grep efs /proc/mtd | /tmp/busybox awk '{print $1}' | /tmp/busybox sed 's/://g' | /tmp/busybox sed 's/mtd/mtdblock/g'`
     RADIO_PART=`/tmp/busybox grep radio /proc/mtd | /tmp/busybox awk '{print $1}' | /tmp/busybox sed 's/://g' | /tmp/busybox sed 's/mtd/mtdblock/g'`
 fi
+
+setup_lvm_partitions() {
+    /tmp/busybox dd if=/dev/zero of=$MMC_PART1 bs=1k count=1
+    /tmp/busybox blockdev --rereadpt $MMC_PART1
+
+    /tmp/busybox dd if=/dev/zero of=$MMC_PART2 bs=1k count=1
+    /tmp/busybox blockdev --rereadpt $MMC_PART2
+
+    /lvm/sbin/lvm vgremove -f lvpool
+    /lvm/sbin/lvm lvremove -f lvpool
+    /lvm/sbin/lvm pvcreate $MMC_PART1 $MMC_PART2
+    /lvm/sbin/lvm vgcreate lvpool $MMC_PART1 $MMC_PART2
+}
 
 # Check if this is a CDMA device with no eMMC
 if ! $IS_GSM && /tmp/busybox test `cat /sys/devices/platform/s3c-sdhci.0/mmc_host/mmc0/mmc0:0001/type` != "MMC" ; then
@@ -234,10 +249,12 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
 
     # Resize partitions
     # (For first install, this will get skipped because device doesn't exist)
-    if /tmp/busybox test `/tmp/busybox blockdev --getsize64 /dev/mapper/lvpool-system` -ne $SYSTEM_SIZE ; then
-        warn_repartition
-        /lvm/sbin/lvm lvremove -f lvpool
-        format_partitions
+    if /tmp/busybox test -e /dev/mapper/lvpool-system ; then
+        if /tmp/busybox test `/tmp/busybox blockdev --getsize64 /dev/mapper/lvpool-system` -ne $SYSTEM_SIZE ; then
+            warn_repartition
+            setup_lvm_partitions
+            format_partitions
+        fi
     fi
 
     if $IS_GSM ; then
@@ -269,7 +286,8 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
         /tmp/busybox umount -l /radio
     fi
 
-    if ! /tmp/busybox test -e /sdcard/omni.cfg ; then
+    if ! /tmp/busybox test -e /sdcard/omni.cfg && \
+            /tmp/busybox test -e /dev/mapper/lvpool-system ; then
         # update install - flash boot image then skip back to updater-script
         # (boot image is already flashed for first time install or old mtd upgrade)
 
@@ -290,9 +308,14 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
     /tmp/busybox rm -f /sdcard/omni.cfg
 
     # setup lvm volumes
-    /lvm/sbin/lvm pvcreate $MMC_PART
-    /lvm/sbin/lvm vgcreate lvpool $MMC_PART
-    format_partitions
+    if ! /tmp/busybox test -e /dev/mapper/lvpool-system ; then
+        /tmp/busybox umount -l /cache
+        /tmp/erase_image cache
+        setup_lvm_partitions
+        format_partitions
+    fi
+
+    /tmp/busybox mount -t yaffs2 /dev/block/mtdblock3 /cache
 
     # restart into recovery so the user can install further packages before booting
     /tmp/busybox touch /cache/.startrecovery
