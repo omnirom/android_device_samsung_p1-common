@@ -121,6 +121,8 @@ else
     SD_PART='/dev/block/mmcblk0p1'
     MMC_PART='/dev/block/mmcblk0p2 /dev/block/mmcblk0p3'
     MTD_SIZE='442499072'
+    EFS_PART=`/tmp/busybox grep efs /proc/mtd | /tmp/busybox awk '{print $1}' | /tmp/busybox sed 's/://g' | /tmp/busybox sed 's/mtd/mtdblock/g'`
+    RADIO_PART=`/tmp/busybox grep radio /proc/mtd | /tmp/busybox awk '{print $1}' | /tmp/busybox sed 's/://g' | /tmp/busybox sed 's/mtd/mtdblock/g'`
 fi
 
 # Check if this is a CDMA device with no eMMC
@@ -195,7 +197,7 @@ elif /tmp/busybox test `/tmp/busybox cat /sys/class/mtd/mtd2/size` != "$MTD_SIZE
 
     if $IS_GSM ; then
         # make sure efs is mounted
-        check_mount /efs /dev/block/mtdblock4 yaffs2
+        check_mount /efs /dev/block/$EFS_PART yaffs2
 
         # create a backup of efs
         if /tmp/busybox test -e /sdcard/backup/efs ; then
@@ -247,8 +249,8 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
 
         # make sure radio partition is mounted
         if ! /tmp/busybox grep -q /radio /proc/mounts ; then
-            /tmp/busybox umount -l /dev/block/mtdblock5
-            if ! /tmp/busybox mount -t yaffs2 /dev/block/mtdblock5 /radio ; then
+            /tmp/busybox umount -l /dev/block/$RADIO_PART
+            if ! /tmp/busybox mount -t yaffs2 /dev/block/$RADIO_PART /radio ; then
                 /tmp/busybox echo "Cannot mount radio partition."
                 exit 5
             fi
@@ -256,9 +258,9 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
 
         # if modem.bin doesn't exist on radio partition, format the partition and copy it
         if ! /tmp/busybox test -e /radio/modem.bin ; then
-            /tmp/busybox umount -l /dev/block/mtdblock5
+            /tmp/busybox umount -l /dev/block/$RADIO_PART
             /tmp/erase_image radio
-            if ! /tmp/busybox mount -t yaffs2 /dev/block/mtdblock5 /radio ; then
+            if ! /tmp/busybox mount -t yaffs2 /dev/block/$RADIO_PART /radio ; then
                 /tmp/busybox echo "Cannot copy modem.bin to radio partition."
                 exit 5
             else
@@ -267,7 +269,7 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
         fi
 
         # unmount radio partition
-        /tmp/busybox umount -l /dev/block/mtdblock5
+        /tmp/busybox umount -l /radio
     fi
 
     if ! /tmp/busybox test -e /sdcard/omni.cfg ; then
@@ -306,7 +308,7 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
             /tmp/busybox mkdir -p /efs
 
             if ! /tmp/busybox grep -q /efs /proc/mounts ; then
-                if ! /tmp/busybox mount -t yaffs2 /dev/block/mtdblock4 /efs ; then
+                if ! /tmp/busybox mount -t yaffs2 /dev/block/$EFS_PART /efs ; then
                     /tmp/busybox echo "Cannot mount efs."
                     exit 6
                 fi
