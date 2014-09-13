@@ -33,6 +33,7 @@ PRODUCT_COPY_FILES := \
     device/samsung/p1-common/libaudio/audio_policy.conf:system/etc/audio_policy.conf \
     device/samsung/p1-common/libaudio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
     device/samsung/p1-common/rootdir/setupdatadata.sh:root/sbin/setupdatadata.sh \
+    device/samsung/p1-common/rootdir/zram-init.sh:root/sbin/zram-init.sh \
     device/samsung/p1-common/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf
 
 # Init files

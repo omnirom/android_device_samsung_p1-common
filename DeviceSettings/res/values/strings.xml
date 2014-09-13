@@ -42,6 +42,18 @@
     <string name="category_speed_title">Speed</string>
     <string name="touchscreen_clock_title">Touchscreen Clock Speed</string>
 
+    <string name="category_zram_title">Memory</string>
+    <string name="zram_disable_title">Disable Zram</string>
+    <string name="zram_disable_summary">Disable Zram Swap Memory (requires a reboot)</string>
+    <string name="zram_num_device_title">Zram Devices</string>
+    <string name="zram_num_device_summary">This creates n Zram devices: /dev/block/zram{0,1,2,3,4} (requires a reboot)</string>
+    <string name="zram_comp_stream_title">Compression Streams</string>
+    <string name="zram_comp_stream_summary">Set max number of compression streams (requires a reboot)</string>
+    <string name="zram_comp_algorithm_title">Compression Algorithm</string>
+    <string name="zram_comp_algorithm_summary">Set Compression Algorithm (requires a reboot)</string>
+    <string name="zram_disk_size_title">Zram Disk Size</string>
+    <string name="zram_disk_size_summary">Set Zram Disk Size (requires a reboot)</string>
+
     <string name="category_vibrator_tuning_title">Vibration</string>
     <string name="vibrator_tuning_title_head">Vibrator feedback tuning</string>
     <string name="vibrator_tuning_summary_head">Controls the default power of vibrator feedback</string>

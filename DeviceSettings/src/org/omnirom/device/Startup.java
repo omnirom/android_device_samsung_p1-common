@@ -26,6 +26,11 @@ public class Startup extends BroadcastReceiver {
     public void onReceive(final Context context, final Intent bootintent) {
         ToggleCapacitiveKeys.restore(context);
         TouchKeyBacklightTimeout.restore(context);
+        ZramDisable.restore(context);
+        ZramNumDevice.restore(context);
+        ZramCompStream.restore(context);
+        ZramCompAlgorithm.restore(context);
+        ZramDiskSize.restore(context);
         TouchscreenClock.restore(context);
         VibratorTuningPreference.restore(context);
         Sanity.check(context);
