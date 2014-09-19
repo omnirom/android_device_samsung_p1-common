@@ -50,7 +50,6 @@ public class DeviceSettings extends Activity {
     public static final String KEY_BUTTONS_DISABLE = "buttons_disable";
     public static final String KEY_BUTTONS = "buttons_category";
     public static final String KEY_BACKLIGHT_TIMEOUT = "backlight_timeout";
-    public static final String KEY_TOUCHSCREEN_CLOCK = "touchscreen_clock";
     public static final String KEY_VIBRATOR_TUNING = "vibrator_tuning";
     public static final String KEY_ZRAM_DISABLE = "zram_disable";
     public static final String KEY_ZRAM_NUM_DEVICE = "zram_num_device";
@@ -82,8 +81,6 @@ public class DeviceSettings extends Activity {
                 RadioFragmentActivity.class, null);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_zram_title),
                 ZramFragmentActivity.class, null);
-        mTabsAdapter.addTab(bar.newTab().setText(R.string.category_speed_title),
-                OverClockFragmentActivity.class, null);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_tvout_title),
                 TVFragmentActivity.class, null);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_vibrator_tuning_title),

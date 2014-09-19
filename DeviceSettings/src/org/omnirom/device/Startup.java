@@ -31,7 +31,6 @@ public class Startup extends BroadcastReceiver {
         ZramCompStream.restore(context);
         ZramCompAlgorithm.restore(context);
         ZramDiskSize.restore(context);
-        TouchscreenClock.restore(context);
         VibratorTuningPreference.restore(context);
         Sanity.check(context);
     }

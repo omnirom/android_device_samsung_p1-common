@@ -15,11 +15,9 @@
  -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Galaxy Tab Einstellungen</string>
-
     <string name="category_radio_title">Mobilfunk</string>
     <string name="hspa_title_head">HSPA</string>
     <string name="hspa_summary_head">HSDPA/HSUPA einschalten</string>
-
     <string name="category_tvout_title">TV</string>
     <string name="tvout_enable_head">TV-Out</string>
     <string name="tvout_enable_summary_nocable">TV-Out kein Kabel verbunden</string>
@@ -31,7 +29,6 @@
     <string name="hdmi_dock_summary">HDMI-Dock verbunden, zum aktivieren, Haken setzen</string>
     <string name="hdmi_dock_summary_on">HDMI-Dock eingeschaltet</string>
     <string name="hdmi_dock_head">HDMI-Dock</string>
-
     <string name="category_buttons_title">Tasten</string>
     <string name="category_capacitive_buttons_title">Sensortasten</string>
     <string name="capacitive_buttons_title">Sensortasten deaktivieren</string>

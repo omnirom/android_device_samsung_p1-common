@@ -19,7 +19,6 @@
         <item>Nur HSDPA</item>
         <item>HSDPA + HSUPA</item>
     </string-array>
-
     <string-array name="backlight_timeout_entries">
         <item>Immer an</item>
         <item>Immer aus</item>

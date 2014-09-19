@@ -34,10 +34,4 @@
         <item>15 másodperc</item>
         <item>30 másodperc</item>
     </string-array>
-    <string-array name="touchscreen_clock_entries">
-        <item>400 MHz</item>
-        <item>800 MHz</item>
-        <item>1000 MHz</item>
-        <item>1200 MHz</item>
-    </string-array>
 </resources>

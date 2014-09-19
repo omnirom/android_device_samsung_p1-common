@@ -19,7 +19,6 @@
         <item>HSDPA Only</item>
         <item>HSDPA + HSUPA</item>
     </string-array>
-
     <string-array name="hspa_entries_values" translatable="false">
         <item>21</item>
         <item>22</item>
@@ -30,7 +29,6 @@
         <item>NTSC</item>
         <item>PAL</item>
     </string-array>
-
     <string-array name="tvout_system_entries_values" translatable="false">
         <item>1</item>
         <item>2</item>
@@ -47,7 +45,6 @@
         <item>15 seconds</item>
         <item>30 seconds</item>
     </string-array>
-
     <string-array name="backlight_timeout_entries_values" translatable="false">
         <item>-1</item>
         <item>0</item>
@@ -60,25 +57,12 @@
         <item>30000</item>
     </string-array>
 
-    <string-array name="touchscreen_clock_entries">
-        <item>400 Mhz</item>
-        <item>800 Mhz</item>
-        <item>1000 Mhz</item>
-    </string-array>
-
-    <string-array name="touchscreen_clock_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-
     <string-array name="zram_num_device_entries">
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
     </string-array>
-
     <string-array name="zram_num_device_values" translatable="false">
         <item>1</item>
         <item>2</item>
@@ -90,7 +74,6 @@
         <item>lzo</item>
         <item>lz4</item>
     </string-array>
-
     <string-array name="zram_comp_algorithm_values" translatable="false">
         <item>lzo</item>
         <item>lz4</item>
@@ -102,7 +85,6 @@
         <item>3</item>
         <item>4</item>
     </string-array>
-
     <string-array name="zram_comp_stream_values" translatable="false">
         <item>1</item>
         <item>2</item>
@@ -116,7 +98,6 @@
         <item>256MB only 2 Zram devices are available to set</item>
         <item>512MB (max) only 1 Zram device is available to set</item>
     </string-array>
-
     <string-array name="zram_disk_size_values" translatable="false">
         <item>64M</item>
         <item>128M</item>

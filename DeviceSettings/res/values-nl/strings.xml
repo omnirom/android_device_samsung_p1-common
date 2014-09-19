@@ -15,11 +15,9 @@
  -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Geavanceerde instellingen</string>
-
     <string name="category_radio_title">Radio</string>
     <string name="hspa_title_head">HSPA</string>
     <string name="hspa_summary_head">HSDPA/HSUPA inschakelen</string>
-
     <string name="category_tvout_title">Tv-uitoer</string>
     <string name="tvout_enable_head">Tv-uitvoer</string>
     <string name="tvout_enable_summary_nocable">Kabel voor tv-uitvoer niet verbonden</string>
@@ -31,19 +29,13 @@
     <string name="hdmi_dock_summary">HDMI-dock verbonden, activeer om in te schakelen</string>
     <string name="hdmi_dock_summary_on">HDMI-dock ingeschakeld</string>
     <string name="hdmi_dock_head">HDMI-dock</string>
-
     <string name="category_buttons_title">Knoppen</string>
     <string name="category_capacitive_buttons_title">Aanraakknoppen</string>
     <string name="capacitive_buttons_title">Aanraakknoppen uitschakelen</string>
     <string name="capacitive_buttons_summary">Verlichting en aanrakingen van aanraakknoppen uitschakelen (incl. meldingen)</string>
     <string name="backlight_timeout_title_head">Time-out verlichting</string>
     <string name="backlight_timeout_summary_head">Vertraging van uitschakelen verlichting aanraakknoppen</string>
-
-    <string name="category_speed_title">Snelheid</string>
-    <string name="touchscreen_clock_title">Kloksnelheid van aanraakscherm</string>
-
     <string name="generic_warning_title">Let op</string>
-
     <string name="imei_not_sane_title">Let op</string>
     <string name="imei_not_sane_message">Er is een probleem gevonden met uw telefoon. Het IMEI-nummer van uw telefoon is ongeldig. Hierdoor kunnen problemen optreden met uw mobiele netwerkverbinding, inclusief het niet kunnen bellen van het alarmnummer.</string>
     <string name="imei_not_sane_ok">OK</string>

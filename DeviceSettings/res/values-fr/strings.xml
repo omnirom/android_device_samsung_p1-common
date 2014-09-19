@@ -35,8 +35,6 @@
     <string name="capacitive_buttons_summary">Désactiver le rétroéclairage (ainsi que l\'éclairage des notifications) et les touches tactiles</string>
     <string name="backlight_timeout_title_head">Délai avant extinction</string>
     <string name="backlight_timeout_summary_head">Définir le délai avant l\'extinction des touches</string>
-    <string name="category_speed_title">Vitesse</string>
-    <string name="touchscreen_clock_title">Vitesse d\'horloge de l\'écran tactile</string>
     <string name="category_vibrator_tuning_title">Vibreur</string>
     <string name="vibrator_tuning_title_head">Personalisation du vibreur</string>
     <string name="vibrator_tuning_summary_head">Contrôler le niveau par défaut du vibreur</string>

@@ -17,7 +17,6 @@
     <style name="Theme.DevicePreference" parent="android:style/Theme.Holo">
         <item name="android:actionBarTabStyle">@style/MyActionBarTabStyle</item>
     </style>
-
     <style name="MyActionBarTabStyle" parent="android:style/Widget.Holo.ActionBar.TabView">
         <item name="android:paddingLeft">@dimen/action_bar_tab_padding</item>
         <item name="android:paddingRight">@dimen/action_bar_tab_padding</item>

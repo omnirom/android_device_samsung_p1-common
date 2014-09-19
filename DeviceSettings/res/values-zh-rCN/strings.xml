@@ -15,11 +15,9 @@
  -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">高级设置</string>
-
     <string name="category_radio_title">无线电</string>
     <string name="hspa_title_head">HSPA</string>
     <string name="hspa_summary_head">启用 HSDPA/HSUPA</string>
-
     <string name="category_tvout_title">电视输出</string>
     <string name="tvout_enable_head">电视输出</string>
     <string name="tvout_enable_summary_nocable">电视输出线未连接</string>
@@ -31,19 +29,13 @@
     <string name="hdmi_dock_summary">HDMI 基座已连接，点击以启用</string>
     <string name="hdmi_dock_summary_on">HDMI 基座已启用</string>
     <string name="hdmi_dock_head">HDMI 基座</string>
-
     <string name="category_buttons_title">按键</string>
     <string name="category_capacitive_buttons_title">电容式按键</string>
     <string name="capacitive_buttons_title">禁用电容式按键</string>
     <string name="capacitive_buttons_summary">禁用电容式按键的所有功能 (包括通知)</string>
     <string name="backlight_timeout_title_head">背光灯超时</string>
     <string name="backlight_timeout_summary_head">调整背光灯自动关闭前的延迟</string>
-
-    <string name="category_speed_title">速度</string>
-    <string name="touchscreen_clock_title">触摸屏时钟频率速度</string>
-
     <string name="generic_warning_title">警告</string>
-
     <string name="imei_not_sane_title">警告！</string>
     <string name="imei_not_sane_message">在您的设备上发现了一个问题。您设备的 IMEI 号码是无效的。无效的 IMEI 号码可能会导致网络问题，包括无法拔打紧急呼叫电话。</string>
     <string name="imei_not_sane_ok">确定</string>
