@@ -23,14 +23,6 @@
         android:defaultValue="false" />
 
     <ListPreference
-        android:key="zram_num_device"
-        android:title="@string/zram_num_device_title"
-        android:entries="@array/zram_num_device_entries"
-        android:entryValues="@array/zram_num_device_values"
-        android:defaultValue="1"
-        android:dependency="zram_disable" />
-
-    <ListPreference
         android:key="zram_comp_stream"
         android:title="@string/zram_comp_stream_title"
         android:entries="@array/zram_comp_stream_entries"

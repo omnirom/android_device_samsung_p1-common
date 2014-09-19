@@ -39,8 +39,6 @@
     <string name="category_zram_title">Memory</string>
     <string name="zram_disable_title">Disable Zram</string>
     <string name="zram_disable_summary">Disable Zram Swap Memory (requires a reboot)</string>
-    <string name="zram_num_device_title">Zram Devices</string>
-    <string name="zram_num_device_summary">This creates n Zram devices: /dev/block/zram{0,1,2,3,4} (requires a reboot)</string>
     <string name="zram_comp_stream_title">Compression Streams</string>
     <string name="zram_comp_stream_summary">Set max number of compression streams (requires a reboot)</string>
     <string name="zram_comp_algorithm_title">Compression Algorithm</string>

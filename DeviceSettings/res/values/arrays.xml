@@ -57,19 +57,6 @@
         <item>30000</item>
     </string-array>
 
-    <string-array name="zram_num_device_entries">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-    <string-array name="zram_num_device_values" translatable="false">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-
     <string-array name="zram_comp_algorithm_entries">
         <item>lzo</item>
         <item>lz4</item>
@@ -93,13 +80,11 @@
     </string-array>
 
     <string-array name="zram_disk_size_entries">
-        <item>64MB</item>
         <item>128MB</item>
-        <item>256MB only 2 Zram devices are available to set</item>
-        <item>512MB (max) only 1 Zram device is available to set</item>
+        <item>256MB</item>
+        <item>512MB</item>
     </string-array>
     <string-array name="zram_disk_size_values" translatable="false">
-        <item>64M</item>
         <item>128M</item>
         <item>256M</item>
         <item>512M</item>

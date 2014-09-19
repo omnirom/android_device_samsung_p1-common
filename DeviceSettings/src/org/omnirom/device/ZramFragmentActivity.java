@@ -36,7 +36,6 @@ public class ZramFragmentActivity extends PreferenceFragment {
     private static final String TAG = "DeviceSettings_Zram";
 
     private CheckBoxPreference mZramDisable;
-    private ListPreference mZramNumDevice;
     private ListPreference mZramMaxCompStream;
     private ListPreference mZramCompAlgorithm;
     private ListPreference mZramDiskSize;
@@ -52,12 +51,6 @@ public class ZramFragmentActivity extends PreferenceFragment {
         mZramDisable = (CheckBoxPreference) findPreference(DeviceSettings.KEY_ZRAM_DISABLE);
         mZramDisable.setEnabled(ZramDisable.isSupported());
         mZramDisable.setOnPreferenceChangeListener(new ZramDisable());
-
-        mZramNumDevice = (ListPreference) findPreference(DeviceSettings.KEY_ZRAM_NUM_DEVICE);
-        mZramNumDevice.setEnabled(ZramNumDevice.isSupported());
-        mZramNumDevice.setOnPreferenceChangeListener(new ZramNumDevice());
-        ZramNumDevice.updateSummary(mZramNumDevice,
-                Integer.parseInt(mZramNumDevice.getValue()));
 
         mZramMaxCompStream = (ListPreference) findPreference(DeviceSettings.KEY_ZRAM_COMP_STREAM);
         mZramMaxCompStream.setEnabled(ZramCompStream.isSupported());
