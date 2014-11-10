@@ -51,11 +51,6 @@ public class DeviceSettings extends Activity {
     public static final String KEY_BUTTONS = "buttons_category";
     public static final String KEY_BACKLIGHT_TIMEOUT = "backlight_timeout";
     public static final String KEY_VIBRATOR_TUNING = "vibrator_tuning";
-    public static final String KEY_ZRAM_DISABLE = "zram_disable";
-    public static final String KEY_ZRAM_NUM_DEVICE = "zram_num_device";
-    public static final String KEY_ZRAM_COMP_STREAM = "zram_comp_stream";
-    public static final String KEY_ZRAM_COMP_ALGORITHM = "zram_comp_algorithm";
-    public static final String KEY_ZRAM_DISK_SIZE = "zram_disk_size";
 
     ViewPager mViewPager;
     TabsAdapter mTabsAdapter;
@@ -79,8 +74,6 @@ public class DeviceSettings extends Activity {
                 ButtonFragmentActivity.class, null);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_radio_title),
                 RadioFragmentActivity.class, null);
-        mTabsAdapter.addTab(bar.newTab().setText(R.string.category_zram_title),
-                ZramFragmentActivity.class, null);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_tvout_title),
                 TVFragmentActivity.class, null);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_vibrator_tuning_title),

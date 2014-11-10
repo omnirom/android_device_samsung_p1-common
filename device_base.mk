@@ -25,20 +25,20 @@ TARGET_SCREEN_HEIGHT := 1024
 TARGET_SCREEN_WIDTH := 600
 
 # Screen size is large 7"
-PRODUCT_AAPT_CONFIG := large mdpi
-PRODUCT_AAPT_PREF_CONFIG := mdpi
+# Enable higher-res drawables
+PRODUCT_AAPT_CONFIG := normal large tvdpi hdpi
+PRODUCT_AAPT_PREF_CONFIG := hdpi
 
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES := \
     device/samsung/p1-common/libaudio/audio_policy.conf:system/etc/audio_policy.conf \
     device/samsung/p1-common/libaudio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
-    device/samsung/p1-common/rootdir/setupdatadata.sh:root/sbin/setupdatadata.sh \
-    device/samsung/p1-common/rootdir/zram-init.sh:root/sbin/zram-init.sh \
     device/samsung/p1-common/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf
 
 # Init files
 PRODUCT_COPY_FILES += \
     device/samsung/p1-common/rootdir/init.p1-common.rc:root/init.p1-common.rc \
+    device/samsung/p1-common/rootdir/init.trace.rc:root/init.trace.rc \
     device/samsung/p1-common/rootdir/lpm.rc:root/lpm.rc
 
 # Prebuilt kl keymaps
@@ -52,20 +52,22 @@ PRODUCT_PACKAGES := \
     setup_fs \
     bml_over_mtd
 
-# Lights
-PRODUCT_PACKAGES += \
-    lights.s5pc110
-
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.usb.default \
-    audio.primary.s5pc110
+    audio.primary.s5pc110 \
+    audio.r_submix.default
 
-# Camera
+# s5pc110 libs
 PRODUCT_PACKAGES += \
     camera.s5pc110 \
-    libs3cjpeg
+    lights.s5pc110 \
+    hwcomposer.s5pc110 \
+    power.s5pc110 \
+    libs3cjpeg \
+    libnetcmdiface \
+    libstagefrighthw
 
 # These are the OpenMAX IL configuration files
 PRODUCT_COPY_FILES += \
@@ -85,23 +87,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     p1_charger \
     p1_charger_res_images
-
-# Libnetcmd
-PRODUCT_PACKAGES += \
-    libnetcmdiface
-
-# Libs
-PRODUCT_PACKAGES += \
-    hwcomposer.s5pc110 \
-    libstagefrighthw
-
-# audio submix
-PRODUCT_PACKAGES += \
-    audio.r_submix.default
-
-# Powah
-PRODUCT_PACKAGES += \
-    power.s5pc110
 
 # tvout
 PRODUCT_PACKAGES += \
@@ -178,7 +163,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     wifi.supplicant_scan_interval=45
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.bq.gpu_to_cpu_unsupported=1 \
+    ro.bq.gpu_to_cpu_unsupported=1
 
 # SGX540 is slower with the scissor optimization enabled
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -190,30 +175,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.locationfeatures=1 \
     ro.com.google.networklocation=1
 
-# Extended JNI checks
-# The extended JNI checks will cause the system to run more slowly, but they can spot a variety of nasty bugs 
-# before they have a chance to cause problems.
-# Default=true for development builds, set by android buildsystem.
-# Disable GC freed lines
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.kernel.android.checkjni=0 \
-    dalvik.vm.checkjni=false \
-    dalvik.vm.debug.alloc=0 \
-    dalvik.vm.dexopt-data-only=1
-
-# Override /proc/sys/vm/dirty_ratio on UMS
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vold.umsdirtyratio=20
-
 # Enable Low Ram Device flag
 # This is used by ActivityManager.isLowRamDevice()
 PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
-
-# Disable JIT
-PRODUCT_PROPERTY_OVERRIDES += dalvik.vm.jit.codecachesize=0
-
-# Enable KSM by default
-PRODUCT_PROPERTY_OVERRIDES += ro.ksm.default=1
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
@@ -234,3 +198,4 @@ PRODUCT_COPY_FILES += \
     device/samsung/p1-common/bml_over_mtd.sh:bml_over_mtd.sh
 
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4329/device-bcm.mk)
+# $(call inherit-product-if-exists, vendor/google/apps/gapps.mk)

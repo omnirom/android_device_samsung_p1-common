@@ -33,12 +33,22 @@ TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_ARCH_VARIANT_CPU := cortex-a8
 TARGET_CPU_VARIANT := cortex-a8
 
+# Dalvik startup with low memory footprint
+TARGET_ARCH_LOWMEM := true
+
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
-
 TARGET_BOARD_PLATFORM := s5pc110
-TARGET_BOARD_PLATFORM_GPU := POWERVR_SGX540_120
-TARGET_BOOTLOADER_BOARD_NAME := s5pc110
+
+# Releasetools
+TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/p1-common
+
+# Camera HAL
+USE_CAMERA_STUB := false
+ifeq ($(USE_CAMERA_STUB),false)
+BOARD_CAMERA_LIBRARIES := libcamera
+endif
+BOARD_CAMERA_HAVE_ISO := true
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -46,7 +56,26 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/p1-common/bluetooth
 BOARD_BLUEDROID_VENDOR_CONF := device/samsung/p1-common/bluetooth/libbt_vndcfg.txt
 
-# WiFi related defines
+# OpenGL stuff
+BOARD_EGL_CFG := device/samsung/p1-common/prebuilt/lib/egl/egl.cfg
+USE_OPENGL_RENDERER := true
+
+# Video Devices
+BOARD_V4L2_DEVICE := /dev/video1
+BOARD_CAMERA_DEVICE := /dev/video0
+BOARD_SECOND_CAMERA_DEVICE := /dev/video2
+
+# Device related defines
+BOARD_NAND_PAGE_SIZE := 4096
+BOARD_NAND_SPARE_SIZE := 128
+BOARD_KERNEL_BASE := 0x32000000
+BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_CMDLINE := console=ttyFIQ0,115200 androidboot.selinux=permissive init=/init no_console_suspend
+
+BOARD_BOOTIMAGE_PARTITION_SIZE := 7864320
+BOARD_FLASH_BLOCK_SIZE := 4096
+
+# Connectivity - Wi-Fi
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
@@ -59,47 +88,11 @@ WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
 WIFI_DRIVER_FW_PATH_STA     := "/vendor/firmware/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_AP      := "/vendor/firmware/fw_bcmdhd_apsta.bin"
 
-# Camera HAL
-USE_CAMERA_STUB := false
-ifeq ($(USE_CAMERA_STUB),false)
-BOARD_CAMERA_LIBRARIES := libcamera
-endif
-BOARD_V4L2_DEVICE := /dev/video1
-BOARD_CAMERA_DEVICE := /dev/video0
-BOARD_SECOND_CAMERA_DEVICE := /dev/video2
-BOARD_CAMERA_HAVE_ISO := true
-
-# OpenGL stuff
-BOARD_EGL_CFG := device/samsung/p1-common/prebuilt/lib/egl/egl.cfg
-USE_OPENGL_RENDERER := true
-
-# SkTextBox for libtvout
-BOARD_USES_SKTEXTBOX := true
-
-# Device related defines
-BOARD_NAND_PAGE_SIZE := 4096
-BOARD_NAND_SPARE_SIZE := 128
-BOARD_KERNEL_BASE := 0x32000000
-BOARD_KERNEL_PAGESIZE := 4096
-BOARD_KERNEL_CMDLINE := console=ttyFIQ0,115200 androidboot.selinux=permissive init=/init no_console_suspend
-BOARD_BOOTIMAGE_PARTITION_SIZE := 7864320
-BOARD_FLASH_BLOCK_SIZE := 4096
-
 # Vold
+BOARD_VOLD_MAX_PARTITIONS := 12
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
+BOARD_VOLD_DISC_HAS_MULTIPLE_MAJORS := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/s3c-usbgadget/gadget/lun%d/file"
-
-# Releasetools
-TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/p1-common
-
-# Samsung EMMC brick bug
-# Already disabled in kernel, but disable again for safety
-BOARD_SUPPRESS_EMMC_WIPE := true
-
-# Boot Animation
-TARGET_BOOTANIMATION_PRELOAD := true
-TARGET_BOOTANIMATION_TEXTURE_CACHE := false
-TARGET_BOOTANIMATION_USE_RGB565 := true
 
 # Open Source Charging Mode
 BOARD_POWER_SUPPLY_PATH := /sys/class/power_supply
@@ -111,6 +104,17 @@ BOARD_CHARGER_DIM_SCREEN_BRIGHTNESS := true
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../../device/samsung/p1-common/recovery/keys.c
 BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/p1-common/recovery/graphics.c
 
+# Boot Animation
+TARGET_BOOTANIMATION_PRELOAD := true
+TARGET_BOOTANIMATION_TEXTURE_CACHE := false
+TARGET_BOOTANIMATION_USE_RGB565 := true
+
+# SkTextBox for libtvout
+BOARD_USES_SKTEXTBOX := true
+
+# Hardware rendering
+USE_OPENGL_RENDERER := true
+
 # TARGET_DISABLE_TRIPLE_BUFFERING can be used to disable triple buffering
 # on per target basis. On crespo it is possible to do so in theory
 # to save memory, however, there are currently some limitations in the
@@ -119,32 +123,14 @@ BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/p1-common/recovery/graphics.c
 TARGET_DISABLE_TRIPLE_BUFFERING := false
 
 BOARD_ALLOW_EGL_HIBERNATION := true
+BOARD_EGL_WORKAROUND_BUG_10194508 := true
+TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 
 # hwcomposer: custom vsync ioctl
 BOARD_CUSTOM_VSYNC_IOCTL := true
 
-# Dalvik startup with a low memory footprint
-TARGET_ARCH_LOWMEM := true
-
-# TWRP
-DEVICE_RESOLUTION := 1024x600
-BOARD_USES_BML_OVER_MTD := true
-TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /cache/.startrecovery; sync;"
-TARGET_RECOVERY_PIXEL_FORMAT := "RGB_565"
-BOARD_HAS_FLIPPED_SCREEN := true
-RECOVERY_TOUCHSCREEN_FLIP_Y := true
-RECOVERY_TOUCHSCREEN_FLIP_X := true
-TW_NO_REBOOT_BOOTLOADER := true
-TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
-TW_INCLUDE_FB2PNG := true
-TW_FLASH_FROM_STORAGE := true
-TW_NO_PARTITION_SD_CARD := true
-TW_EXCLUDE_SUPERSU := true
-TW_INTERNAL_STORAGE_PATH := "/sdcard"
-TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
-TW_MAX_BRIGHTNESS := 255
-TW_BRIGHTNESS_PATH := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
+# Required for TV out
+COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 
 # SELinux
 BOARD_SEPOLICY_DIRS += \
@@ -161,8 +147,20 @@ BOARD_SEPOLICY_UNION += \
     tvouthack.te \
     tvoutserver.te
 
-TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
-BOARD_EGL_WORKAROUND_BUG_10194508 := true
-
-# Required for TV out
-COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
+# TWRP
+DEVICE_RESOLUTION := 1024x600
+BOARD_USES_BML_OVER_MTD := true
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /cache/.startrecovery; sync;"
+TARGET_RECOVERY_PIXEL_FORMAT := "RGB_565"
+BOARD_HAS_FLIPPED_SCREEN := true
+RECOVERY_TOUCHSCREEN_FLIP_Y := true
+RECOVERY_TOUCHSCREEN_FLIP_X := true
+TW_NO_REBOOT_BOOTLOADER := true
+TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
+TW_INCLUDE_FB2PNG := true
+TW_FLASH_FROM_STORAGE := true
+TW_NO_PARTITION_SD_CARD := true
+TW_EXCLUDE_SUPERSU := true
+TW_MAX_BRIGHTNESS := 255
+TW_BRIGHTNESS_PATH := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
