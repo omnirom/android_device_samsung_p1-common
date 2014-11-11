@@ -32,8 +32,6 @@ PRODUCT_AAPT_PREF_CONFIG := mdpi
 PRODUCT_COPY_FILES := \
     device/samsung/p1-common/libaudio/audio_policy.conf:system/etc/audio_policy.conf \
     device/samsung/p1-common/libaudio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
-    device/samsung/p1-common/rootdir/setupdatadata.sh:root/sbin/setupdatadata.sh \
-    device/samsung/p1-common/rootdir/zram-init.sh:root/sbin/zram-init.sh \
     device/samsung/p1-common/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf
 
 # Init files
@@ -179,7 +177,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     wifi.supplicant_scan_interval=45
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.bq.gpu_to_cpu_unsupported=1 \
+    ro.bq.gpu_to_cpu_unsupported=1
 
 # SGX540 is slower with the scissor optimization enabled
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -199,22 +197,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.kernel.android.checkjni=0 \
     dalvik.vm.checkjni=false \
-    dalvik.vm.debug.alloc=0 \
-    dalvik.vm.dexopt-data-only=1
-
-# Override /proc/sys/vm/dirty_ratio on UMS
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vold.umsdirtyratio=20
+    dalvik.vm.debug.alloc=0
 
 # Enable Low Ram Device flag
 # This is used by ActivityManager.isLowRamDevice()
 PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
-
-# Disable JIT
-PRODUCT_PROPERTY_OVERRIDES += dalvik.vm.jit.codecachesize=0
-
-# Enable KSM by default
-PRODUCT_PROPERTY_OVERRIDES += ro.ksm.default=1
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise

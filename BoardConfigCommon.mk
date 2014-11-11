@@ -141,8 +141,6 @@ TW_INCLUDE_FB2PNG := true
 TW_FLASH_FROM_STORAGE := true
 TW_NO_PARTITION_SD_CARD := true
 TW_EXCLUDE_SUPERSU := true
-TW_INTERNAL_STORAGE_PATH := "/sdcard"
-TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
 TW_MAX_BRIGHTNESS := 255
 TW_BRIGHTNESS_PATH := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
 
