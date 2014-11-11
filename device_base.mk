@@ -39,6 +39,7 @@ PRODUCT_COPY_FILES := \
 # Init files
 PRODUCT_COPY_FILES += \
     device/samsung/p1-common/rootdir/init.p1-common.rc:root/init.p1-common.rc \
+    device/samsung/p1-common/rootdir/init.trace.rc:root/init.trace.rc \
     device/samsung/p1-common/rootdir/lpm.rc:root/lpm.rc
 
 # Prebuilt kl keymaps
