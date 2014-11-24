@@ -147,19 +147,19 @@ TW_MAX_BRIGHTNESS := 255
 TW_BRIGHTNESS_PATH := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
 
 # SELinux
-BOARD_SEPOLICY_DIRS += \
-    device/samsung/p1-common/sepolicy
+# BOARD_SEPOLICY_DIRS += \
+#    device/samsung/p1-common/sepolicy
 
-BOARD_SEPOLICY_UNION += \
-    device.te \
-    domain.te \
-    file_contexts \
-    mediaserver.te \
-    property_contexts \
-    pvrsrvinit.te \
-    rild.te \
-    tvouthack.te \
-    tvoutserver.te
+# BOARD_SEPOLICY_UNION += \
+#    device.te \
+#    domain.te \
+#    file_contexts \
+#    mediaserver.te \
+#    property_contexts \
+#    pvrsrvinit.te \
+#    rild.te \
+#    tvouthack.te \
+#    tvoutserver.te
 
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
