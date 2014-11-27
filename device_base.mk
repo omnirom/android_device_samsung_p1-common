@@ -95,6 +95,11 @@ PRODUCT_PACKAGES += \
     hwcomposer.s5pc110 \
     libstagefrighthw
 
+# PVR
+PRODUCT_PACKAGES += \
+    pvrsrvinit \
+    libPVRScopeServices.so
+
 # audio submix
 PRODUCT_PACKAGES += \
     audio.r_submix.default
