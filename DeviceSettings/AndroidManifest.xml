@@ -30,7 +30,6 @@
         </receiver>
 
         <activity android:name=".ButtonFragmentActivity" />
-        <activity android:name=".ZramFragmentActivity" />
         <activity android:name=".RadioFragmentActivity" />
         <activity android:name=".TVFragmentActivity" />
         <activity android:name=".VibratorFragmentActivity" />
