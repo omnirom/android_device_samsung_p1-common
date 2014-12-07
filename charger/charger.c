@@ -74,9 +74,9 @@
 #define MSEC_PER_SEC            (1000LL)
 #define NSEC_PER_MSEC           (1000000LL)
 
-#define BATTERY_UNKNOWN_TIME    (1 * MSEC_PER_SEC)
-#define POWER_ON_KEY_TIME       (1 * MSEC_PER_SEC)
-#define UNPLUGGED_SHUTDOWN_TIME (15 * MSEC_PER_SEC)
+#define BATTERY_UNKNOWN_TIME    (2 * MSEC_PER_SEC)
+#define POWER_ON_KEY_TIME       (2 * MSEC_PER_SEC)
+#define UNPLUGGED_SHUTDOWN_TIME (20 * MSEC_PER_SEC)
 
 #define BATTERY_FULL_THRESH     95
 
@@ -174,7 +174,7 @@ static struct frame batt_anim_frames[] = {
 static struct animation battery_animation = {
     .frames = batt_anim_frames,
     .num_frames = ARRAY_SIZE(batt_anim_frames),
-    .num_cycles = 3,
+    .num_cycles = 5,
 };
 
 static struct supplies_list *supplies_list;
@@ -309,75 +309,83 @@ static int get_battery_capacity()
     return batt_cap;
 }
 
-static void init_sysfs_paths(){
+static void init_sysfs_paths()
+{
     strcpy(supplies_list->ac_online_path,AC_SYSFS);
     strcat(supplies_list->ac_online_path,"/online");
     LOGI("ac_path %s\n",supplies_list->ac_online_path);
+
     strcpy(supplies_list->usb_online_path,USB_SYSFS);
     strcat(supplies_list->usb_online_path,"/online");
     LOGI("usb_path %s\n",supplies_list->usb_online_path);
+
     strcpy(supplies_list->battery_capacity_path,BATTERY_SYSFS);
     strcat(supplies_list->battery_capacity_path,"/capacity");
 }
 
-static int init_supplies(struct charger *charger){
+static int init_supplies(struct charger *charger)
+{
     int online_ac = 0,online_usb=0,ac,usb;
     charger->online=0;
     charger->charger_type=NONE;
     init_sysfs_paths();
     ac=read_file_int(supplies_list->ac_online_path,&online_ac);
     usb=read_file_int(supplies_list->usb_online_path,&online_usb);
-    if(ac!=-1 || usb!=-1){
-        //LOGI("ac => fd= %d,online=%d\tusb=>fd=%d,online=%d\n",ac,online_ac,usb,online_usb);
-        if(online_ac && ac!=-1)
+
+    if (ac!=-1 || usb!=-1) {
+        if (online_ac && ac!=-1)
             charger->charger_type=AC;
-        else if(online_usb && usb!=-1)
+        else if (online_usb && usb!=-1)
             charger->charger_type=USB;
-    }
-    else{
+    } else {
         LOGE("Error opening paths ac=%d usb=%d\n",ac,usb);
         return -1;
-}
+    }
+
     charger->capacity= get_battery_capacity();
     charger->online=1;
+
     LOGI("Charger_online= %d (0=NONE,1=AC,2=USB)\n",charger->charger_type);
     charger->next_supply_check = curr_time_ms() + UNPLUGGED_SHUTDOWN_TIME;
     return 0;
 }
 
-
-static int update_supply(struct charger *charger){
+static int update_supply(struct charger *charger)
+{
     int supply=charger->charger_type;
     int online = 0,was_online=0;
-    char *path;
+    char *path = '\0';
 
-    if(supply == AC)
+    if (supply == AC)
         path=supplies_list->ac_online_path;
-    else if(supply == USB)
+    else if (supply == USB)
         path=supplies_list->usb_online_path;
 
-    if(read_file_int(path,&online)==-1){
+    if (read_file_int(path,&online)==-1)
         return -1;
+
+    if (charger->online!=online) {
+        LOGI("Charger online from %d to %d\t",charger->online,online);
+        if (online==0)
+			LOGI("Disconnected\n");
+        else
+			LOGI("Reconnected\n");
     }
 
-    if(charger->online!=online){
-        LOGI("Charger online from %d to %d\t",charger->online,online);
-        if(online==0)LOGI("Disconnected\n");
-        else LOGI("Reconnected\n");
-}
     charger->online = online;
     charger->capacity=get_battery_capacity();
     return 0;
 }
 
-static void check_status(struct charger *charger, int64_t now){
-    if(now>=charger->next_supply_check){
+static void check_status(struct charger *charger, int64_t now)
+{
+    if (now>=charger->next_supply_check) {
         update_supply(charger);
         LOGI("Battery status %d %%\n",charger->capacity);
 
-        if(charger->online){
+        if (charger->online) {
             charger->next_supply_check = now + UNPLUGGED_SHUTDOWN_TIME;
-            LOGI("Next power check in %d sec\n",(charger->next_supply_check)/MSEC_PER_SEC);
+            LOGI("Next power check in %llu sec\n",(charger->next_supply_check)/MSEC_PER_SEC);
             return;
         }
         android_reboot(ANDROID_RB_POWEROFF, 0, 0);
@@ -388,12 +396,12 @@ static void check_status(struct charger *charger, int64_t now){
 static int request_suspend(bool enable)
 {
     int fd;
-    if (enable){
+    if (enable) {
         gr_fb_blank(true);
 #ifdef CHARGER_ENABLE_SUSPEND
         return autosuspend_enable();
 #elif defined DIM_SCREEN && defined BRIGHTNESS_PATH
-        fd = open(BRIGHTNESS_PATH,O_WRONLY);
+        fd = open(BRIGHTNESS_PATH, O_WRONLY);
         write(fd,"20",strlen("20"));
         close(fd);
         return 0;
@@ -403,8 +411,8 @@ static int request_suspend(bool enable)
 #ifdef CHARGER_ENABLE_SUSPEND
     return autosuspend_disable();
 #elif defined DIM_SCREEN && defined BRIGHTNESS_PATH
-    fd = open(BRIGHTNESS_PATH,O_WRONLY);
-    write(fd,MAX_BRIGHTNESS,strlen(MAX_BRIGHTNESS));
+    fd = open(BRIGHTNESS_PATH, O_WRONLY);
+    write(fd, MAX_BRIGHTNESS, strlen(MAX_BRIGHTNESS));
     close(fd);
     return 0;
 #endif
@@ -480,8 +488,8 @@ static void draw_battery(struct charger *charger)
     if (batt_anim->num_frames != 0) {
         draw_surface_centered(charger, frame->surface);
         LOGV("drawing frame #%d name=%s min_cap=%d time=%d\n",
-	 batt_anim->cur_frame, frame->name, frame->min_capacity,
-	 frame->disp_time);
+             batt_anim->cur_frame, frame->name, frame->min_capacity,
+             frame->disp_time);
     }
 }
 
@@ -513,10 +521,12 @@ static void reset_animation(struct animation *anim)
     anim->run = false;
 }
 
-static void update_screen_state(struct charger *charger,int64_t now){
+static void update_screen_state(struct charger *charger, int64_t now)
+{
+    struct animation *batt_anim = charger->batt_anim;
     int cur_frame;
     int disp_time;
-    struct animation *batt_anim=charger->batt_anim;
+
     if (!batt_anim->run || now < charger->next_screen_transition)
         return;
 
@@ -524,6 +534,7 @@ static void update_screen_state(struct charger *charger,int64_t now){
     if (batt_anim->cur_cycle == batt_anim->num_cycles) {
         reset_animation(batt_anim);
         charger->next_screen_transition = -1;
+        gr_fb_blank(true);
         LOGV("[%lld] animation done\n", now);
         if (charger->online > 0)
             request_suspend(true);
@@ -545,7 +556,7 @@ static void update_screen_state(struct charger *charger,int64_t now){
             /* find first frame given current capacity */
             for (i = 1; i < batt_anim->num_frames; i++) {
                 if (batt_cap < batt_anim->frames[i].min_capacity)
-                break;
+                    break;
             }
             batt_anim->cur_frame = i - 1;
 
@@ -585,7 +596,7 @@ static void update_screen_state(struct charger *charger,int64_t now){
      * the current level, skip it during the animation.
      */
     while (batt_anim->cur_frame < batt_anim->num_frames &&
-        batt_anim->frames[batt_anim->cur_frame].level_only)
+           batt_anim->frames[batt_anim->cur_frame].level_only)
         batt_anim->cur_frame++;
     if (batt_anim->cur_frame >= batt_anim->num_frames) {
         batt_anim->cur_cycle++;
@@ -735,6 +746,7 @@ static void event_loop(struct charger *charger)
          * screen transitions (animations, etc)
          */
         update_screen_state(charger, now);
+
         wait_next_event(charger, now);
     }
 }
@@ -782,15 +794,20 @@ int main(int argc, char **argv)
 
     supplies_list=&supply;
     LOGI("Starting supply init \n");
-    if(init_supplies(charger)==-1) return -1;
+    if (init_supplies(charger)==-1)return -1;
     LOGI("Starting key event callback \n");
     ev_sync_key_state(set_key_callback, charger);
+
+#ifndef CHARGER_DISABLE_INIT_BLANK
+    gr_fb_blank(true);
+#endif
+
     charger->next_screen_transition = now - 1;
     charger->next_key_check = -1;
     reset_animation(charger->batt_anim);
     kick_animation(charger->batt_anim);
-    LOGI("Starting event loop\n");
+
     event_loop(charger);
-    gr_exit();
+
     return 0;
 }
