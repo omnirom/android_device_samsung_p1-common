@@ -1,12 +1,22 @@
-# We shifted /data/data stuff around
-/data/data2/.*                                      u:object_r:app_data_file:s0
-/datadata                                           u:object_r:system_data_file:s0
-/data/data2/com.android.providers.downloads/cache   u:object_r:download_file:s0
-
 # RIL
 /dev/s3c2410_serial3                                u:object_r:radio_device:s0
 /dev/onedram                                        u:object_r:radio_device:s0
+/dev/modem_ctl                                      u:object_r:radio_device:s0
+/dev/modem_fmt                                      u:object_r:radio_device:s0
+/dev/modem_rfs                                      u:object_r:radio_device:s0
+/dev/mtd/mtd4                                       u:object_r:radio_device:s0
+/dev/mtd/mtd4ro                                     u:object_r:radio_device:s0
+/dev/block/mtdblock4                                u:object_r:radio_device:s0
 /radio(/.*)?                                        u:object_r:rild_file:s0
+
+# camera
+/dev/video0                                         u:object_r:camera_device:s0
+/dev/video1                                         u:object_r:camera_device:s0
+/dev/video2                                         u:object_r:camera_device:s0
+/dev/s3c-jpg                                        u:object_r:camera_device:s0
+/dev/s3c-mem                                        u:object_r:camera_device:s0
+/dev/s3c-mfc                                        u:object_r:graphics_device:s0
+/dev/i2c-1                                          u:object_r:graphics_device:s0
 
 # Bluetooth
 /dev/s3c2410_serial0                                u:object_r:hci_attach_dev:s0
@@ -16,10 +26,6 @@
 
 # GPS
 /dev/s3c2410_serial1                                u:object_r:gps_device:s0
-
-# TV-Out
-/system/bin/tvoutserver                             u:object_r:tvoutserver_exec:s0
-/system/bin/tvouthack                               u:object_r:tvouthack_exec:s0
 
 # Advanced settings
 # TODO: sysfs_writable may not be a good choice
