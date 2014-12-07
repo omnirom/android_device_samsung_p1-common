@@ -1,6 +1,17 @@
-on init
+# Init for devices built on Samsung S5PC110 platform
 
-loglevel 9
+on early-init
+
+    loglevel 9
+
+    mount debugfs /sys/kernel/debug /sys/kernel/debug
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/block/mmcblk0/queue/scheduler row
+
+#   set up LVM volumes
+    wait /sys/dev/block/179:0
+
+on init
 
     # we will create our own ril-daemon service in class 'core' because the
     # rild doesn't like being killed. (During device encryption.)
@@ -8,21 +19,21 @@ loglevel 9
 
 on boot
 
-    # mount debugfs
-    mount debugfs /sys/kernel/debug /sys/kernel/debug
-
-    # fake some battery state
+#   fake some battery state
     setprop status.battery.state Slow
     setprop status.battery.level 5
     setprop status.battery.level_raw  50
     setprop status.battery.level_scale 9
 
-    # phone
+#   phone
     setprop ro.telephony.call_ring.multiple 0
+
+#   prevents permission denied error for telephony
+    chmod 0644 /proc/cmdline
 
 on fs
 
-    # bluetooth
+#   bluetooth
     chown bluetooth net_bt_stack /dev/s3c2410_serial0
     chmod 0600 /dev/s3c2410_serial0
     chmod 0660 /sys/class/rfkill/rfkill0/state
@@ -36,24 +47,24 @@ on fs
     restorecon /sys/class/rfkill/rfkill0/type
     restorecon /sys/class/rfkill/rfkill1/type
 
-    # system server can control backlight brightness
+#   system server can control backlight brightness
     chown system system /sys/class/backlight/s5p_bl/brightness
 
-    # change permission for uart_switch
+#   change permission for uart_switch
     chown radio radio /sys/class/sec/uart_switch/UART_SEL/value
     chmod 660 /sys/class/sec/uart_switch/UART_SEL/value
 
-    # permissions for MTP device node
+#   permissions for MTP device node
     chmod 0777 /dev/mtp_usb
     restorecon /dev/mtp_usb
     chmod 0777 /dev/usb_accessory
     restorecon /dev/usb_accessory
 
-    # sensor sysfs permission
+#   sensor sysfs permission
     chown system system /sys/devices/virtual/BMA-dev/accelerometer/calibration
     chown system system /sys/devices/virtual/lightsensor/switch_cmd/lightsensor_file_cmd
 
-    # mdnie permission
+#   mdnie permission
     chown system system /sys/class/sec/sec_tune_cmc623/color_saturation
     chown system system /sys/class/sec/sec_tune_cmc623/color_black
     chown system system /sys/class/sec/sec_tune_cmc623/color_white
@@ -62,54 +73,35 @@ on fs
     chown system system /sys/class/sec/sec_tune_cmc623/read_reg
     chown system system /sys/class/sec/sec_tune_cmc623/set_reg
 
-on post-fs
-
-    # now that all filesystems are mounted, load device specific kernel modules
-    # vibrator
-    insmod /system/lib/modules/vibrator.ko
-
-    # load wifi module
-    insmod /system/lib/modules/bcmdhd.ko
-
 on post-fs-data
 
-    # write value must be consistent with the above properties.
-    # note that the driver only supports 6 slots, so we have combined some of
-    # the classes into the same memory level; the associated processes of higher
-    # classes will still be killed first.
-    write /sys/module/lowmemorykiller/parameters/adj 0,1,2,4,7,15
-    write /sys/module/lowmemorykiller/parameters/minfree 2048,3072,4096,6144,7168,8192
-
-    # create data/gps for GPS demon
+#   create data/gps for GPS demon
     mkdir /data/gps 771 gps system
     chown gps system /data/gps
 
-    # wi-fi
+#   wi-fi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp
 
-    # cpufreq, set default governor
+#   cpufreq, set default governor
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
 
-    # sensors
-    # this needs to be fixed correctly
-    # see: frameworks/base/services/sensorservice/SensorDevice.cpp
-
-    # enable gyro (p1c) & orientation_sensor (p1)
+#   sensors
+#   enable gyro (p1c) & orientation_sensor (p1)
     write /sys/class/input/input3/enable 1
 
-    # enable lightsensor-level (p1c) & gyro (p1)
+#   enable lightsensor-level (p1c) & gyro (p1)
     write /sys/class/input/input4/enable 1
 
-    # zram parameters
-    write /proc/sys/vm/swappiness 70
-    # read only 1 page at a time
+#   swap parameters
     write /proc/sys/vm/page-cluster 0
+    write /proc/sys/vm/swappiness 60
+    write /proc/sys/vm/dirty_expire_centisecs 500
+    write /proc/sys/vm/dirty_writeback_centisecs 1000
+    write /proc/sys/vm/dirty_background_ratio 5
+    write /proc/sys/vm/dirty_ratio 90
 
-    # zram init
-    exec /sbin/zram-init.sh
-
-    # make sure that /data/.nvram_net.txt exists during wifi initialization
+#   make sure that /data/.nvram_net.txt exists during wifi initialization
     start set-macaddr
 
     setprop vold.post_fs_data_done 1
@@ -121,7 +113,7 @@ service p1-ril-daemon /system/bin/rild
     user root
     group radio cache inet misc audio log
 
-# 3D init
+# pvr init
 service pvrsrvinit /system/bin/pvrsrvinit
     class core
     user root
@@ -130,21 +122,27 @@ service pvrsrvinit /system/bin/pvrsrvinit
     oneshot
 
 # set device specific MAC addresses, depends on preceding start of rild
-service set-macaddr /system/vendor/bin/set-macaddr
+service set-macaddr /system/bin/set-macaddr
+    class main
     user root
     group root
     disabled
+    seclabel u:r:set-macaddr:s0
     oneshot
 
 on property:sys.boot_completed=1
     start set-macaddr
 
 service wpa_supplicant /system/bin/wpa_supplicant \
-    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -O/data/misc/wifi/sockets -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
-    #   we will start as root and wpa_supplicant will switch to user wifi
-    #   after setting up the capabilities required for WEXT
-    #   user wifi
-    #   group wifi inet keystore
+    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
+    -O/data/misc/wifi/sockets \
+    -I/system/etc/wifi/wpa_supplicant.conf \
+    -e/data/misc/wifi/entropy.bin \
+    -g@android:wpa_wlan0
+#   we will start as root and wpa_supplicant will switch to user wifi
+#   after setting up the capabilities required for WEXT
+#   user wifi
+#   group wifi inet keystore
     class main
     socket wpa_wlan0 dgram 660 wifi wifi
     disabled
@@ -170,12 +168,12 @@ service iprenew_bnep0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
-service tvout /system/bin/tvoutserver
-    class main
-    user system
-    group graphics
+#service tvout /system/bin/tvoutserver
+#    class main
+#    user system
+#    group graphics
 
-service tvouthack /system/bin/tvouthack
-    user system
-    group graphics
-    disabled
+#service tvouthack /system/bin/tvouthack
+#    user system
+#    group graphics
+#    disabled

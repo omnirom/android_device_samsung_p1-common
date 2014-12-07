@@ -21,6 +21,9 @@ include $(CLEAR_VARS)
 LOCAL_SRC_FILES:= \
 	AudioHardware.cpp
 
+LOCAL_CFLAGS += \
+	-DUSE_OLD_LIBAUDIO
+
 LOCAL_MODULE := audio.primary.s5pc110
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
 LOCAL_STATIC_LIBRARIES:= libmedia_helper

@@ -22,6 +22,7 @@
 
 # Set this up here so that BoardVendorConfig.mk can override it
 BOARD_USES_GENERIC_AUDIO := false
+TARGET_USE_OLD_LIBAUDIO := true
 
 BOARD_USES_LIBSECRIL_STUB := true
 
@@ -40,7 +41,9 @@ TARGET_BOARD_PLATFORM := s5pc110
 TARGET_BOARD_PLATFORM_GPU := POWERVR_SGX540_120
 TARGET_BOOTLOADER_BOARD_NAME := s5pc110
 
-# Non PIE verification
+# Bionic stuff
+TARGET_NEEDS_BIONIC_MD5 := true
+TARGET_NEEDS_BIONIC_PRELINK_SUPPORT := true
 TARGET_ENABLE_NON_PIE_SUPPORT := true
 
 # RIL
@@ -76,8 +79,14 @@ BOARD_SECOND_CAMERA_DEVICE := /dev/video2
 BOARD_CAMERA_HAVE_ISO := true
 
 # OpenGL stuff
-BOARD_EGL_CFG := device/samsung/p1-common/prebuilt/lib/egl/egl.cfg
+BOARD_EGL_CFG := device/samsung/p1-common/rootdir/system/lib/egl/egl.cfg
 USE_OPENGL_RENDERER := true
+
+# Enable dex-preoptimization to speed up first boot sequence
+ifeq ($(HOST_OS),linux)
+    WITH_DEXPREOPT := true
+endif
+DONT_DEXPREOPT_PREBUILTS := true
 
 # SkTextBox for libtvout
 BOARD_USES_SKTEXTBOX := true
@@ -139,6 +148,7 @@ EXTENDED_FONT_FOOTPRINT := true
 DEVICE_RESOLUTION := 1024x600
 BOARD_USES_BML_OVER_MTD := true
 TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
 TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /cache/.startrecovery; sync;"
 TARGET_RECOVERY_PIXEL_FORMAT := "RGB_565"
 BOARD_HAS_FLIPPED_SCREEN := true
@@ -150,25 +160,25 @@ TW_INCLUDE_FB2PNG := true
 TW_FLASH_FROM_STORAGE := true
 TW_NO_PARTITION_SD_CARD := true
 TW_EXCLUDE_SUPERSU := true
-TW_INTERNAL_STORAGE_PATH := "/sdcard"
-TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
 TW_MAX_BRIGHTNESS := 255
 TW_BRIGHTNESS_PATH := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
+RECOVERY_SDCARD_ON_DATA := true
+TW_INTERNAL_STORAGE_PATH := "/data/media"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+TW_EXTERNAL_STORAGE_PATH := "/external_sd"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
 
 # SELinux
-# BOARD_SEPOLICY_DIRS += \
-#    device/samsung/p1-common/sepolicy
+BOARD_SEPOLICY_DIRS += \
+    device/samsung/p1-common/sepolicy
 
-# BOARD_SEPOLICY_UNION += \
-#    device.te \
-#    domain.te \
-#    file_contexts \
-#    mediaserver.te \
-#    property_contexts \
-#    pvrsrvinit.te \
-#    rild.te \
-#    tvouthack.te \
-#    tvoutserver.te
+BOARD_SEPOLICY_UNION += \
+    device.te \
+    file_contexts \
+    mediaserver.te \
+    property_contexts \
+    pvrsrvinit.te \
+    rild.te
 
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
