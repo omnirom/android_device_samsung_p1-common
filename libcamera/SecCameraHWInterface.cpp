@@ -1074,8 +1074,8 @@ int CameraHardwareSec::pictureThread()
     else
         mJpegHeapSize = cap_frame_size;
 
-    ALOG_TIME_DEFINE(0)
-    ALOG_TIME_START(0)
+    LOG_TIME_DEFINE(0)
+    LOG_TIME_START(0)
 //    sp<MemoryBase> buffer = new MemoryBase(mRawHeap, 0, mPostViewSize + 8);
 
     struct addrs_cap *addrs = (struct addrs_cap *)mRawHeap->data;
@@ -1088,8 +1088,8 @@ int CameraHardwareSec::pictureThread()
     sp<MemoryHeapBase> PostviewHeap = new MemoryHeapBase(mPostViewSize);
     sp<MemoryHeapBase> ThumbnailHeap = new MemoryHeapBase(mThumbSize);
 
-    ALOG_TIME_DEFINE(1)
-    ALOG_TIME_START(1)
+    LOG_TIME_DEFINE(1)
+    LOG_TIME_START(1)
 
     int picture_size, picture_width, picture_height;
     mSecCamera->getSnapshotSize(&picture_width, &picture_height, &picture_size);
@@ -1122,8 +1122,8 @@ int CameraHardwareSec::pictureThread()
         ALOGI("snapshotandjpeg done\n");
     }
 
-    ALOG_TIME_END(1)
-    ALOG_CAMERA("getSnapshotAndJpeg interval: %lu us", LOG_TIME(1));
+    LOG_TIME_END(1)
+    LOG_CAMERA("getSnapshotAndJpeg interval: %lu us", LOG_TIME(1));
 
     if (mSecCamera->getCameraId() == SecCamera::CAMERA_ID_BACK) {
         // TODO: copy postview to PostviewHeap->base()
@@ -1169,8 +1169,8 @@ int CameraHardwareSec::pictureThread()
             ExifHeap->release(ExifHeap);
     }
 
-    ALOG_TIME_END(0)
-    ALOG_CAMERA("pictureThread interval: %lu us", LOG_TIME(0));
+    LOG_TIME_END(0)
+    LOG_CAMERA("pictureThread interval: %lu us", LOG_TIME(0));
 
     ALOGV("%s : pictureThread end", __func__);
 
