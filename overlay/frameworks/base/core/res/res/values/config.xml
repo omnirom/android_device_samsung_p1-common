@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
-** Copyright 2009, The Android Open Source Project
+** Copyright 2013, The Android Open Source Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -160,7 +160,7 @@
     <integer name="config_screenBrightnessDim">30</integer>
 
     <!-- CRT Screen off animation -->
-    <bool name="config_animateScreenLights">false</bool>
+    <bool name="config_animateScreenLights">true</bool>
 
     <!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
     <bool name="config_intrusiveNotificationLed">true</bool>
@@ -187,13 +187,21 @@
          a car dock make the accelerometer more a physical input (like a lid). -->
     <bool name="config_carDockEnablesAccelerometer">true</bool>
 
+    <!-- Make things go fast -->
+    <bool name="config_ui_enableFadingMarquee">false</bool>
+
     <!-- There is no charging LED. -->
     <bool name="config_unplugTurnsOnScreen">true</bool>
+
+    <!-- reference volume index for music stream to limit headphone volume and display warning -->
+    <integer name="config_safe_media_volume_index">7</integer>
 
     <!-- If this is true, key chords can be used to take a screen record on the device. -->
     <!-- bool name="config_enableScreenrecordChord">false</bool -->
 
     <!--  Maximum number of supported users -->
-    <integer name="config_multiuserMaximumUsers">5</integer>
+    <integer name="config_multiuserMaximumUsers">4</integer>
+    <!--  Whether Multiuser UI should be shown -->
+    <bool name="config_enableMultiUserUI">true</bool>
 
 </resources>

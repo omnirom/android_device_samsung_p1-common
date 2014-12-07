@@ -30,8 +30,8 @@
 /dev/modem_fmt            0660   radio      radio
 /dev/modem_rfs            0660   radio      radio
 /dev/s3c2410_serial3      0660   radio      radio
-/dev/block/mtdblock5      0660   radio      radio
-/dev/mtd/mtd5ro           0660   radio      radio
+/dev/block/mtdblock4      0660   radio      radio
+/dev/mtd/mtd4ro           0660   radio      radio
 
 # network
 /dev/dun                  0600   system     system
@@ -57,8 +57,8 @@
 /dev/s3c2410_serial0      0660   bluetooth  net_bt_stack
 
 # for mtp
-/dev/usb_accessory        0664    system    system
-/dev/mtp_usb              0664    system    system
+/dev/usb_accessory        0777    system    system
+/dev/mtp_usb              0777    system    system
 
 # serial console aka s3c2310_serial2 uart in old kernel
 /dev/ttyFIQ0              0600   root       root
