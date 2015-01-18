@@ -97,8 +97,7 @@ PRODUCT_PACKAGES += \
 
 # PVR
 PRODUCT_PACKAGES += \
-    pvrsrvinit \
-    libPVRScopeServices.so
+    pvrsrvinit
 
 # audio submix
 PRODUCT_PACKAGES += \
