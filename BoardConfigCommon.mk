@@ -43,6 +43,9 @@ TARGET_BOOTLOADER_BOARD_NAME := s5pc110
 # Non PIE verification
 TARGET_ENABLE_NON_PIE_SUPPORT := true
 
+# RIL
+BOARD_RIL_CLASS := ../../../hardware/samsung/exynos3/s5pc110/ril/
+
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
