@@ -132,6 +132,9 @@ BOARD_CUSTOM_VSYNC_IOCTL := true
 # Dalvik startup with a low memory footprint
 TARGET_ARCH_LOWMEM := true
 
+# Include an expanded selection of fonts
+EXTENDED_FONT_FOOTPRINT := true
+
 # TWRP
 DEVICE_RESOLUTION := 1024x600
 BOARD_USES_BML_OVER_MTD := true
