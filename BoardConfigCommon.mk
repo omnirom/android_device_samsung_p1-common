@@ -170,6 +170,7 @@ TW_BRIGHTNESS_PATH := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl
 #    tvouthack.te \
 #    tvoutserver.te
 
+TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
 
 # Required for TV out
