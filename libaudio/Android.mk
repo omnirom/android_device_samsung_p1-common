@@ -21,8 +21,11 @@ include $(CLEAR_VARS)
 LOCAL_SRC_FILES:= \
 	AudioHardware.cpp
 
-LOCAL_CFLAGS += \
-	-DUSE_OLD_LIBAUDIO
+LOCAL_CFLAGS := \
+	-Wno-missing-field-initializers \
+	-Wno-unused-parameter \
+	-Wnarrowing \
+	-Wno-extra
 
 LOCAL_MODULE := audio.primary.s5pc110
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
