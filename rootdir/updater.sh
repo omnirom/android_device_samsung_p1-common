@@ -146,8 +146,7 @@ warn_external_sd() {
 }
 
 # first installation requires external sdcard
-if ! /tmp/busybox test -e /dev/lvpool/system || \
-   [ "$(/tmp/busybox blockdev --getsize64 /dev/mapper/lvpool-system)" != "${SYSTEM_SIZE}" ] ; then
+if ! /tmp/busybox test -e /dev/lvpool/swap ; then
     installFrom=$(echo "${UPDATE_PACKAGE:1:6}");
     ui_print "Installing update from ${installFrom}"
     if [ "${installFrom}" == "sdcard" ] ; then
@@ -239,7 +238,7 @@ setup_lvm_partitions() {
 
 # check if the sdcard is an emulated sd
 check_emulated_sd() {
-    check_mount /data /dev/lvpool/userdata f2fs;
+    check_mount /data /dev/lvpool/userdata ext4;
     /tmp/busybox mkdir -p /data/media/omni;
     /tmp/busybox ln -fs /data/media /sdcard;
 }
