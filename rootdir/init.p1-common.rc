@@ -101,9 +101,6 @@ on post-fs-data
     write /proc/sys/vm/dirty_background_ratio 5
     write /proc/sys/vm/dirty_ratio 90
 
-    # zram init
-    exec /sbin/zram-init.sh
-
 #   make sure that /data/.nvram_net.txt exists during wifi initialization
     start set-macaddr
 

@@ -31,7 +31,6 @@ PRODUCT_COPY_FILES := \
     $(COMMON_ROOTDIR)/init.trace.rc:root/init.trace.rc \
     $(COMMON_ROOTDIR)/lpm.rc:root/lpm.rc \
     $(COMMON_ROOTDIR)/updater.sh:updater.sh \
-    $(COMMON_ROOTDIR)/zram-init.sh:root/sbin/zram-init.sh \
     $(COMMON_ROOTDIR)/bml_over_mtd.sh:bml_over_mtd.sh \
     $(COMMON_ROOTDIR)/system/bin/set-macaddr:system/bin/set-macaddr \
     $(COMMON_ROOTDIR)/system/etc/audio_policy.conf:system/etc/audio_policy.conf \
