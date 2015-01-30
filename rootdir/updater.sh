@@ -27,6 +27,8 @@ export PATH=/:/sbin:/system/xbin:/system/bin:/tmp:${PATH}
 
 # 1GB
 SYSTEM_SIZE='1073741824';
+# 256MB
+SWAP_SIZE='268435456';
 
 # write logs to /tmp
 set_log() {
@@ -201,11 +203,12 @@ warn_repartition() {
 format_partitions() {
     # create lvm partitions
     /lvm/sbin/lvm lvcreate -L ${SYSTEM_SIZE}B -n system lvpool;
+    /lvm/sbin/lvm lvcreate -L ${SWAP_SIZE}B -n swap lvpool;
     /lvm/sbin/lvm lvcreate -l 100%FREE -n userdata lvpool;
 
     # format partitions
     /tmp/make_ext4fs -b 4096 -g 32768 -i 7680 -I 256 -a /system /dev/lvpool/system;
-    /tmp/mkfs.f2fs /dev/lvpool/userdata;
+    /tmp/make_ext4fs -b 4096 -g 32768 -i 8192 -I 256 -a /data /dev/lvpool/userdata;
 }
 
 # setup lvm partitions
@@ -395,13 +398,23 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
     restore_modem;
 
     # check lvm resize
-    if [ "$(/tmp/busybox blockdev --getsize64 /dev/mapper/lvpool-system)" != "${SYSTEM_SIZE}" ] ; then
-        warn_repartition;
-        setup_lvm_partitions;
-        format_partitions;
+    if /tmp/busybox test -e /dev/lvpool/system ; then
+        if [ "$(/tmp/busybox blockdev --getsize64 /dev/mapper/lvpool-system)" != "${SYSTEM_SIZE}" ] || \
+           [ "$(/tmp/busybox blockdev --getsize64 /dev/mapper/lvpool-swap)" != "${SWAP_SIZE}" ] ; then
+            warn_repartition;
+            setup_lvm_partitions;
+            format_partitions;
+        fi
     fi
 
-    check_emulated_sd;
+    # check sdcard
+    # if exists swap partition
+    # then the sdcard is an emulated driver (new LVM partition layout)
+    if ! /tmp/busybox test -e /dev/lvpool/swap ; then
+        /tmp/busybox mount -t vfat "${SD_PART}" /sdcard;
+    else
+        check_emulated_sd;
+    fi
 
     if ! /tmp/busybox test -e /sdcard/omni.cfg ; then
         # unmount system and data (recovery seems to expect system to be unmounted)
@@ -427,6 +440,21 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
 
     # efs
     restore_efs;
+
+    if ! /tmp/busybox test -e /dev/lvpool/swap ; then
+        # Internal sd card will be wiped completely
+        # move efs backup to cache temporarily
+        /tmp/busybox mkdir -p /cache/omni;
+        /tmp/busybox cp /sdcard/omni /cache/omni;
+
+        # lvm setup
+        setup_lvm_partitions;
+        format_partitions;
+        check_emulated_sd;
+
+        # bring back efs backup from cache to new emulated sdcard
+        /tmp/busybox cp -R /cache/omni /sdcard/;
+    fi
 
     # restart into recovery so the user can install further packages before booting
     /tmp/busybox touch /cache/.startrecovery;
