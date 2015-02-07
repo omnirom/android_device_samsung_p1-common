@@ -23,6 +23,9 @@ include $(CLEAR_VARS)
 LOCAL_SRC_FILES := \
 	charger.c
 
+ifeq ($(strip $(BOARD_CHARGER_DISABLE_INIT_BLANK)),true)
+LOCAL_CFLAGS := -DCHARGER_DISABLE_INIT_BLANK
+endif
 
 ifeq ($(strip $(BOARD_CHARGER_ENABLE_SUSPEND)),true)
 LOCAL_CFLAGS += -DCHARGER_ENABLE_SUSPEND
@@ -68,8 +71,8 @@ endif
 endif
 
 
-
 include $(BUILD_EXECUTABLE)
+
 
 define _add-charger-image
 include $$(CLEAR_VARS)
@@ -85,13 +88,8 @@ endef
 
 _img_modules :=
 _images :=
-ifneq ($(BOARD_CHARGER_RES),)
-$(foreach _img, $(call find-subdir-subdir-files, ../../../$(BOARD_CHARGER_RES), "*.png"), \
-  $(eval $(call _add-charger-image,$(_img))))
-else
 $(foreach _img, $(call find-subdir-subdir-files, "images", "*.png"), \
   $(eval $(call _add-charger-image,$(_img))))
-endif
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := p1_charger_res_images
