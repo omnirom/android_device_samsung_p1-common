@@ -29,7 +29,6 @@ PRODUCT_AAPT_PREF_CONFIG := mdpi
 PRODUCT_COPY_FILES := \
     $(COMMON_ROOTDIR)/init.p1-common.rc:root/init.p1-common.rc \
     $(COMMON_ROOTDIR)/init.trace.rc:root/init.trace.rc \
-    $(COMMON_ROOTDIR)/lpm.rc:root/lpm.rc \
     $(COMMON_ROOTDIR)/updater.sh:updater.sh \
     $(COMMON_ROOTDIR)/bml_over_mtd.sh:bml_over_mtd.sh \
     $(COMMON_ROOTDIR)/system/bin/set-macaddr:system/bin/set-macaddr \
