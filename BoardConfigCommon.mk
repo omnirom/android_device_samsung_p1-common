@@ -88,6 +88,8 @@ USE_OPENGL_RENDERER := true
 # Enable dex-preoptimization to speed up first boot sequence
 ifeq ($(HOST_OS),linux)
     WITH_DEXPREOPT := true
+    WITH_DEXPREOPT_BOOT_IMG_ONLY := true
+    DONT_DEXPREOPT_PREBUILTS := true
 endif
 DONT_DEXPREOPT_PREBUILTS := true
 
