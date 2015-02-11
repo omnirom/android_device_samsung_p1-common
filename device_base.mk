@@ -104,10 +104,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.networklocation=1
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.kernel.android.checkjni=0 \
-    dalvik.vm.checkjni=false \
-    dalvik.vm.debug.alloc=0 \
-    dalvik.vm.dexopt-data-only=1 \
+    ro.config.low_ram=true \
     dalvik.vm.jit.codecachesize=0
 
 # Set default property
