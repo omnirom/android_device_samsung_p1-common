@@ -44,6 +44,9 @@ TARGET_BOARD_PLATFORM := s5pc110
 TARGET_BOARD_PLATFORM_GPU := POWERVR_SGX540_120
 TARGET_BOOTLOADER_BOARD_NAME := s5pc110
 
+# Use dlmalloc instead of jemalloc for mallocs on low-ram target kernels
+MALLOC_IMPL := dlmalloc
+
 # Bionic stuff
 TARGET_NEEDS_BIONIC_MD5 := true
 TARGET_NEEDS_BIONIC_PRELINK_SUPPORT := true
