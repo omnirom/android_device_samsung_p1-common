@@ -104,6 +104,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.networklocation=1
 
 PRODUCT_PROPERTY_OVERRIDES += \
+    ro.config.low_ram=true \
     ro.sys.fw.bg_apps_limit=16 \
     ro.config.max_starting_bg=10 \
     dalvik.vm.jit.codecachesize=0
