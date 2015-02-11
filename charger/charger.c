@@ -38,7 +38,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/poll.h>
 #include <sys/stat.h>
@@ -390,30 +389,6 @@ static void check_status(struct charger *charger, int64_t now)
     return;
 }
 
-#if defined DIM_SCREEN && defined BRIGHTNESS_PATH
-static int set_backlight_on(void)
-{
-    int fd;
-    char buffer[10];
-
-    fd = open(BRIGHTNESS_PATH, O_WRONLY);
-    if (fd < 0) {
-        LOGE("Could not open backlight node : %s\n", strerror(errno));
-        return 0;
-    }
-
-    LOGV("Enabling backlight\n");
-
-    snprintf(buffer, sizeof(buffer), "%d\n", MAX_BRIGHTNESS);
-
-    if (write(fd, buffer,strlen(buffer)) < 0)
-        LOGE("Could not write to backlight node : %s\n", strerror(errno));
-
-    close(fd);
-    return 0;
-}
-#endif
-
 #ifdef CHARGER_ENABLE_SUSPEND
 static int request_suspend(bool action)
 {
@@ -599,12 +574,8 @@ static void update_screen_state(struct charger *charger, int64_t now)
     }
 
     /* unblank the screen on first cycle */
-    if (batt_anim->cur_cycle == 0) {
-#if defined DIM_SCREEN && defined BRIGHTNESS_PATH
-        set_backlight_on();
-#endif
+    if (batt_anim->cur_cycle == 0)
         gr_fb_blank(false);
-    }
 
     /* draw the new frame (@ cur_frame) */
     redraw_screen(charger);
@@ -842,6 +813,6 @@ int main(int argc, char **argv)
 
     LOGI("Starting event loop\n");
     event_loop(charger);
-
+    gr_exit();
     return 0;
 }

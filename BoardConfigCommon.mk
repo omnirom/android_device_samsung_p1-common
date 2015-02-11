@@ -127,10 +127,8 @@ BOARD_BATTERY_SYSFS_PATH := $(BOARD_POWER_SUPPLY_PATH)/battery
 BOARD_AC_SYSFS_PATH := $(BOARD_POWER_SUPPLY_PATH)/ac
 BOARD_USB_SYSFS_PATH := $(BOARD_POWER_SUPPLY_PATH)/usb
 BOARD_CHARGER_ENABLE_SUSPEND := true
-BOARD_CHARGER_DIM_SCREEN_BRIGHTNESS := true
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../../device/samsung/p1-common/recovery/keys.c
 BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/p1-common/recovery/graphics.c
-BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/charging_mode_booting
 
 # TARGET_DISABLE_TRIPLE_BUFFERING can be used to disable triple buffering
 # on per target basis. On crespo it is possible to do so in theory
