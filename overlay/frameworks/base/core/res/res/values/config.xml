@@ -199,4 +199,9 @@
     <!-- If this is true, key chords can be used to take a screen record on the device. -->
     <!-- bool name="config_enableScreenrecordChord">false</bool -->
 
+    <!-- Device configuration setting the /proc/sys/vm/extra_free_kbytes tunable
+         in the kernel. Default is 3 full-screen 32 bpp buffers, i.e. 7200KB
+         on Galaxy Tab P1000. Let's double this value. -->
+    <integer name="config_extraFreeKbytesAbsolute">14400</integer>
+
 </resources>
