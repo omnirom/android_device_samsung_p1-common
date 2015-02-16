@@ -1,0 +1,4 @@
+###########################
+# OmniROM P1 sepolicy
+#
+allow untrusted_app sysfs_writable:file { read open getattr write };
