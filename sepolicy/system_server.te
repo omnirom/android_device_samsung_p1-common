@@ -1,0 +1,4 @@
+###########################
+# OmniROM P1 sepolicy
+#
+allow system_server uhid_device:chr_file { open read write ioctl };

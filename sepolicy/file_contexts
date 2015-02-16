@@ -1,3 +1,10 @@
+###########################
+# OmniROM P1 sepolicy
+#
+
+# We shifted /data/data stuff around
+/data/data/(.*)                                     u:object_r:app_data_file:s0
+
 # RIL
 /dev/s3c2410_serial3                                u:object_r:radio_device:s0
 /dev/onedram                                        u:object_r:radio_device:s0
@@ -34,3 +41,4 @@
 
 # LVM
 /dev/mapper/lvpool-(.*)                             u:object_r:block_device:s0
+/dev/lvpool/(.*)                                    u:object_r:block_device:s0

@@ -1,0 +1,6 @@
+###########################
+# OmniROM P1 sepolicy
+#
+# aries radio wants to access /data/data/com.android.providers.telephony
+allow radio app_data_file:dir { getattr search };
+allow radio app_data_file:file { getattr open read write lock };
