@@ -1,3 +1,6 @@
+###########################
+# OmniROM P1 sepolicy
+#
 # RIL
 /dev/s3c2410_serial3                                u:object_r:radio_device:s0
 /dev/onedram                                        u:object_r:radio_device:s0

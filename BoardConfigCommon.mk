@@ -180,12 +180,21 @@ BOARD_SEPOLICY_DIRS += \
     device/samsung/p1-common/sepolicy
 
 BOARD_SEPOLICY_UNION += \
+    bluetooth.te \
     device.te \
-    file_contexts \
+    geomagneticd.te \
+    gpsd.te \
+    init.te \
     mediaserver.te \
+    orientationd.te \
     property_contexts \
     pvrsrvinit.te \
-    rild.te
+    surfaceflinger.te \
+    system_app.te \
+    rild.te \
+    ueventd.te \
+    untrusted_app.te \
+    file_contexts
 
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true

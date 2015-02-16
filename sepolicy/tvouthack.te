@@ -1,3 +1,7 @@
+###########################
+# OmniROM P1 sepolicy
+#
+
 type tvouthack, domain;
 type tvouthack_exec, exec_type, file_type;
 
