@@ -25,10 +25,8 @@
 set -x
 export PATH=/:/sbin:/system/xbin:/system/bin:/tmp:${PATH}
 
-# 1GB
-SYSTEM_SIZE='1073741824';
-# 256MB
-SWAP_SIZE='268435456';
+# 600MB
+SYSTEM_SIZE='629145600';
 
 # write logs to /tmp
 set_log() {
@@ -126,34 +124,6 @@ if ! /tmp/busybox test -n "${UPDATE_PACKAGE}" ; then
     );
 fi
 
-# warning external sdcard
-warn_external_sd() {
-    ui_print ""
-    ui_print "============================================"
-    ui_print "ATTENTION"
-    ui_print ""
-    ui_print "This VERSION will update the LVM partition layout"
-    ui_print "The first install requires the External SDCard"
-    ui_print ""
-    ui_print "Please, move the package.zip to External SDCard"
-    ui_print "Restart recovery and flash it "
-    ui_print "from External SDCard"
-    ui_print ""
-    ui_print "ATTENTION"
-    ui_print "============================================"
-    ui_print ""
-    exit 4
-}
-
-# first installation requires external sdcard
-if ! /tmp/busybox test -e /dev/lvpool/swap ; then
-    installFrom=$(echo "${UPDATE_PACKAGE:1:6}");
-    ui_print "Installing update from ${installFrom}"
-    if [ "${installFrom}" == "sdcard" ] ; then
-        warn_external_sd;
-    fi
-fi
-
 UPDATE_PACKAGE=$(fix_package_location "${UPDATE_PACKAGE}");
 ui_print "Package:${UPDATE_PACKAGE}"
 
@@ -181,17 +151,18 @@ warn_repartition() {
     if ! /tmp/busybox test -e /tmp/.accept_wipe ; then
         /tmp/busybox touch /tmp/.accept_wipe;
         ui_print ""
-        ui_print "============================================"
+        ui_print "========================================"
         ui_print "ATTENTION"
         ui_print ""
-        ui_print "This VERSION uses an incompatible partition layout"
-        ui_print "Your /data and Internal SD card will be wiped completely"
-        ui_print "So, make your backups then just run this"
-        ui_print "update.zip again to confirm install"
-        ui_print "NOTE: Internal SD Card will be wiped!"
+        ui_print "This VERSION uses an incompatible"
+        ui_print "partition layout"
+        ui_print "Your /data will be wiped completely"
+        ui_print "So, make your backups then just"
+        ui_print "run this update.zip"
+        ui_print "again to confirm install"
         ui_print ""
         ui_print "ATTENTION"
-        ui_print "============================================"
+        ui_print "========================================"
         ui_print ""
         exit 9
     fi
@@ -202,12 +173,13 @@ warn_repartition() {
 format_partitions() {
     # create lvm partitions
     /lvm/sbin/lvm lvcreate -L ${SYSTEM_SIZE}B -n system lvpool;
-    /lvm/sbin/lvm lvcreate -L ${SWAP_SIZE}B -n swap lvpool;
     /lvm/sbin/lvm lvcreate -l 100%FREE -n userdata lvpool;
 
     # format partitions
     /tmp/make_ext4fs -b 4096 -g 32768 -i 7680 -I 256 -a /system /dev/lvpool/system;
     /tmp/make_ext4fs -b 4096 -g 32768 -i 8192 -I 256 -a /data /dev/lvpool/userdata;
+    /tmp/busybox umount -l /datadata
+    /tmp/erase_image datadata
 }
 
 # setup lvm partitions
@@ -215,7 +187,6 @@ setup_lvm_partitions() {
     # umount
     /tmp/busybox umount -l /system;
     /tmp/busybox umount -l /data;
-    /tmp/busybox umount -f -l ${MMC_PART1};
     /tmp/busybox umount -f -l ${MMC_PART2};
     /tmp/busybox umount -f -l ${MMC_PART3};
 
@@ -224,23 +195,14 @@ setup_lvm_partitions() {
     /lvm/sbin/lvm vgremove -f lvpool;
     /lvm/sbin/lvm pvremove -ffy ${MMC_PART3};
     /lvm/sbin/lvm pvremove -ffy ${MMC_PART2};
-    /lvm/sbin/lvm pvremove -ffy ${MMC_PART1};
 
     # force clean up
     dd if=/dev/zero of=${MMC_PART3} bs=512 count=1;
     dd if=/dev/zero of=${MMC_PART2} bs=512 count=1;
-    dd if=/dev/zero of=${MMC_PART1} bs=512 count=1;
 
     # create lvm phisical volumes and lvpool group
-    /lvm/sbin/lvm pvcreate ${MMC_PART3} ${MMC_PART2} ${MMC_PART1};
-    /lvm/sbin/lvm vgcreate lvpool ${MMC_PART3} ${MMC_PART2} ${MMC_PART1};
-}
-
-# check if the sdcard is an emulated sd
-check_emulated_sd() {
-    check_mount /data /dev/lvpool/userdata ext4;
-    /tmp/busybox mkdir -p /data/media/omni;
-    /tmp/busybox ln -fs /data/media /sdcard;
+    /lvm/sbin/lvm pvcreate ${MMC_PART3} ${MMC_PART2};
+    /lvm/sbin/lvm vgcreate lvpool ${MMC_PART3} ${MMC_PART2};
 }
 
 # backup /efs partition
@@ -267,7 +229,6 @@ restore_efs() {
             /tmp/busybox umount -l /efs;
             /tmp/erase_image efs;
             /tmp/busybox mkdir -p /efs;
-            /tmp/busybox mkdir -p /cache/omni/backup/efs;
 
             if ! /tmp/busybox grep -q /efs /proc/mounts ; then
                 if ! /tmp/busybox mount -t yaffs2 /dev/block/"${EFS_PART}" /efs ; then
@@ -277,7 +238,6 @@ restore_efs() {
             fi
 
             /tmp/busybox cp -R /sdcard/omni/backup/efs /;
-            /tmp/busybox cp -R /sdcard/omni/backup/efs /cache/omni/backup/;
             /tmp/busybox umount -l /efs;
         else
             echo "nv_data.bin not found";
@@ -348,7 +308,8 @@ if /tmp/busybox test -e /dev/block/bml7 ; then
     /sbin/reboot now;
     exit 0;
 
-elif /tmp/busybox test "$(/tmp/busybox cat /sys/class/mtd/mtd2/name)" != "cache" ; then
+elif [ "$(/tmp/busybox cat /sys/class/mtd/mtd2/size)" != "${MTD_SIZE}" ] || \
+     [ "$(/tmp/busybox cat /sys/class/mtd/mtd2/name)" != "datadata" ] ; then
 ################################################################################
 ################################################################################
 # Install process
@@ -360,13 +321,15 @@ elif /tmp/busybox test "$(/tmp/busybox cat /sys/class/mtd/mtd2/name)" != "cache"
     # send a warning to user
     warn_repartition;
 
-    # lvm setup
-    setup_lvm_partitions;
-    format_partitions;
-    check_emulated_sd;
+    # make sure sdcard is mounted
+    check_mount /sdcard $SD_PART vfat
 
     # write the package path to sdcard omni.cfg
     echo "${UPDATE_PACKAGE}" > /sdcard/omni.cfg;
+
+    # clear datadata
+    /tmp/busybox umount -l /datadata
+    /tmp/erase_image datadata
 
     # backup efs
     backup_efs /dev/block/"${EFS_PART}" yaffs2 /sdcard;
@@ -390,16 +353,13 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
     # everything is logged into /tmp/omni/mtd.log
     set_log mtd.log;
 
-    # check if /cache is mounted
-    check_mount /cache /dev/block/mtdblock2 yaffs2;
-
     # restore modem.bin
     restore_modem;
 
     # check lvm resize
     if /tmp/busybox test -e /dev/lvpool/system ; then
         if [ "$(/tmp/busybox blockdev --getsize64 /dev/mapper/lvpool-system)" != "${SYSTEM_SIZE}" ] || \
-           [ "$(/tmp/busybox blockdev --getsize64 /dev/mapper/lvpool-swap)" != "${SWAP_SIZE}" ] ; then
+           /tmp/busybox test -e /dev/lvpool/swap; then
             warn_repartition;
             setup_lvm_partitions;
             format_partitions;
@@ -407,13 +367,7 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
     fi
 
     # check sdcard
-    # if exists swap partition
-    # then the sdcard is an emulated driver (new LVM partition layout)
-    if ! /tmp/busybox test -e /dev/lvpool/swap ; then
-        /tmp/busybox mount -t vfat "${SD_PART}" /sdcard;
-    else
-        check_emulated_sd;
-    fi
+    check_mount /mnt/sdcard "${SD_PART}" vfat;
 
     if ! /tmp/busybox test -e /sdcard/omni.cfg ; then
         # unmount system and data (recovery seems to expect system to be unmounted)
@@ -440,20 +394,9 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
     # efs
     restore_efs;
 
-    if ! /tmp/busybox test -e /dev/lvpool/swap ; then
-        # Internal sd card will be wiped completely
-        # move efs backup to cache temporarily
-        /tmp/busybox mkdir -p /cache/omni;
-        /tmp/busybox cp /sdcard/omni /cache/omni;
-
-        # lvm setup
-        setup_lvm_partitions;
-        format_partitions;
-        check_emulated_sd;
-
-        # bring back efs backup from cache to new emulated sdcard
-        /tmp/busybox cp -R /cache/omni /sdcard/;
-    fi
+    # lvm setup
+    setup_lvm_partitions;
+    format_partitions;
 
     # restart into recovery so the user can install further packages before booting
     /tmp/busybox touch /cache/.startrecovery;

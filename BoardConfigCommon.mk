@@ -148,9 +148,6 @@ BOARD_CUSTOM_VSYNC_IOCTL := true
 # Dalvik startup with a low memory footprint
 TARGET_ARCH_LOWMEM := true
 
-# Include an expanded selection of fonts
-EXTENDED_FONT_FOOTPRINT := true
-
 # TWRP
 DEVICE_RESOLUTION := 1024x600
 BOARD_USES_BML_OVER_MTD := true
@@ -167,13 +164,12 @@ TW_INCLUDE_FB2PNG := true
 TW_FLASH_FROM_STORAGE := true
 TW_NO_PARTITION_SD_CARD := true
 TW_EXCLUDE_SUPERSU := true
+TW_EXCLUDE_MTP := true
+TW_NEVER_UNMOUNT_SYSTEM := true
+TW_INTERNAL_STORAGE_PATH := "/sdcard"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
 TW_MAX_BRIGHTNESS := 255
 TW_BRIGHTNESS_PATH := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
-RECOVERY_SDCARD_ON_DATA := true
-TW_INTERNAL_STORAGE_PATH := "/data/media"
-TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
-TW_EXTERNAL_STORAGE_PATH := "/external_sd"
-TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
 
 # SELinux
 BOARD_SEPOLICY_DIRS += \
