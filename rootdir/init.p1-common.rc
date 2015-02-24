@@ -25,7 +25,13 @@ on boot
     setprop status.battery.level_raw  50
     setprop status.battery.level_scale 9
 
+#   KSM
+    write /sys/kernel/mm/ksm/pages_to_scan 256
+    write /sys/kernel/mm/ksm/sleep_millisecs 1500
+    write /sys/kernel/mm/ksm/run 1
+
 #   swap parameters
+    write /proc/sys/vm/page-cluster 0
     write /proc/sys/vm/vfs_cache_pressure 85
     write /proc/sys/vm/swappiness 70
     write /proc/sys/vm/dirty_ratio 16
@@ -51,10 +57,7 @@ on fs
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill1/state
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill1/type
-    restorecon /sys/class/rfkill/rfkill0/state
-    restorecon /sys/class/rfkill/rfkill1/state
-    restorecon /sys/class/rfkill/rfkill0/type
-    restorecon /sys/class/rfkill/rfkill1/type
+    restorecon_recursive /sys/class/rfkill
 
 #   system server can control backlight brightness
     chown system system /sys/class/backlight/s5p_bl/brightness
@@ -62,12 +65,6 @@ on fs
 #   change permission for uart_switch
     chown radio radio /sys/class/sec/uart_switch/UART_SEL/value
     chmod 660 /sys/class/sec/uart_switch/UART_SEL/value
-
-#   permissions for MTP device node
-    chmod 0777 /dev/mtp_usb
-    restorecon /dev/mtp_usb
-    chmod 0777 /dev/usb_accessory
-    restorecon /dev/usb_accessory
 
 #   sensor sysfs permission
     chown system system /sys/devices/virtual/BMA-dev/accelerometer/calibration
@@ -92,9 +89,6 @@ on post-fs-data
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp
 
-#   cpufreq, set default governor
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-
 #   sensors
 #   enable gyro (p1c) & orientation_sensor (p1)
     write /sys/class/input/input3/enable 1
@@ -107,6 +101,7 @@ on post-fs-data
 
     setprop vold.post_fs_data_done 1
 
+# RIL
 service p1-ril-daemon /system/bin/rild
     class core
     socket rild stream 660 root radio
@@ -131,9 +126,10 @@ service set-macaddr /system/bin/set-macaddr
     seclabel u:r:set-macaddr:s0
     oneshot
 
+# LMK values
+# 6, 12, 26, 48, 64, 96 MB
 on property:sys.boot_completed=1
-    start set-macaddr
-    write /sys/module/lowmemorykiller/parameters/minfree 2048,4096,8192,16384,24576,32768
+    write /sys/module/lowmemorykiller/parameters/minfree 1536,3072,6656,12288,16384,24576
 
 service wpa_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
