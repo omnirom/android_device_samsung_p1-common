@@ -25,7 +25,13 @@ on boot
     setprop status.battery.level_raw  50
     setprop status.battery.level_scale 9
 
+#   KSM
+    write /sys/kernel/mm/ksm/pages_to_scan 256
+    write /sys/kernel/mm/ksm/sleep_millisecs 1500
+    write /sys/kernel/mm/ksm/run 1
+
 #   swap parameters
+    write /proc/sys/vm/page-cluster 0
     write /proc/sys/vm/vfs_cache_pressure 85
     write /proc/sys/vm/swappiness 70
     write /proc/sys/vm/dirty_ratio 16
@@ -107,6 +113,7 @@ on post-fs-data
 
     setprop vold.post_fs_data_done 1
 
+# RIL
 service p1-ril-daemon /system/bin/rild
     class core
     socket rild stream 660 root radio
@@ -131,9 +138,11 @@ service set-macaddr /system/bin/set-macaddr
     seclabel u:r:set-macaddr:s0
     oneshot
 
+# LMK values
+# 6, 12, 26, 48, 64, 96 MB
 on property:sys.boot_completed=1
     start set-macaddr
-    write /sys/module/lowmemorykiller/parameters/minfree 2048,4096,8192,16384,24576,32768
+    write /sys/module/lowmemorykiller/parameters/minfree 1536,3072,6656,12288,16384,24576
 
 service wpa_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \

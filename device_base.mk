@@ -103,15 +103,29 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.locationfeatures=1 \
     ro.com.google.networklocation=1
 
+# ART
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.dex2oat-Xms=8m \
+    dalvik.vm.dex2oat-Xmx=96m \
+    dalvik.vm.image-dex2oat-Xms=48m \
+    dalvik.vm.image-dex2oat-Xmx=48m \
+    dalvik.vm.dex2oat-filter=interpret-only \
+    dalvik.vm.image-dex2oat-filter=speed
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.config.low_ram=true \
     ro.sys.fw.bg_apps_limit=16 \
     ro.config.max_starting_bg=10 \
-    dalvik.vm.jit.codecachesize=0
+    dalvik.vm.jit.codecachesize=0 \
+    ro.ksm.default=1
 
 # Set default property
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
+
+# ART
+PRODUCT_DEX_PREOPT_DEFAULT_FLAGS := \
+    --compiler-filter=interpret-only
 
 # Filesystem management tools
 PRODUCT_PACKAGES := \
@@ -173,5 +187,7 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 
 # Virtual machine setup
 include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
+
+$(call add-product-dex-preopt-module-config,services,--compiler-filter=speed)
 
 $(call inherit-product, hardware/broadcom/wlan/bcmdhd/firmware/bcm4329/device-bcm.mk)
