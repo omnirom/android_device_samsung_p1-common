@@ -1,0 +1,5 @@
+###########################
+# OmniROM P1 sepolicy
+#
+allow zygote servicemanager:binder { call };
+allow zygote system_server:binder { call transfer };

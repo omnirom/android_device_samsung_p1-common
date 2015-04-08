@@ -1,4 +1,4 @@
 ###########################
 # OmniROM P1 sepolicy
 #
-type mfc_device, dev_type;
+allow kernel block_device:blk_file { read };

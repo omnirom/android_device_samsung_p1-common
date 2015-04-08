@@ -1,0 +1,4 @@
+###########################
+# OmniROM P1 sepolicy
+#
+allow sdcardd unlabeled:file { read write getattr setattr};
