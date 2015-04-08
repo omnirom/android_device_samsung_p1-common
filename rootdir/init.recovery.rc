@@ -1,10 +1,5 @@
 import usb.rc # Renamed init.p1.usb.rc, we can't use init*.rc because the build script will delete it
 
-on early-init
-
-    # set up LVM volumes
-    wait /sys/dev/block/179:0
-
 on init
 
     export PATH /sbin
@@ -12,17 +7,14 @@ on init
 
 on fs
 
-    # set up lvm volumes
-    exec /lvm/sbin/lvm vgscan --mknodes --ignorelockingfailure
-    exec /lvm/sbin/lvm vgchange -aly --ignorelockingfailure
-    restorecon_recursive /dev/mapper
-
-    mount yaffs2 mtd@cache /cache
+#   LVM: set up LVM volumes
+    wait /sys/dev/block/179:0
+    exec_context u:r:lvm:s0 /lvm/sbin/lvm vgscan --mknodes --ignorelockingfailure
+    exec_context u:r:lvm:s0 /lvm/sbin/lvm vgchange -aly --ignorelockingfailure
+    restorecon /dev/mapper/lvpool-system
+    restorecon /dev/mapper/lvpool-userdata
 
 on post-fs
-
-    # disable lpm
-    write /sys/class/power_supply/battery/charging_mode_booting 0
 
     # touch rotate
     write /sys/devices/platform/s3c2440-i2c.2/i2c-2/2-004a/pivot 0
