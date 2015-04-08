@@ -1,0 +1,7 @@
+###########################
+# OmniROM P1 sepolicy
+#
+allow gpsd self:process { execmem };
+allow gpsd properties_device:file { execute };
+allow gpsd sysfs_wake_lock:file { read write open };
+allow gpsd binder_device:chr_file { execute };

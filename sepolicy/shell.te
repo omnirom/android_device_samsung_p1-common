@@ -1,4 +1,4 @@
 ###########################
 # OmniROM P1 sepolicy
 #
-type mfc_device, dev_type;
+allow shell dalvikcache_data_file:file { write };

@@ -1,4 +1,6 @@
 ###########################
 # OmniROM P1 sepolicy
 #
-type mfc_device, dev_type;
+allow recovery selinuxfs:file { write };
+
+
