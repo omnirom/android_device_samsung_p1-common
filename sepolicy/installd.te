@@ -1,0 +1,6 @@
+###########################
+# OmniROM P1 sepolicy
+#
+allow installd datadata_file:file { create_file_perms relabelfrom relabelto };
+allow installd datadata_file:dir { create_dir_perms relabelfrom relabelto };
+allow installd datadata_file:lnk_file create_file_perms;

@@ -72,9 +72,10 @@ public class DeviceSettings extends Activity {
         mTabsAdapter = new TabsAdapter(this, mViewPager);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_buttons_title),
                 ButtonFragmentActivity.class, null);
+        /*
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_radio_title),
                 RadioFragmentActivity.class, null);
-        /*
+
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_tvout_title),
                 TVFragmentActivity.class, null);
         */

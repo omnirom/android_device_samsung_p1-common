@@ -54,7 +54,7 @@
         </receiver>
 
         <activity android:name=".ButtonFragmentActivity" />
-        <activity android:name=".RadioFragmentActivity" />
+        <!-- activity android:name=".RadioFragmentActivity" /-->
         <!-- activity android:name=".TVFragmentActivity" / -->
         <activity android:name=".VibratorFragmentActivity" />
 
