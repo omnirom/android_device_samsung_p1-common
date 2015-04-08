@@ -44,13 +44,12 @@ TARGET_BOARD_PLATFORM := s5pc110
 TARGET_BOARD_PLATFORM_GPU := POWERVR_SGX540_120
 TARGET_BOOTLOADER_BOARD_NAME := s5pc110
 
-# Use dlmalloc instead of jemalloc for mallocs on low-ram target kernels
-MALLOC_IMPL := dlmalloc
-
 # Bionic stuff
+BOARD_USES_LEGACY_MMAP := true
 TARGET_NEEDS_BIONIC_MD5 := true
 TARGET_NEEDS_BIONIC_PRELINK_SUPPORT := true
 TARGET_ENABLE_NON_PIE_SUPPORT := true
+MALLOC_IMPL := dlmalloc
 
 # RIL
 BOARD_RIL_CLASS := ../../../hardware/samsung/exynos3/s5pc110/ril/
@@ -62,6 +61,7 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/p1-common/bluetoot
 BOARD_BLUEDROID_VENDOR_CONF := device/samsung/p1-common/bluetooth/libbt_vndcfg.txt
 
 # WiFi related defines
+BOARD_NO_WIFI_HAL           := true
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
@@ -94,7 +94,6 @@ ifeq ($(HOST_OS),linux)
     WITH_DEXPREOPT_BOOT_IMG_ONLY := true
     DONT_DEXPREOPT_PREBUILTS := true
 endif
-DONT_DEXPREOPT_PREBUILTS := true
 
 # SkTextBox for libtvout
 BOARD_USES_SKTEXTBOX := true
@@ -104,7 +103,6 @@ BOARD_NAND_PAGE_SIZE := 4096
 BOARD_NAND_SPARE_SIZE := 128
 BOARD_KERNEL_BASE := 0x32000000
 BOARD_KERNEL_PAGESIZE := 4096
-BOARD_KERNEL_CMDLINE := console=ttyFIQ0,115200 androidboot.selinux=permissive init=/init no_console_suspend
 BOARD_BOOTIMAGE_PARTITION_SIZE := 7864320
 BOARD_FLASH_BLOCK_SIZE := 4096
 
@@ -120,11 +118,11 @@ TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/p1-common
 BOARD_SUPPRESS_EMMC_WIPE := true
 
 # Boot Animation
-TARGET_BOOTANIMATION_PRELOAD := true
 TARGET_BOOTANIMATION_TEXTURE_CACHE := false
 TARGET_BOOTANIMATION_USE_RGB565 := true
 
 # Open Source Charging Mode
+BOARD_USES_OWN_CHARGER := true
 BOARD_POWER_SUPPLY_PATH := /sys/class/power_supply
 BOARD_BATTERY_SYSFS_PATH := $(BOARD_POWER_SUPPLY_PATH)/battery
 BOARD_AC_SYSFS_PATH := $(BOARD_POWER_SUPPLY_PATH)/ac
@@ -141,6 +139,11 @@ BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/p1-common/recovery/graphics.c
 TARGET_DISABLE_TRIPLE_BUFFERING := false
 
 BOARD_ALLOW_EGL_HIBERNATION := true
+TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
+BOARD_EGL_WORKAROUND_BUG_10194508 := true
+
+# OMX buffer reallocate
+BOARD_CANT_REALLOCATE_OMX_BUFFERS := true
 
 # hwcomposer: custom vsync ioctl
 BOARD_CUSTOM_VSYNC_IOCTL := true
@@ -167,28 +170,45 @@ TW_INCLUDE_FB2PNG := true
 TW_FLASH_FROM_STORAGE := true
 TW_NO_PARTITION_SD_CARD := true
 TW_EXCLUDE_SUPERSU := true
+TW_INTERNAL_STORAGE_PATH := "/sdcard"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
+TW_NEVER_UNMOUNT_SYSTEM := true
 TW_MAX_BRIGHTNESS := 255
 TW_BRIGHTNESS_PATH := /sys/devices/platform/s3cfb/cmc623_pwm_bl/backlight/s5p_bl/brightness
-RECOVERY_SDCARD_ON_DATA := true
-TW_INTERNAL_STORAGE_PATH := "/data/media"
-TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
-TW_EXTERNAL_STORAGE_PATH := "/external_sd"
-TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
 
 # SELinux
 BOARD_SEPOLICY_DIRS += \
     device/samsung/p1-common/sepolicy
 
 BOARD_SEPOLICY_UNION += \
+    bluetooth.te \
+    debuggerd.te \
     device.te \
+    file.te \
     file_contexts \
+    gpsd.te \
+    init.te \
+    installd.te \
+    kernel.te \
+    lvm.te \
     mediaserver.te \
+    netd.te \
+    platform_app.te \
     property_contexts \
     pvrsrvinit.te \
-    rild.te
-
-TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
-BOARD_EGL_WORKAROUND_BUG_10194508 := true
+    radio.te \
+    recovery.te \
+    rild.te \
+    sdcardd.te \
+    servicemanager.te \
+    shared_relro.te \
+    shell.te \
+    surfaceflinger.te \
+    system_app.te \
+    system_server.te \
+    ueventd.te \
+    untrusted_app.te \
+    zygote.te
 
 # Required for TV out
 COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS

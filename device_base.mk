@@ -51,7 +51,7 @@ PRODUCT_COPY_FILES += \
     hardware/samsung/exynos3/s5pc110/sec_mm/sec_omx/sec_omx_core/secomxregistry:system/etc/secomxregistry \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
+    frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml:system/etc/media_codecs_google_video_le.xml
 
 # These are the hardware-specific permissions
 PRODUCT_COPY_FILES += \
@@ -79,12 +79,24 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES := \
     ro.sf.hwrotation=90 \
     ro.sf.lcd_density=160 \
-    ro.vold.umsdirtyratio=20
+    ro.vold.umsdirtyratio=20 \
+    persist.sys.media.legacy-drm=1
 
+# ART
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.dex2oat-Xms=8m \
+    dalvik.vm.dex2oat-Xmx=96m \
+    dalvik.vm.image-dex2oat-Xms=48m \
+    dalvik.vm.image-dex2oat-Xmx=48m \
+    dalvik.vm.dex2oat-filter=interpret-only \
+    dalvik.vm.image-dex2oat-filter=speed
+
+# Camera
 PRODUCT_PROPERTY_OVERRIDES += \
     camera2.portability.force_api=1 \
     camera2.port.operation_time_ms=5000
 
+# SGX540 is slower with the scissor optimization enabled
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=131072 \
     ro.hwui.disable_scissor_opt=true \
@@ -92,16 +104,18 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.bq.gpu_to_cpu_unsupported=1 \
     debug.hwui.render_dirty_regions=false
 
+# Enable Google-specific location features,
+# like NetworkLocationProvider and LocationCollector
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.com.google.locationfeatures=1 \
+    ro.com.google.networklocation=1
+
 PRODUCT_PROPERTY_OVERRIDES += \
     wifi.interface=wlan0 \
     wifi.supplicant_scan_interval=45
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=SamsungExynos3RIL
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.com.google.locationfeatures=1 \
-    ro.com.google.networklocation=1
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.config.low_ram=true \
@@ -112,6 +126,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Set default property
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
+
+# SELinux
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.build.selinux=1
 
 # Filesystem management tools
 PRODUCT_PACKAGES := \
@@ -134,8 +152,8 @@ PRODUCT_PACKAGES += \
 
 # Open Source Charging Mode
 PRODUCT_PACKAGES += \
-    p1_charger \
-    p1_charger_res_images
+    device_healthd \
+    device_healthd_images
 
 # Libs
 PRODUCT_PACKAGES += \
@@ -168,8 +186,6 @@ PRODUCT_PACKAGES += \
     fsck.f2fs \
     mkfs.f2fs \
     fibmap.f2fs
-
-PRODUCT_TAGS += dalvik.gc.type-precise
 
 # Virtual machine setup
 include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
