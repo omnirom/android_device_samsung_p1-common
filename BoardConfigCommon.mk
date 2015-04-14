@@ -86,6 +86,10 @@ BOARD_CAMERA_HAVE_ISO := true
 # OpenGL stuff
 BOARD_EGL_CFG := device/samsung/p1-common/rootdir/system/lib/egl/egl.cfg
 USE_OPENGL_RENDERER := true
+BOARD_ALLOW_EGL_HIBERNATION := true
+BOARD_EGL_WORKAROUND_BUG_10194508 := true
+BOARD_EGL_SYSTEMUI_PBSIZE_HACK := true
+TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 
 # Enable dex-preoptimization to speed up first boot sequence
 ifeq ($(HOST_OS),linux)
@@ -93,9 +97,6 @@ ifeq ($(HOST_OS),linux)
     WITH_DEXPREOPT_BOOT_IMG_ONLY := true
     DONT_DEXPREOPT_PREBUILTS := true
 endif
-
-# SkTextBox for libtvout
-BOARD_USES_SKTEXTBOX := true
 
 # Device related defines
 BOARD_NAND_PAGE_SIZE := 4096
@@ -136,10 +137,6 @@ BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/p1-common/recovery/graphics.c
 # OpenGL ES driver that in conjunction with disable triple-buffering
 # would hurt performance significantly (see b/6016711)
 TARGET_DISABLE_TRIPLE_BUFFERING := false
-
-BOARD_ALLOW_EGL_HIBERNATION := true
-TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
-BOARD_EGL_WORKAROUND_BUG_10194508 := true
 
 # OMX buffer reallocate
 BOARD_CANT_REALLOCATE_OMX_BUFFERS := true

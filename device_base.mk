@@ -26,7 +26,7 @@ PRODUCT_AAPT_CONFIG := large mdpi
 PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 # These are the hardware-specific configuration files
-PRODUCT_COPY_FILES := \
+PRODUCT_COPY_FILES += \
     $(COMMON_ROOTDIR)/init.p1-common.rc:root/init.p1-common.rc \
     $(COMMON_ROOTDIR)/init.trace.rc:root/init.trace.rc \
     $(COMMON_ROOTDIR)/updater.sh:updater.sh \
@@ -76,10 +76,14 @@ PRODUCT_COPY_FILES += \
 # These are the hardware-specific settings that are stored in system properties.
 # Note that the only such settings should be the ones that are too low-level to
 # be reachable from resources or other mechanisms.
-PRODUCT_PROPERTY_OVERRIDES := \
+#
+# Surface
+PRODUCT_PROPERTY_OVERRIDES += \
     ro.sf.hwrotation=90 \
-    ro.sf.lcd_density=160 \
-    ro.vold.umsdirtyratio=20 \
+    ro.sf.lcd_density=160
+
+# Media
+PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.media.legacy-drm=1
 
 # Camera
@@ -87,7 +91,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     camera2.portability.force_api=1 \
     camera2.port.operation_time_ms=5000
 
-# SGX540 is slower with the scissor optimization enabled
+# EGL
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=131072 \
     ro.hwui.disable_scissor_opt=true \
@@ -101,20 +105,38 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.locationfeatures=1 \
     ro.com.google.networklocation=1
 
+# Wi-Fi
 PRODUCT_PROPERTY_OVERRIDES += \
     wifi.interface=wlan0 \
     wifi.supplicant_scan_interval=45
 
+# RIL
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=SamsungExynos3RIL
 
+# Extended JNI checks
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.kernel.android.checkjni=0 \
+    dalvik.vm.checkjni=false
+
+# Low RAM
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.config.low_ram=true \
     ro.sys.fw.bg_apps_limit=16 \
     ro.config.max_starting_bg=10 \
     dalvik.vm.jit.codecachesize=0
 
-# Set default property
+# ART
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.image-dex2oat-Xms=16m \
+    dalvik.vm.image-dex2oat-Xmx=64m \
+    dalvik.vm.dex2oat-Xms=64m \
+    dalvik.vm.dex2oat-Xmx=128m \
+    ro.dalvik.vm.native.bridge=0 \
+    dalvik.vm.dex2oat-filter=interpret-only \
+    dalvik.vm.image-dex2oat-filter=speed
+
+# Set default property for USB protocol
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
 
@@ -123,7 +145,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.build.selinux=1
 
 # Filesystem management tools
-PRODUCT_PACKAGES := \
+PRODUCT_PACKAGES += \
     setup_fs \
     bml_over_mtd
 
@@ -146,7 +168,7 @@ PRODUCT_PACKAGES += \
     device_healthd \
     device_healthd_images
 
-# Libs
+# HAL
 PRODUCT_PACKAGES += \
     camera.s5pc110 \
     lights.s5pc110 \
@@ -154,7 +176,6 @@ PRODUCT_PACKAGES += \
     power.s5pc110 \
     libs3cjpeg \
     libstagefrighthw \
-    libskia_legacy \
     libnetcmdiface
 
 # Packages
@@ -178,7 +199,13 @@ PRODUCT_PACKAGES += \
     mkfs.f2fs \
     fibmap.f2fs
 
+# ART
+PRODUCT_DEX_PREOPT_DEFAULT_FLAGS := \
+    --compiler-filter=interpret-only
+$(call add-product-dex-preopt-module-config,services,--compiler-filter=speed)
+
 # Virtual machine setup
 include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
 
+# broadcom wlan
 $(call inherit-product, hardware/broadcom/wlan/bcmdhd/firmware/bcm4329/device-bcm.mk)
