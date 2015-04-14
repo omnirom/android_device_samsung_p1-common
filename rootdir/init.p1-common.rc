@@ -31,10 +31,6 @@ on boot
     write /proc/sys/vm/dirty_expire_centisecs 500
     write /proc/sys/vm/dirty_writeback_centisecs 1000
 
-#   readahead
-    write /sys/block/mmcblk0/queue/read_ahead_kb 256
-    write /sys/block/mmcblk1/queue/read_ahead_kb 256
-
 #   prevents permission denied error for telephony
     chmod 0644 /proc/cmdline
 
@@ -80,6 +76,14 @@ on fs
     chown system system /sys/class/sec/sec_tune_cmc623/read_reg
     chown system system /sys/class/sec/sec_tune_cmc623/set_reg
 
+#   allow system to modify cpufreq control files
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+
 on post-fs-data
 
 #   create data/gps for GPS demon
@@ -89,9 +93,6 @@ on post-fs-data
 #   wi-fi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp
-
-#   cpufreq, set default governor
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
 
 #   sensors
 #   enable gyro (p1c) & orientation_sensor (p1)
