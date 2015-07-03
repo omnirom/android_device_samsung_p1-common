@@ -33,7 +33,7 @@ TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_ARCH_VARIANT_CPU := cortex-a8
 TARGET_CPU_VARIANT := cortex-a8
 TARGET_CPU_SMP := false
-TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.7
+KERNEL_TOOLCHAIN := "$(ANDROID_BUILD_TOP)/prebuilts/gcc/$(strip $(HOST_OS))-x86/arm/arm-eabi-4.7/bin/"
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
