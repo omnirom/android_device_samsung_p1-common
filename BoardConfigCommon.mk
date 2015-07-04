@@ -109,6 +109,7 @@ BOARD_FLASH_BLOCK_SIZE := 4096
 # Vold
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/s3c-usbgadget/gadget/lun%d/file"
+BOARD_HAS_NON_EMULATED_SDCARD := true
 
 # Releasetools
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/p1-common
